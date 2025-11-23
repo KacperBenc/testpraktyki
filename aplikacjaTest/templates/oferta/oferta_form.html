@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dodaj ofertę</title>
+</head>
+<body>
+
+<h1>Dodaj nową ofertę</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Zapisz ofertę</button>
+</form>
+
+<a href="{% url 'lista_ofert' %}">⬅ Powrót do listy ofert</a>
+
+</body>
+</html>

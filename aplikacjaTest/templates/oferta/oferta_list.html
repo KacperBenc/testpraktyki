@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista ofert</title>
+</head>
+<body>
+
+<h1>Lista dostępnych ofert</h1>
+
+<a href="{% url 'dodaj_oferte' %}">➕ Dodaj nową ofertę</a>
+
+<ul>
+    {% for oferta in oferty %}
+        <li>
+            <strong>{{ oferta.pracodawca.nazwa_firmy }}</strong><br>
+            Rodzaj: {{ oferta.rodzaj_zgloszenia }} <br>
+            Dostępność: {{ oferta.dostepnosc_oferty }} <br>
+            <em>{{ oferta.opis }}</em>
+        </li>
+    {% empty %}
+        <li>Brak ofert.</li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

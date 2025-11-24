@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista ofert</title>
+</head>
+<body>
+
+<h1>Lista dostępnych ofert</h1>
+
+<a href="{% url 'rejestracja' %}">➕ zarejestruj sie</a>
+
+<ul>
+    {% for uzytkownik in uzytkownicy %}
+        <li>
+            <strong> rola:{{ uzytkownik.rola}}</strong><br>
+            login: {{ uzytkownik.login }} <br>
+            telefon: {{ uzytkownik.status_konta }} <br>
+             email: {{ uzytkownik.adres_mailowy }} <br>
+            telefon: {{ uzytkownik.numer_telefonu }}<br>
+
+        </li>
+    {% empty %}
+        <li>Brak ofert.</li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Oferta
+from ..models import Oferta
 
 class OfertaForm(forms.ModelForm):
     class Meta:

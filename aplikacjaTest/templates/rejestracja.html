@@ -3,66 +3,150 @@
 <form method="POST">
     {% csrf_token %}
 
+    <!-- =============================
+         BLOK WYŚWIETLANIA BŁĘDÓW
+    ============================== -->
+
+    {% if form.errors %}
+        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
+            <h4>Błędy w danych użytkownika:</h4>
+            {{ form.errors }}
+        </div>
+    {% endif %}
+
+    {% if adres_form.errors %}
+        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
+            <h4>Błędy w adresie:</h4>
+            {{ adres_form.errors }}
+        </div>
+    {% endif %}
+
+    {% if student_form.errors %}
+        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
+            <h4>Błędy w danych studenta:</h4>
+            {{ student_form.errors }}
+        </div>
+    {% endif %}
+
+    {% if pracodawca_form.errors %}
+        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
+            <h4>Błędy w danych pracodawcy:</h4>
+            {{ pracodawca_form.errors }}
+        </div>
+    {% endif %}
+
+    {% if opiekun_form.errors %}
+        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
+            <h4>Błędy w danych opiekuna:</h4>
+            {{ opiekun_form.errors }}
+        </div>
+    {% endif %}
+
+    {% if pracownikbk_form.errors %}
+        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
+            <h4>Błędy w danych pracownika BK:</h4>
+            {{ pracownikbk_form.errors }}
+        </div>
+    {% endif %}
+
+
+    <!-- =============================
+             DANE UŻYTKOWNIKA
+    ============================== -->
     <h3>Dane użytkownika</h3>
     {{ form.as_p }}
 
-  <div id="adres_fields" style="display:none;">
-    <h3>Adres</h3>
-    {{ adres_form.as_p }}
-</div>
-    <!-- STUDENT -->
-    <div id="student_fields" style="display:none;">
+
+    <!-- =============================
+                 ADRES
+    ============================== -->
+    <div id="adres_fields" style="display:none; margin-top:20px;">
+        <h3>Adres</h3>
+        {{ adres_form.as_p }}
+    </div>
+
+
+    <!-- =============================
+                 STUDENT
+    ============================== -->
+    <div id="student_fields" style="display:none; margin-top:20px;">
         <h3>Dane studenta</h3>
         {{ student_form.as_p }}
     </div>
 
-    <!-- OPIEKUN -->
-    <div id="opiekun_fields" style="display:none;">
+
+    <!-- =============================
+               OPIEKUN
+    ============================== -->
+    <div id="opiekun_fields" style="display:none; margin-top:20px;">
         <h3>Dane opiekuna</h3>
         {{ opiekun_form.as_p }}
     </div>
 
-    <!-- PRACODAWCA -->
-    <div id="pracodawca_fields" style="display:none;">
+
+    <!-- =============================
+               PRACODAWCA
+    ============================== -->
+    <div id="pracodawca_fields" style="display:none; margin-top:20px;">
         <h3>Dane pracodawcy</h3>
         {{ pracodawca_form.as_p }}
     </div>
 
-    <!-- PRACOWNIK BK -->
-    <div id="pracownikbk_fields" style="display:none;">
+
+    <!-- =============================
+              PRACOWNIK BK
+    ============================== -->
+    <div id="pracownikbk_fields" style="display:none; margin-top:20px;">
         <h3>Dane pracownika BK</h3>
         {{ pracownikbk_form.as_p }}
     </div>
 
-    <button type="submit">Zarejestruj</button>
+
+    <button type="submit" style="margin-top:20px;">Zarejestruj</button>
 </form>
 
+
+<!-- =============================
+       OBSŁUGA WYBORU ROLI (JS)
+=============================== -->
 <script>
+function disableSection(selector, disable) {
+    document.querySelectorAll(selector + " input, " + selector + " select")
+        .forEach(el => el.disabled = disable);
+}
+
 function updateRoleFields() {
     const role = document.getElementById("id_rola").value;
 
-    // Ukryj wszystko
-    document.getElementById("student_fields").style.display = "none";
-    document.getElementById("opiekun_fields").style.display = "none";
-    document.getElementById("pracodawca_fields").style.display = "none";
-    document.getElementById("pracownikbk_fields").style.display = "none";
+    // Ukryj wszystkie sekcje
+    const sections = ["#student_fields", "#opiekun_fields", "#pracodawca_fields", "#pracownikbk_fields", "#adres_fields"];
+    sections.forEach(s => {
+        document.querySelector(s).style.display = "none";
+        disableSection(s, true);
+    });
 
-    document.getElementById("adres_fields").style.display = "none"; // <- adres domyślnie ukryty
-
-    // Pokazujemy sekcje zależnie od roli
+    // Wyświetlanie + aktywacja odpowiednich sekcji
     if (role === "Student") {
-        document.getElementById("student_fields").style.display = "block";
-        document.getElementById("adres_fields").style.display = "block";   // Student wymaga adresu
-    }
-    else if (role === "Opiekun Praktyk") {
-        document.getElementById("opiekun_fields").style.display = "block";
+        document.querySelector("#student_fields").style.display = "block";
+        disableSection("#student_fields", false);
+
+        document.querySelector("#adres_fields").style.display = "block";
+        disableSection("#adres_fields", false);
     }
     else if (role === "Pracodawca") {
-        document.getElementById("pracodawca_fields").style.display = "block";
-        document.getElementById("adres_fields").style.display = "block";   // Pracodawca wymaga adresu
+        document.querySelector("#pracodawca_fields").style.display = "block";
+        disableSection("#pracodawca_fields", false);
+
+        document.querySelector("#adres_fields").style.display = "block";
+        disableSection("#adres_fields", false);
+    }
+    else if (role === "Opiekun Praktyk") {
+        document.querySelector("#opiekun_fields").style.display = "block";
+        disableSection("#opiekun_fields", false);
     }
     else if (role === "Pracownik BK") {
-        document.getElementById("pracownikbk_fields").style.display = "block";
+        document.querySelector("#pracownikbk_fields").style.display = "block";
+        disableSection("#pracownikbk_fields", false);
     }
 }
 

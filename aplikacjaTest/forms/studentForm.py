@@ -4,4 +4,4 @@ from aplikacjaTest.models import Student
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        exclude = ["uzytkownik"]
+        fields = ["imie", "nazwisko", "data_urodzenia", "numer_indeksu"]

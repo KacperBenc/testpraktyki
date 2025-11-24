@@ -14,7 +14,6 @@ from aplikacjaTest.models import Adres
 
 def rejestracja(request):
 
-    # Mapowanie formularzy zależnie od roli
     role_forms = {
         "Student": StudentForm,
         "Pracodawca": PracodawcaForm,
@@ -23,14 +22,24 @@ def rejestracja(request):
     }
 
     if request.method == "POST":
-        main_form = RejestracjaForm(request.POST)
-        adres_form = AdresForm(request.POST)
 
-        role = request.POST.get("rola")
+        # --- główny formularz ---
+        main_form = RejestracjaForm(request.POST, prefix="main")
+
+        # --- adres (zawsze prefix, ukrywanie jest tylko JS) ---
+        adres_form = AdresForm(request.POST, prefix="adres")
+
+        # --- rola ---
+        role = request.POST.get("main-rola")
         extra_form_class = role_forms.get(role)
-        extra_form = extra_form_class(request.POST) if extra_form_class else None
 
-        # Czy rola wymaga adresu?
+        extra_prefix = role.replace(" ", "_") if extra_form_class else None
+        extra_form = (
+            extra_form_class(request.POST, prefix=extra_prefix)
+            if extra_form_class else None
+        )
+
+        # Czy ta rola wymaga adresu?
         role_requires_address = role in ["Student", "Pracodawca"]
 
         valid_main = main_form.is_valid()
@@ -39,21 +48,20 @@ def rejestracja(request):
 
         if valid_main and valid_address and valid_extra:
 
-            # --- Zapis adresu (tylko jeśli wymagany) ---
+            # Zapis adresu
             adres = adres_form.save() if role_requires_address else None
 
-            # --- Zapis użytkownika ---
+            # Zapis użytkownika
             user = main_form.save(commit=False)
             user.haslo = make_password(main_form.cleaned_data["haslo"])
-            user.status_konta = None  # administrator ustawia później
+            user.status_konta = None
             user.save()
 
-            # --- Zapis powiązanej roli ---
+            # Zapis roli
             if extra_form:
                 role_obj = extra_form.save(commit=False)
                 role_obj.uzytkownik = user
 
-                # jeśli model roli ma pole adresu — dodajemy
                 if hasattr(role_obj, "adres") and adres is not None:
                     role_obj.adres = adres
 
@@ -63,21 +71,20 @@ def rejestracja(request):
             return redirect("home")
 
     else:
-        main_form = RejestracjaForm()
-        adres_form = AdresForm()
-        extra_form = None
+        main_form = RejestracjaForm(prefix="main")
+        adres_form = AdresForm(prefix="adres")
 
-    # Formularze ról na potrzeby wyświetlania w template
+    # Formularze wstępne (GET)
     forms_map = {
-        "student_form": StudentForm(),
-        "pracodawca_form": PracodawcaForm(),
-        "opiekun_form": OpiekunForm(),
-        "pracownikbk_form": PracownikBKForm(),
+        "student_form": StudentForm(prefix="Student"),
+        "pracodawca_form": PracodawcaForm(prefix="Pracodawca"),
+        "opiekun_form": OpiekunForm(prefix="Opiekun_Praktyk"),
+        "pracownikbk_form": PracownikBKForm(prefix="Pracownik_BK"),
         "adres_form": adres_form,
     }
 
-    # Jeśli był POST i extra_form istnieje → chcemy pokazać jego błędy
-    if request.method == "POST" and extra_form is not None:
+    # Jeśli były błędy w extra_form → chcemy pokazać je na stronie
+    if request.method == "POST":
         if role == "Student":
             forms_map["student_form"] = extra_form
         elif role == "Pracodawca":
@@ -89,6 +96,5 @@ def rejestracja(request):
 
     return render(request, "rejestracja.html", {
         "form": main_form,
-        "adres_form": adres_form,
-        **forms_map
+        **forms_map,
     })

@@ -1,12 +1,28 @@
 <h2>Rejestracja</h2>
 
-<form method="POST">
+<style>
+/* sekcje „ukryte” muszą być nadal w DOM, ale niewidoczne */
+.hidden {
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* sekcje widoczne */
+.visible {
+    visibility: visible;
+    height: auto;
+    overflow: visible;
+    margin-top: 20px;
+}
+</style>
+
+<form method="POST" novalidate>
     {% csrf_token %}
 
-    <!-- =============================
-         BŁĘDY
-    ============================== -->
-
+    <!-- ============================= BŁĘDY ============================== -->
     {% if form.errors %}
         <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
             <h4>Błędy w danych użytkownika:</h4>
@@ -23,111 +39,128 @@
 
     {% if student_form.errors %}
         <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy w danych studenta:</h4>
+            <h4>Błędy studenta:</h4>
             {{ student_form.errors }}
         </div>
     {% endif %}
 
     {% if pracodawca_form.errors %}
         <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy w danych pracodawcy:</h4>
+            <h4>Błędy pracodawcy:</h4>
             {{ pracodawca_form.errors }}
         </div>
     {% endif %}
 
     {% if opiekun_form.errors %}
         <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy w danych opiekuna:</h4>
+            <h4>Błędy opiekuna:</h4>
             {{ opiekun_form.errors }}
         </div>
     {% endif %}
 
     {% if pracownikbk_form.errors %}
         <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy w danych pracownika BK:</h4>
+            <h4>Błędy pracownika BK:</h4>
             {{ pracownikbk_form.errors }}
         </div>
     {% endif %}
 
-
+    <!-- ========================== UŻYTKOWNIK ========================== -->
     <h3>Dane użytkownika</h3>
     {{ form.as_p }}
 
-    <!-- ADRES -->
-    <div id="adres_fields" style="display:none; margin-top:20px;">
+    <!-- ============================ ADRES ============================== -->
+    <div id="adres_fields" class="hidden">
         <h3>Adres</h3>
         {{ adres_form.as_p }}
     </div>
 
-    <!-- STUDENT -->
-    <div id="student_fields" style="display:none; margin-top:20px;">
+    <!-- ============================ STUDENT ============================ -->
+    <div id="student_fields" class="hidden">
         <h3>Dane studenta</h3>
         {{ student_form.as_p }}
     </div>
 
-    <!-- OPIEKUN -->
-    <div id="opiekun_fields" style="display:none; margin-top:20px;">
+    <!-- ============================ OPIEKUN ============================ -->
+    <div id="opiekun_fields" class="hidden">
         <h3>Dane opiekuna</h3>
         {{ opiekun_form.as_p }}
     </div>
 
-    <!-- PRACODAWCA -->
-    <div id="pracodawca_fields" style="display:none; margin-top:20px;">
+    <!-- ============================ PRACODAWCA ============================ -->
+    <div id="pracodawca_fields" class="hidden">
         <h3>Dane pracodawcy</h3>
         {{ pracodawca_form.as_p }}
     </div>
 
-    <!-- PRACOWNIK BK -->
-    <div id="pracownikbk_fields" style="display:none; margin-top:20px;">
+    <!-- ============================ PRACOWNIK BK ============================ -->
+    <div id="pracownikbk_fields" class="hidden">
         <h3>Dane pracownika BK</h3>
         {{ pracownikbk_form.as_p }}
     </div>
 
-
     <button type="submit" style="margin-top:20px;">Zarejestruj</button>
 </form>
 
-<script>
-function setRequiredInSection(sectionId, required) {
-    document.querySelectorAll(`#${sectionId} input, #${sectionId} select`)
-        .forEach(el => el.required = required);
-}
 
-function hideAllSections() {
-    ["adres_fields", "student_fields", "pracodawca_fields", "opiekun_fields", "pracownikbk_fields"]
-        .forEach(id => {
-            document.getElementById(id).style.display = "none";
-            setRequiredInSection(id, false);
+<!-- ============================ JAVASCRIPT ============================ -->
+
+<script>
+function setRequired(sectionId, enable) {
+    document.querySelectorAll(`#${sectionId} input, #${sectionId} select`)
+        .forEach(el => {
+            el.required = enable;
         });
 }
 
+function hideAll() {
+    [
+        "adres_fields",
+        "student_fields",
+        "pracodawca_fields",
+        "opiekun_fields",
+        "pracownikbk_fields"
+    ].forEach(id => {
+        document.getElementById(id).className = "hidden";
+        setRequired(id, false);
+    });
+}
+
 function updateRoleFields() {
-    hideAllSections();
+    hideAll();
 
     const role = document.getElementById("id_main-rola").value;
 
     if (role === "Student") {
-        document.getElementById("student_fields").style.display = "block";
-        document.getElementById("adres_fields").style.display = "block";
-        setRequiredInSection("student_fields", true);
-        setRequiredInSection("adres_fields", true);
+        document.getElementById("student_fields").className = "visible";
+        document.getElementById("adres_fields").className = "visible";
+
+        setRequired("student_fields", true);
+        setRequired("adres_fields", true);
     }
+
     if (role === "Pracodawca") {
-        document.getElementById("pracodawca_fields").style.display = "block";
-        document.getElementById("adres_fields").style.display = "block";
-        setRequiredInSection("pracodawca_fields", true);
-        setRequiredInSection("adres_fields", true);
+        document.getElementById("pracodawca_fields").className = "visible";
+        document.getElementById("adres_fields").className = "visible";
+
+        setRequired("pracodawca_fields", true);
+        setRequired("adres_fields", true);
     }
+
     if (role === "Opiekun Praktyk") {
-        document.getElementById("opiekun_fields").style.display = "block";
-        setRequiredInSection("opiekun_fields", true);
+        document.getElementById("opiekun_fields").className = "visible";
+        setRequired("opiekun_fields", true);
     }
+
     if (role === "Pracownik BK") {
-        document.getElementById("pracownikbk_fields").style.display = "block";
-        setRequiredInSection("pracownikbk_fields", true);
+        document.getElementById("pracownikbk_fields").className = "visible";
+        setRequired("pracownikbk_fields", true);
     }
 }
 
+// odśwież po załadowaniu
 document.addEventListener("DOMContentLoaded", updateRoleFields);
+
+// przełącz po zmianie roli
 document.getElementById("id_main-rola").addEventListener("change", updateRoleFields);
 </script>

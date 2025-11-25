@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -15,6 +16,7 @@ class Uzytkownik(models.Model):
         PRACOWNIK_BK = "Pracownik BK", "Pracownik BK"
         PRACODAWCA = "Pracodawca", "Pracodawca"
 
+    django_user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     rola = models.CharField(max_length=50, choices=Role.choices)
     login = models.CharField(max_length=50, unique=True)
     haslo = models.CharField(max_length=255)

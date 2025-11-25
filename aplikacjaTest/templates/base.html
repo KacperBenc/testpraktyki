@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}System Praktyk{% endblock %}</title>
+
+    <style>
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background: #333;
+            padding: 10px;
+            color: white;
+        }
+        .nav-left a, .nav-right a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+        }
+        .nav-right {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="nav-left">
+        <a href="/"></a>
+    </div>
+
+    <div class="nav-right">
+        {% if request.user.is_authenticated %}
+            Zalogowany jako: {{ request.user.username }}
+            | <a href="{% url 'logout' %}">Wyloguj</a>
+        {% else %}
+            <a href="{% url 'login' %}">Zaloguj</a>
+        {% endif %}
+    </div>
+</div>
+
+<div style="padding:20px;">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

@@ -31,14 +31,7 @@ def load_countries(apps, schema_editor):
     ]
 
     for kraj in kraje:
-        Kraj.objects.get_or_create(nazwa=kraj)
-
-    Miasto = apps.get_model("aplikacjaTest", "Miasto")
-
-    startowe_miasta = ["Kraków", "Gdańsk", "Wrocław", "Poznań"]
-
-    for m in startowe_miasta:
-        Miasto.objects.update_or_create(nazwa=m, defaults={})
+        Kraj.objects.get_or_create(nazwa=kraj)\
 
 def unload_countries(apps, schema_editor):
     Kraj = apps.get_model("aplikacjaTest", "Kraj")

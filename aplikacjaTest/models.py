@@ -52,11 +52,11 @@ class Miasto(models.Model):
 #        ADRES
 # ==========================
 class Adres(models.Model):
-    miasto = models.ForeignKey(Miasto, on_delete=models.PROTECT)
     kraj = models.ForeignKey(Kraj, on_delete=models.PROTECT)
+    miasto = models.ForeignKey(Miasto, on_delete=models.PROTECT)
     ulica = models.CharField(max_length=100, null=True)
     numer_budynku = models.CharField(max_length=10)
-    numer_lokalu = models.CharField(max_length=10, null=True)
+    numer_lokalu = models.CharField(max_length=10, null=True, blank=True)
     kod_pocztowy = models.CharField(max_length=10)
 
     def __str__(self):

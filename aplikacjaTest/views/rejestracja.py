@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
 from django.contrib import messages
-
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
 from aplikacjaTest.forms.rejestracjaForm import RejestracjaForm
+from aplikacjaTest.forms.adresForm import AdresForm
 from aplikacjaTest.forms.studentForm import StudentForm
 from aplikacjaTest.forms.pracodawcaForm import PracodawcaForm
 from aplikacjaTest.forms.opiekunForm import OpiekunForm
 from aplikacjaTest.forms.pracownikBKForm import PracownikBKForm
-from aplikacjaTest.forms.adresForm import AdresForm
+
+from aplikacjaTest.models import Miasto
 
 
 def rejestracja(request):
-
     role_forms = {
         "Student": StudentForm,
         "Pracodawca": PracodawcaForm,
@@ -20,17 +21,13 @@ def rejestracja(request):
     }
 
     if request.method == "POST":
-
         main_form = RejestracjaForm(request.POST, prefix="main")
         adres_form = AdresForm(request.POST, prefix="adres")
 
         role = request.POST.get("main-rola")
-        extra_form_class = role_forms.get(role)
-
-        extra_form = (
-            extra_form_class(request.POST, prefix=role.replace(" ", "_"))
-            if extra_form_class else None
-        )
+        extra_class = role_forms.get(role)
+        extra_prefix = role.replace(" ", "_") if extra_class else None
+        extra_form = extra_class(request.POST, prefix=extra_prefix) if extra_class else None
 
         requires_address = role in ["Student", "Pracodawca"]
 
@@ -40,54 +37,89 @@ def rejestracja(request):
 
         if valid_main and valid_address and valid_extra:
 
-            # 1. Najpierw zapis adresu, jeśli wymagany
-            adres = adres_form.save() if requires_address else None
+            # =====================================================
+            # 1) Zapis ADRESU (dla ról, które go wymagają)
+            # =====================================================
+            adres_instance = None
+            if requires_address:
+                # miasto — szukanie/utworzenie
+                miasto_nazwa = adres_form.cleaned_data["miasto_nazwa"].strip()
+                miasto_obj = Miasto.objects.filter(nazwa__iexact=miasto_nazwa).first()
+                if not miasto_obj:
+                    miasto_obj = Miasto.objects.create(nazwa=miasto_nazwa.title())
 
-            # 2. Tworzymy konto Django
-            raw_password = main_form.cleaned_data["haslo"]
+                # stworzenie adresu
+                adres_instance = adres_form.save(commit=False)
+                adres_instance.miasto = miasto_obj
+
+                # numer lokalu może być None
+                if not adres_instance.numer_lokalu:
+                    adres_instance.numer_lokalu = None
+
+                adres_instance.save()
+
+            # =====================================================
+            # 2) Zapis UŻYTKOWNIKA
+            # =====================================================
+            haslo_raw = main_form.cleaned_data["haslo"]
 
             django_user = User.objects.create_user(
                 username=main_form.cleaned_data["login"],
-                email=main_form.cleaned_data["adres_mailowy"],
-                password=raw_password
+                password=haslo_raw,
+                email=main_form.cleaned_data["adres_mailowy"]
             )
 
-            # 3. Zapis użytkownika w twojej tabeli
             user = main_form.save(commit=False)
-
-            # kopiujemy hash hasła z Django
-            user.haslo = django_user.password
+            user.haslo = make_password(haslo_raw)   # możesz usunąć jeśli nie chcesz duplikatu
+            user.django_user = django_user
+            user.status_konta = None
             user.save()
 
-            # 4. Zapis obiektu roli
+            # =====================================================
+            # 3) Zapis ROLI — Student/Pracodawca/Opiekun/BK
+            # =====================================================
             if extra_form:
                 role_obj = extra_form.save(commit=False)
                 role_obj.uzytkownik = user
 
-                # student/pracodawca zawsze muszą mieć adres
-                if role in ["Student", "Pracodawca"]:
-                    role_obj.adres = adres
+                if requires_address:
+                    # W tym momencie adres_instance istnieje ZAWSZE
+                    role_obj.adres = adres_instance
 
                 role_obj.save()
 
             messages.success(request, "Rejestracja przebiegła pomyślnie!")
             return redirect("home")
-
-        messages.error(request, "Popraw błędy w formularzu.")
+        else:
+            messages.error(request, "Popraw błędy formularza.")
 
     else:
         main_form = RejestracjaForm(prefix="main")
         adres_form = AdresForm(prefix="adres")
+        extra_form = None
+        role = None
 
-    return render(
-        request,
-        "rejestracja.html",
-        {
-            "form": main_form,
-            "student_form": StudentForm(prefix="Student"),
-            "pracodawca_form": PracodawcaForm(prefix="Pracodawca"),
-            "opiekun_form": OpiekunForm(prefix="Opiekun_Praktyk"),
-            "pracownikbk_form": PracownikBKForm(prefix="Pracownik_BK"),
-            "adres_form": adres_form,
-        },
-    )
+    # domyślne formularze do wyświetlenia
+    forms_map = {
+        "student_form": StudentForm(prefix="Student"),
+        "pracodawca_form": PracodawcaForm(prefix="Pracodawca"),
+        "opiekun_form": OpiekunForm(prefix="Opiekun_Praktyk"),
+        "pracownikbk_form": PracownikBKForm(prefix="Pracownik_BK"),
+        "adres_form": adres_form,
+    }
+
+    # PODSTAW formularz roli z błędami po POST
+    if request.method == "POST" and extra_form is not None:
+        if role == "Student":
+            forms_map["student_form"] = extra_form
+        elif role == "Pracodawca":
+            forms_map["pracodawca_form"] = extra_form
+        elif role == "Opiekun Praktyk":
+            forms_map["opiekun_form"] = extra_form
+        elif role == "Pracownik BK":
+            forms_map["pracownikbk_form"] = extra_form
+
+    return render(request, "rejestracja.html", {
+        "form": main_form,
+        **forms_map,
+    })

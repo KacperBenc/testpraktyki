@@ -1,15 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
 
+# Create your models here.
 
 
 # ==========================
 #       UZYTKOWNIK
 # ==========================
 class Uzytkownik(models.Model):
-
     class Role(models.TextChoices):
         STUDENT = "Student", "Student"
         OPIEKUN = "Opiekun Praktyk", "Opiekun Praktyk"
@@ -82,7 +81,6 @@ class Pracodawca(models.Model):
 #         OFERTA
 # ==========================
 class Oferta(models.Model):
-
     class Rodzaj(models.TextChoices):
         PRACA = "Praca zawodowa", "Praca zawodowa"
         PRAKTYKI = "Praktyki", "Praktyki"
@@ -133,7 +131,6 @@ class Student(models.Model):
 #        ZGLOSZENIE
 # ==========================
 class Zgloszenie(models.Model):
-
     class Status(models.TextChoices):
         ZGLOSZONE = "Zgłoszone", "Zgłoszone"
         ZAAKCEPTOWANE = "Zaakceptowane", "Zaakceptowane"
@@ -211,4 +208,3 @@ class PracownikBK(models.Model):
 
     def __str__(self):
         return f"{self.imie} {self.nazwisko}"
- 

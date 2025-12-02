@@ -1,40 +1,43 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from aplikacjaTest.forms.zgloszenieFrom import ZgloszenieForm
 from aplikacjaTest.forms.zgloszenie_bk_form import ZgloszenieBKForm
-from aplikacjaTest.models import Uzytkownik, Student, Zgloszenie, OpiekunPraktyk, PracownikBK
+from django.contrib import messages
+from aplikacjaTest.models import (
+    Uzytkownik,
+    Student,
+    Zgloszenie,
+    Oferta,
+)
 
 
 @login_required
-def zgloszenie_nowe(request):
-    uzytkownik = get_object_or_404(Uzytkownik, django_user=request.user)  # zalogowany user
+def zgloszenie_na_oferte(request, oferta_id):
+    uzytkownik = get_object_or_404(Uzytkownik, django_user=request.user)
+
+    # Tylko student może się zgłaszać
+    if uzytkownik.rola != Uzytkownik.Role.STUDENT:
+        messages.error(request, "Tylko student może zgłosić się na praktyki.")
+        return redirect("lista_ofert")
+
     student = get_object_or_404(Student, uzytkownik=uzytkownik)
+    oferta = get_object_or_404(Oferta, pk=oferta_id)
+
+    if Zgloszenie.objects.filter(student=student, oferta=oferta).exists():
+        messages.warning(request, "Już zgłosiłeś się na tę ofertę.")
+        return redirect("lista_ofert")
 
     if request.method == "POST":
+        Zgloszenie.objects.create(
+            student=student,
+            oferta=oferta,
+            data_zgloszenia=timezone.now(),
+            status=Zgloszenie.Status.ZGLOSZONE,
+        )
+        messages.success(request, "Pomyślnie zgłosiłeś się na ofertę.")
+        return redirect("lista_ofert")
 
-        form = ZgloszenieForm(request.POST)
-
-        if form.is_valid():
-            zgloszenie = form.save(commit=False)
-
-            zgloszenie.student = student
-
-            zgloszenie.data_zgloszenia = timezone.now()
-
-            zgloszenie.status = Zgloszenie.Status.ZGLOSZONE
-
-            zgloszenie.save()
-
-            return redirect("lista_ofert")
-    else:
-
-        form = ZgloszenieForm()
-
-    context = {
-        "form": form,
-    }
-    return render(request, "zgloszenie/zgloszenie_form.html", context)
+    return redirect("lista_ofert")
 
 
 def moje_zgloszenia(request):

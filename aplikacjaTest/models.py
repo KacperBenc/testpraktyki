@@ -2,12 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
-
-
-# ==========================
-#       UZYTKOWNIK
-# ==========================
 class Uzytkownik(models.Model):
     class Role(models.TextChoices):
         STUDENT = "Student", "Student"
@@ -27,9 +21,6 @@ class Uzytkownik(models.Model):
         return self.login
 
 
-# ==========================
-#       KRAJ
-# ==========================
 class Kraj(models.Model):
     nazwa = models.CharField(max_length=100, unique=True)
 
@@ -37,9 +28,6 @@ class Kraj(models.Model):
         return self.nazwa
 
 
-# ==========================
-#       MIASTO
-# ==========================
 class Miasto(models.Model):
     nazwa = models.CharField(max_length=100)
 
@@ -47,9 +35,6 @@ class Miasto(models.Model):
         return self.nazwa
 
 
-# ==========================
-#        ADRES
-# ==========================
 class Adres(models.Model):
     kraj = models.ForeignKey(Kraj, on_delete=models.PROTECT)
     miasto = models.ForeignKey(Miasto, on_delete=models.PROTECT)
@@ -62,9 +47,6 @@ class Adres(models.Model):
         return f"{self.ulica} {self.numer_budynku}, {self.miasto}"
 
 
-# ==========================
-#     PRACODAWCA
-# ==========================
 class Pracodawca(models.Model):
     uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
     adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
@@ -77,9 +59,6 @@ class Pracodawca(models.Model):
         return self.nazwa_firmy or "(Pracodawca)"
 
 
-# ==========================
-#         OFERTA
-# ==========================
 class Oferta(models.Model):
     class Rodzaj(models.TextChoices):
         PRACA = "Praca zawodowa", "Praca zawodowa"
@@ -100,9 +79,6 @@ class Oferta(models.Model):
         return f"Oferta #{self.id} - {self.pracodawca}"
 
 
-# ==========================
-#     OPIEKUN PRAKTYK
-# ==========================
 class OpiekunPraktyk(models.Model):
     uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
     imie = models.CharField(max_length=50, null=True)
@@ -112,9 +88,6 @@ class OpiekunPraktyk(models.Model):
         return f"{self.imie} {self.nazwisko}"
 
 
-# ==========================
-#          STUDENT
-# ==========================
 class Student(models.Model):
     uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
     adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
@@ -127,9 +100,6 @@ class Student(models.Model):
         return f"{self.imie} {self.nazwisko} ({self.numer_indeksu})"
 
 
-# ==========================
-#        ZGLOSZENIE
-# ==========================
 class Zgloszenie(models.Model):
     class Status(models.TextChoices):
         ZGLOSZONE = "Zgłoszone", "Zgłoszone"
@@ -140,7 +110,7 @@ class Zgloszenie(models.Model):
 
     oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    opiekun_praktyk = models.ForeignKey(OpiekunPraktyk, on_delete=models.SET_NULL, null=True)
+    opiekun_praktyk = models.ForeignKey(OpiekunPraktyk, on_delete=models.SET_NULL, null=True, blank=True)
     data_zgloszenia = models.DateTimeField(null=True)
     status = models.CharField(max_length=20, choices=Status.choices, null=True)
     ocena_dla_pracodawcy = models.IntegerField(null=True)
@@ -149,9 +119,6 @@ class Zgloszenie(models.Model):
         return f"Zgłoszenie #{self.id}"
 
 
-# ==========================
-#        ZALICZENIE
-# ==========================
 class Zaliczenie(models.Model):
     zgloszenie = models.ForeignKey(Zgloszenie, on_delete=models.CASCADE)
     data_rozpoczecia = models.DateTimeField(null=True)
@@ -161,9 +128,6 @@ class Zaliczenie(models.Model):
         return f"Zaliczenie #{self.id}"
 
 
-# ==========================
-#           WPIS
-# ==========================
 class Wpis(models.Model):
     zaliczenie = models.ForeignKey(Zaliczenie, on_delete=models.CASCADE)
     data_wpisu = models.DateTimeField(null=True)
@@ -174,9 +138,6 @@ class Wpis(models.Model):
         return f"Wpis #{self.id}"
 
 
-# ==========================
-#         ZALACZNIK
-# ==========================
 class Zalacznik(models.Model):
     zgloszenie = models.ForeignKey(Zgloszenie, on_delete=models.CASCADE)
     sciezka = models.CharField(max_length=500, null=True)
@@ -186,9 +147,6 @@ class Zalacznik(models.Model):
         return f"Załącznik #{self.id}"
 
 
-# ==========================
-#   OCENA DLA PRACODAWCY
-# ==========================
 class OcenaDlaPracodawcy(models.Model):
     zgloszenie = models.ForeignKey(Zgloszenie, on_delete=models.CASCADE)
     ocena = models.IntegerField(null=True)
@@ -198,9 +156,6 @@ class OcenaDlaPracodawcy(models.Model):
         return f"Ocena #{self.id}"
 
 
-# ==========================
-#       PRACOWNIK BK
-# ==========================
 class PracownikBK(models.Model):
     uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
     imie = models.CharField(max_length=50, null=True)

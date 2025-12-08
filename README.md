@@ -21,6 +21,7 @@ System Zarządzania Praktykami Studenckimi to aplikacja webowa wspierająca proc
 - **Konteneryzacja:** Docker (opcjonalnie)
 - **System zarządzania rolami i uprawnieniami użytkowników**
 
+
 ## Architektura systemu
 System korzysta z separacji warstw prezentacji, logiki biznesowej i warstwy danych. Dane użytkowników, ofert, zgłoszeń i dokumentacji są przechowywane w relacyjnej bazie PostgreSQL. Django ORM ułatwia integrację i zarządzanie danymi. Panel administracyjny pozwala na łatwe zarządzanie systemem.
 
@@ -37,6 +38,7 @@ System korzysta z separacji warstw prezentacji, logiki biznesowej i warstwy dany
 - Opiekunowie nadzorują przebieg praktyk i zatwierdzają zgłoszenia
 - Pracownicy Biura Karier zarządzają użytkownikami, ofertami i monitorują system
 
+
 # Info teraz dla nas :)
 - dodany jest testowy plik, który dodaje do bazy jakieś testowe dane
 - polecam usunąć plik db.sqlite3 (chyba że chcecie zostawić swoje dane, które wpisywaliście)
@@ -47,3 +49,4 @@ rm db.sqlite3
 python manage.py migrate
 python manage.py seed_app_praktyki  # wywołanie dodania kilku testowych użytkowników i ofert
 ```
+

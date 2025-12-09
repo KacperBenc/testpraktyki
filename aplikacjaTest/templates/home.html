@@ -7,5 +7,14 @@
     <li><a href="{% url 'dodaj_oferte' %}">Dodaj ofertę</a></li>
     <li><a href="{% url 'lista_ofert' %}">Lista ofert</a></li>
     <li><a href="{% url 'przegladajUzytkownikow' %}">Lista użytkowników</a></li>
+    {% if uzytkownik and uzytkownik.rola == "Student" %}
+        <li><a href="{% url 'moje_zgloszenia' %}">Moje zgłoszenia</a></li>
+    {% endif %}
+
+    {% if uzytkownik and uzytkownik.rola == "Pracownik BK" %}
+        <li><a href="{% url 'bk_zgloszenia_lista' %}">Zgłoszenia – Biuro Karier</a></li>
+    {% endif %}
+
+
 </ul>
 {% endblock %}

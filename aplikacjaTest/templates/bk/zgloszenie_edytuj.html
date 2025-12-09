@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Edycja zgłoszenia #{{ zgloszenie.id }}</h1>
+
+    <p>
+        <strong>Student:</strong>
+        {{ zgloszenie.student.imie }} {{ zgloszenie.student.nazwisko }}
+        ({{ zgloszenie.student.numer_indeksu }})
+        <br>
+        <strong>Oferta:</strong>
+        Oferta #{{ zgloszenie.oferta.id }} – {{ zgloszenie.oferta.pracodawca.nazwa_firmy }}
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Zapisz zmiany</button>
+        <a href="{% url 'bk_zgloszenia_lista' %}">Powrót do listy</a>
+    </form>
+
+{% endblock %}

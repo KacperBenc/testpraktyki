@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Moje zgłoszenia na praktyki</h1>
+
+    {% if zgloszenia %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID zgłoszenia</th>
+                    <th>Oferta</th>
+                    <th>Pracodawca</th>
+                    <th>Data zgłoszenia</th>
+                    <th>Status</th>
+                    <th>Opiekun praktyk</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for z in zgloszenia %}
+                    <tr>
+                        <td>{{ z.id }}</td>
+                        <td>Oferta #{{ z.oferta.id }}</td>
+                        <td>{{ z.oferta.pracodawca.nazwa_firmy }}</td>
+                        <td>{{ z.data_zgloszenia }}</td>
+                        <td>{{ z.status }}</td>
+                        <td>
+                            {% if z.opiekun_praktyk %}
+                                {{ z.opiekun_praktyk.imie }} {{ z.opiekun_praktyk.nazwisko }}
+                            {% else %}
+                                (brak)
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nie masz jeszcze żadnych zgłoszeń.</p>
+    {% endif %}
+
+{% endblock %}

@@ -25,6 +25,15 @@
 </head>
 
 <body>
+{% if messages %}
+    <div>
+        {% for message in messages %}
+            <p style="color: {% if message.tags == 'warning' %}orange{% elif message.tags == 'success' %}green{% else %}black{% endif %};">
+                {{ message }}
+            </p>
+        {% endfor %}
+    </div>
+{% endif %}
 
 <div class="navbar">
     <div class="nav-left">

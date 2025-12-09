@@ -48,5 +48,12 @@ System korzysta z separacji warstw prezentacji, logiki biznesowej i warstwy dany
 rm db.sqlite3
 python manage.py migrate
 python manage.py seed_app_praktyki  # wywołanie dodania kilku testowych użytkowników i ofert
+
+# przykładowi użytkownicy:
+# student: piotr.zalewski
+# opiekun: ewa.lis
+# pracownik bk: katarzyna.krol
+# pracodawca: krzysztof.urban
+# hasło: test1234
 ```
 

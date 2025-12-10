@@ -1,0 +1,730 @@
+@font-face {
+    font-weight: 100;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Thin.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 100;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-ThinItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 300;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Light.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 300;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-LightItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Regular.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Italic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Bold.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-BoldItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 800;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Black.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 800;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-BlackItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 100;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Thin.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 100;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-ThinItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 300;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Light.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 300;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-LightItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Regular.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Italic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Bold.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-BoldItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 800;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Black.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 800;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-BlackItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 100;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Thin.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 100;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-ThinItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 300;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Light.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 300;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-LightItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Regular.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Italic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Bold.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-BoldItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 800;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Black.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 800;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-BlackItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 100;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Thin.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 100;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-ThinItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 300;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Light.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 300;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-LightItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Regular.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 400;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Italic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Bold.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 700;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-BoldItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 800;
+    font-style: normal;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-Black.ttf) format("truetype")
+}
+
+@font-face {
+    font-weight: 800;
+    font-style: italic;
+    font-family: "Lato";
+    src: url(../webfonts/Lato/Lato-BlackItalic.ttf) format("truetype")
+}
+
+@font-face {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 400;
+    src: url(../webfonts/fontawesome/webfonts/fa-regular-400.ttf) format("woff2"), url("../webfonts/fontawesome/webfonts/fa-regular-400.ttf") format("truetype");;
+}
+
+@font-face {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    src: url(../webfonts/fontawesome/webfonts/fa-solid-900.ttf) format("woff2"), url("../webfonts/fontawesome/webfonts/fa-solid-900.ttf") format("truetype");;
+}
+
+body {
+    background-color: rgb(241, 241, 241)
+}
+
+.navbar {
+    color: #484b49;
+    cursor: default;
+    font-weight: 300;
+    text-transform: none;
+    border-bottom: solid 1px rgb(144 144 144 / .35);
+    box-shadow: 0 3px 6px rgb(0 0 0 / .1);
+    background-color: white !important;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 0 10px;
+    z-index: 9;
+}
+
+
+.nav-link {
+    border-top: 3px solid #fff0;
+    transition: all ease-in 300ms;
+    padding-top: .5em;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    height: 100%;
+}
+
+.navbar-collapse {
+    height: 100%;
+}
+
+.navbar-nav {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    height: 100%;
+}
+
+.nav-link:not(.active):focus {
+    outline-offset: 0;
+    box-shadow: 0 0 3px 3px #061b3d;
+}
+
+.nav-link:hover:not(.active):hover {
+    color: #373a3c;
+    border-bottom: 3px solid #7a7a7a;
+    background-color: #f8f9fa;
+}
+
+.nav-link.active:focus, .nav-link.active:hover {
+    background-color: #f8f9fa;
+    border-bottom-color: #061b3d;
+}
+
+.nav-link.active {
+    font-weight: 400;
+    color: #000;
+    background: #fff0;
+    border-bottom: solid 3px #061b3d;
+}
+
+* {
+    font-family: Lato, sans-serif;
+    color: #000;
+    font-size: 1em;
+}
+
+
+.be-message {
+    color: red;
+    font-size: 14px;
+}
+
+.navbar-toggler {
+    width: 10%;
+}
+
+.primary-navigation {
+    align-items: center;
+}
+
+
+/* Nawigacja */
+body .navbar-light .navbar-brand {
+    color: #000;
+    font-weight: 400;
+    text-wrap: wrap;
+    overflow: hidden;
+    font-size: calc(1.25rem * 1);
+    line-height: calc(1.25rem * 1 + 0.05rem);
+    max-width: 260px;
+    max-height: 42px;
+    width: fit-content;
+}
+
+
+.logo {
+    max-height: calc(60px - (0.25rem * 2));
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: #fff0;
+    border: 0;
+}
+
+.dropdown-item:hover {
+    background-color: #061b3d;
+    color: #fff;
+}
+
+.dropdown-toggle::after {
+    content: "⌄";
+    margin-right: 0;
+    margin-left: 4px;
+    font-size: 9px;
+    width: 9px;
+    border: 0;
+    display: inline-block;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+
+#dropdownMenuLink {
+    background-color: transparent;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: #373a3c;
+    font-weight: 400;
+    margin-right: .25rem;
+}
+
+.user-initials {
+    width: 35px;
+    height: 35px;
+    background-color: #e9ecef;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #373a3c;
+    font-weight: 400;
+    margin-right: .25rem;
+    text-transform: uppercase;
+}
+
+main {
+    padding-top: 0;
+    margin-top: 4em;
+    position: relative;
+    overflow-y: visible;
+    transition: 0.2s;
+    left: 0;
+    right: 0;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    scrollbar-width: thin;
+    scrollbar-color: #868e96 #f8f9fa;
+    min-height: calc(100vh - 4em);
+}
+
+.main-container {
+
+    background-color: #fff0;
+    padding: 1.5rem .5rem;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1 0 auto;
+}
+
+@media (min-width: 768px) {
+    .navbar {
+
+        height: 4em;
+        max-height: 4em;
+    }
+
+    .main {
+        max-width: 1280px;
+        padding: 1.5rem .5rem;
+    }
+}
+
+main h1 {
+    font-family: Lato, sans-serif;
+    line-height: 2rem;
+    font-weight: 600;
+    color: #000;
+    font-size: 1.75rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 1280px;
+    padding: 0;
+}
+
+.main-content {
+    border-top: 2px solid #061b3d;
+    background: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem !important;
+}
+
+/*Logowanie*/
+
+body.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: unset;
+    min-height: 100%;
+    height: unset;
+    font-size: 1rem;
+    line-height: 1.4;
+    font-family: Lato, Roboto, system-ui, sans-serif;
+    text-rendering: optimizelegibility;
+    font-feature-settings: "liga", "kern";
+    color: #000;
+    background: #fff;
+}
+
+.login header #header-content {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 40rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    padding: 16px;
+
+}
+
+.login main {
+    width: 40rem;
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 2rem auto;
+    background: #fff;
+    border: 1px solid #dadce0;
+}
+
+.login main > #logo {
+    display: block;
+    margin: 50px auto;
+    max-width: min(90%, 350px);
+    max-height: 150px;
+}
+
+.login header.expandable {
+    padding: 1rem;
+    white-space: nowrap;
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.login header #header-content a {
+    text-decoration: none;
+    color: #fff;
+    font-family: Lato, Roboto, system-ui, sans-serif;
+}
+
+.login header {
+    background-color: rgba(45, 45, 45, 0.98);
+    z-index: 9999;
+    display: block;
+    color: #fff;
+    line-height: 1.3;
+}
+
+.login div.edgeless {
+    padding: 0 1rem;
+}
+
+.login .form {
+    margin: 0 auto 1rem auto;
+    width: 100%;
+    max-width: 28rem;
+    display: block;
+    border-width: 0;
+    box-sizing: border-box;
+}
+
+.login input {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 14px;
+}
+
+.login button {
+    padding: 10px;
+    width: 100%;
+}
+
+.login .link-box {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.login div.new-input {
+    position: relative;
+    max-width: 100%;
+    margin: 1rem auto;
+}
+
+.login div.new-input input {
+    padding: 1rem;
+    border: 1px solid #000;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1rem;
+    font-family: inherit;
+    background: transparent;
+}
+
+.login div.new-input input:not(:placeholder-shown) ~ label, div.new-input input:focus ~ label {
+    position: absolute;
+    top: -0.625rem;
+    left: 0.5rem;
+    padding: 0 0.5rem;
+    background: #fff;
+    color: #000;
+}
+
+.login div.new-input input ~ label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    transition: top 0.25s;
+    cursor: text;
+}
+
+div.new-input input:focus {
+    border-color: #0076ad;
+    border-width: 2px;
+    padding: calc(1rem - 1px);
+}
+
+div.new-input input:focus ~ label {
+    color: #0076ad;
+}
+
+.login div.submit-button {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.login div.submit-button button {
+    padding: 0.5rem 2rem;
+    border: 1px solid #018dc4;
+    color: #fff;
+    background: #0076ad;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.2);
+    transition: all 300ms cubic-bezier(0.42, 0, 0.58, 1);
+    min-height: 48px;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+div.submit-button button:hover {
+    background: #006594;
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.3);
+    transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.login .form-button {
+    text-align: center;
+    user-select: none;
+    cursor: default;
+    padding: 1rem 1.5rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 500;
+}
+
+footer {
+    background-color: #373a3c;
+    color: #fff;
+}
+
+footer .main-container {
+    margin: 0 6rem 0 auto;
+}
+
+footer p {
+
+    color: #fff;
+}
+
+#goto-top-link {
+    display: none;
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s ease 0s, opacity 0.7s ease 0.1s;
+    bottom: 0;
+    right: 3rem;
+    position: fixed;
+    box-shadow: 0 0 5px #dadada;
+}
+
+/** Rejestracja  */
+
+.hidden {
+    visibility: hidden;
+    height: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* sekcje widoczne */
+.visible {
+    visibility: visible;
+    height: auto;
+    overflow: visible;
+    margin-top: 20px;
+}

@@ -1,58 +1,135 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}System Praktyk{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% load static %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static '/styles/styles.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static '/webfonts/fontawesome/css/all.min.css' %}" type="text/css">
 
-    <style>
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            background: #333;
-            padding: 10px;
-            color: white;
-        }
-        .nav-left a, .nav-right a {
-            color: white;
-            margin-right: 15px;
-            text-decoration: none;
-        }
-        .nav-right {
-            font-weight: bold;
-        }
-    </style>
 </head>
-
 <body>
-{% if messages %}
-    <div>
-        {% for message in messages %}
-            <p style="color: {% if message.tags == 'warning' %}orange{% elif message.tags == 'success' %}green{% else %}black{% endif %};">
-                {{ message }}
-            </p>
-        {% endfor %}
+<header>
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+            <h5 class="text-white h4">Collapsed content</h5>
+            <span class="text-muted">Toggleable via the navbar brand.</span>
+        </div>
     </div>
-{% endif %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-<div class="navbar">
-    <div class="nav-left">
-        <a href="/"></a>
-    </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a href="{% url 'home' %}" class="navbar-brand d-none d-md-flex align-items-center m-0 me-4 p-0">
 
-    <div class="nav-right">
+            <img src="{% static 'images/moodle-logo-uthpraktyki.png' %}" class="img-fluid logo me-1"
+                 alt="Logo">
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+            <ul class="nav more-nav navbar-nav">
+
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link  {% if request.path == '/rejestracja/' %}active{% endif %}"
+                                            href="{% url 'rejestracja' %}">Rejestracja {{ request.GET.urlencode }}</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link {% if request.path == '/oferty/nowa/' %}active{% endif %}"
+                                            href="{% url 'dodaj_oferte' %}">Dodaj ofertę</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link  {% if request.path == '/oferty/' %}active{% endif %}"
+                                            href="{% url 'lista_ofert' %}">Lista ofert</a></li>
+                    <li class="nav-item"><a class="nav-link  {% if request.path == '/uzytkownicy/' %}active{% endif %}"
+                                            href="{% url 'przegladajUzytkownikow' %}">Lista
+                        użytkowników</a></li>
+                {% endif %}
+            </ul>
+
+        </div>
+
         {% if request.user.is_authenticated %}
-            Zalogowany jako: {{ request.user.username }}
-            | <a href="{% url 'logout' %}">Wyloguj</a>
+            <div class="dropdown me-4">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                   data-bs-toggle="dropdown" aria-expanded="false"
+                   title="{{ request.user.username }}" aria-label="{{ request.user.username }}" role="img">
+                    <span class="user-initials">
+                        {{ request.user.username|slice:':1' }}
+                    </span>
+
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="{% url 'logout' %}">Wyloguj</a></li>
+                </ul>
+            </div>
         {% else %}
-            <a href="{% url 'login' %}">Zaloguj</a>
+            <a href="{% url 'login' %}">Zaloguj się</a>
         {% endif %}
+    </nav>
+
+
+</header>
+
+<main>
+    <section class="main-container">
+
+        {% block breadcrumb %}{% endblock %}
+        {% block main_title %}{% endblock %}
+        <div class="main-content">
+
+            {% block content %}{% endblock %}
+        </div>
+    </section>
+</main>
+<footer>
+    <div class="main-container">
+
+        <p>Wsparcie techniczne<br>helpdeskit@uth.edu.pl</p>
     </div>
-</div>
-
-<div style="padding:20px;">
-    {% block content %}{% endblock %}
-</div>
-
+</footer>
+<div id="goto-top-link">
+        <a class="btn btn-light m-0" role="button" href="#" onclick="const main = document.getElementById('main'); main.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            });" aria-label="Go to top">
+            <i class="icon fa fa-arrow-up fa-fw " aria-hidden="true"></i>
+        </a>
+    </div>
 </body>
+
+
+{% bootstrap_javascript %}
+<script>
+const scrollTop = document.getElementById("goto-top-link");
+
+window.onscroll = function(){
+    scrollFunction();
+};
+function scrollFunction(){
+
+    if( document.body.scrollTop > 20 || document.documentElement.scrollTop > 20){
+        scrollTop.style.display = "block";
+    } else {
+        scrollTop.style.display = "none";
+    }
+}
+
+scrollTop.addEventListener("click", function(){
+    window.scrollTo({
+        left: 0,
+        top: 0,
+        behavior: "smooth"
+    })
+})
+</script>
 </html>

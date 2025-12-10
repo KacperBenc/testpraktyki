@@ -1,23 +1,25 @@
 {% extends "base.html" %}
-{% block content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dodaj ofertę</title>
-</head>
-<body>
 
-<h1>Dodaj nową ofertę</h1>
+{% load django_bootstrap5 %}
+{% block title %} Dodaj ofertę {% endblock %}
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Dodaj ofertę</li>
+  </ol>
+</nav>
+{% endblock %}
+{% block main_title %} <h1>Dodaj nową ofertę</h1> {% endblock %}
+{% block content %}
 
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+     {% bootstrap_form form %}
+<div class="d-flex mt-4 justify-content-between">
+    <button class="btn btn-primary" type="submit">Zapisz ofertę</button>
+    <a  class="btn btn btn-outline-secondary" href="{% url 'lista_ofert' %}">⬅ Powrót do listy ofert</a>
+</div>
 
-    <button type="submit">Zapisz ofertę</button>
 </form>
-
-<a href="{% url 'lista_ofert' %}">⬅ Powrót do listy ofert</a>
-
-</body>
-</html>
 {% endblock %}

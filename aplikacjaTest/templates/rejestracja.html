@@ -1,106 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Rejestracja{% endblock %}
+{% load django_bootstrap5 %}
+{% block breadcrumb %}
 
-<h2>Rejestracja</h2>
-
-<style>
-/* sekcje „ukryte” muszą być nadal w DOM, ale niewidoczne */
-.hidden {
-    visibility: hidden;
-    height: 0;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-}
-
-/* sekcje widoczne */
-.visible {
-    visibility: visible;
-    height: auto;
-    overflow: visible;
-    margin-top: 20px;
-}
-</style>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Rejestracja</li>
+  </ol>
+</nav>
+{% endblock %}
+{% block main_title %} <h1>Rejestracja</h1> {% endblock %}
+{% block content %}
 
 <form method="POST" novalidate>
     {% csrf_token %}
-
-    <!-- ============================= BŁĘDY ============================== -->
-    {% if form.errors %}
-        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy w danych użytkownika:</h4>
-            {{ form.errors }}
-        </div>
-    {% endif %}
-
-    {% if adres_form.errors %}
-        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy w adresie:</h4>
-            {{ adres_form.errors }}
-        </div>
-    {% endif %}
-
-    {% if student_form.errors %}
-        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy studenta:</h4>
-            {{ student_form.errors }}
-        </div>
-    {% endif %}
-
-    {% if pracodawca_form.errors %}
-        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy pracodawcy:</h4>
-            {{ pracodawca_form.errors }}
-        </div>
-    {% endif %}
-
-    {% if opiekun_form.errors %}
-        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy opiekuna:</h4>
-            {{ opiekun_form.errors }}
-        </div>
-    {% endif %}
-
-    {% if pracownikbk_form.errors %}
-        <div style="color:red; border:1px solid red; padding:10px; margin-bottom:15px;">
-            <h4>Błędy pracownika BK:</h4>
-            {{ pracownikbk_form.errors }}
-        </div>
-    {% endif %}
-
     <!-- ========================== UŻYTKOWNIK ========================== -->
     <h3>Dane użytkownika</h3>
-    {{ form.as_p }}
+    {% bootstrap_form form %}
 
     <!-- ============================ ADRES ============================== -->
     <div id="adres_fields" class="hidden">
         <h3>Adres</h3>
-        {{ adres_form.as_p }}
+       {% bootstrap_form adres_form %}
     </div>
 
     <!-- ============================ STUDENT ============================ -->
     <div id="student_fields" class="hidden">
         <h3>Dane studenta</h3>
-        {{ student_form.as_p }}
+       {% bootstrap_form student_form %}
     </div>
 
     <!-- ============================ OPIEKUN ============================ -->
     <div id="opiekun_fields" class="hidden">
         <h3>Dane opiekuna</h3>
-        {{ opiekun_form.as_p }}
+       {% bootstrap_form opiekun_form %}
     </div>
 
     <!-- ============================ PRACODAWCA ============================ -->
     <div id="pracodawca_fields" class="hidden">
         <h3>Dane pracodawcy</h3>
-        {{ pracodawca_form.as_p }}
+       {% bootstrap_form pracodawca_form %}
     </div>
 
     <!-- ============================ PRACOWNIK BK ============================ -->
     <div id="pracownikbk_fields" class="hidden">
         <h3>Dane pracownika BK</h3>
-        {{ pracownikbk_form.as_p }}
+       {% bootstrap_form pracownikbk_form %}
     </div>
 
-    <button type="submit" style="margin-top:20px;">Zarejestruj</button>
+    <button type="submit" class="btn btn-primary mt-3">Zarejestruj</button>
 </form>
 
 
@@ -165,3 +114,6 @@ document.addEventListener("DOMContentLoaded", updateRoleFields);
 // przełącz po zmianie roli
 document.getElementById("id_main-rola").addEventListener("change", updateRoleFields);
 </script>
+
+
+{% endblock %}

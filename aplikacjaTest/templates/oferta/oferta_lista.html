@@ -1,40 +1,41 @@
 {% extends "base.html" %}
+{% block title %} Lista ofert {% endblock %}
 
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Lista ofert</li>
+        </ol>
+    </nav>
+{% endblock %}
+{% block main_title %} <h1>Lista dostępnych ofert</h1> {% endblock %}
 {% block content %}
 
-<h1>Lista dostępnych ofert</h1>
+    <div class="text-end">
 
-<a href="{% url 'dodaj_oferte' %}">➕ Dodaj nową ofertę</a>
-
-<ul>
-    {% for oferta in oferty %}
-        <li>
-            <strong>{{ oferta.pracodawca.nazwa_firmy }}</strong><br>
-            Rodzaj: {{ oferta.rodzaj_zgloszenia }} <br>
-            Dostępność: {{ oferta.dostepnosc_oferty }} <br>
-            <em>{{ oferta.opis }}</em><br>
-
-            {% if user_role == "Student" %}
-                {% if oferta.id in moje_zgloszenia %}
-                    <span style="color: green; font-weight: bold;">
-                        ✔ Już zgłoszone
-                    </span>
-                {% else %}
-                    <form method="post" action="{% url 'zgloszenie_na_oferte' oferta.id %}">
-                        {% csrf_token %}
-                        <button type="submit">Zapisz się na tę ofertę</button>
-                    </form>
-                {% endif %}
-
-            {% elif user_role == "Pracownik BK" %}
-                <span style="font-style: italic; color: #555;">
-                    (Podgląd ofert – pracownik Biura Karier, brak możliwości zgłoszenia)
-                </span>
-            {% endif %}
-        </li>
-    {% empty %}
-        <li>Brak ofert.</li>
-    {% endfor %}
-</ul>
-
+        <a class="btn btn-primary " href="{% url 'dodaj_oferte' %}" role="button">Dodaj nową ofertę</a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Nazwa firmy</th>
+            <th scope="col">Rodzaj</th>
+            <th scope="col">Dostępność</th>
+            <th scope="col">Opis</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for oferta in oferty %}
+            <tr>
+                <td>{{ oferta.pracodawca.nazwa_firmy }}</td>
+                <td>{{ oferta.rodzaj_zgloszenia }}</td>
+                <td>{{ oferta.dostepnosc_oferty }}</td>
+                <td>{{ oferta.opis }}</td>
+            </tr>
+        {% empty %}
+            <li>Brak ofert.</li>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

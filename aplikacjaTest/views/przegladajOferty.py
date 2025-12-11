@@ -32,9 +32,18 @@ class OfertaListView(LoginRequiredMixin, View):
                     .values_list("oferta_id", flat=True)
                 )
 
+        uzytkownik = None
+        if request.user.is_authenticated:
+            try:
+                uzytkownik = Uzytkownik.objects.get(django_user=request.user)
+            except Uzytkownik.DoesNotExist:
+                pass
+
         context = {
             "oferty": oferty,
             "moje_zgloszenia": moje_zgloszenia,
             "user_role": user_role,
+            "uzytkownik": uzytkownik
         }
-        return render(request, "oferta/oferta_lista.html", context)
+
+        return render(request, "oferta/oferta_lista.html",  context )

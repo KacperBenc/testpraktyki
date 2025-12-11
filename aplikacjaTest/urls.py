@@ -11,6 +11,7 @@ from aplikacjaTest.views.zgloszenie import (
     moje_zgloszenia,
     bk_zgloszenia_lista,
     bk_zgloszenie_edytuj,
+    opiekun_lista_studentow
 )
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     path("zgloszenia/moje/", moje_zgloszenia, name="moje_zgloszenia"),
     path("bk/zgloszenia/", bk_zgloszenia_lista, name="bk_zgloszenia_lista"),
     path("bk/zgloszenia/<int:pk>/", bk_zgloszenie_edytuj, name="bk_zgloszenie_edytuj"),
+    path("opiekun/studenci/", opiekun_lista_studentow, name="opiekun_lista_studentow"),
 ]

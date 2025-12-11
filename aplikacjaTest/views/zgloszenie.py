@@ -8,6 +8,7 @@ from aplikacjaTest.models import (
     Student,
     Zgloszenie,
     Oferta,
+    OpiekunPraktyk
 )
 
 
@@ -55,6 +56,7 @@ def moje_zgloszenia(request):
     context = {
         "student": student,
         "zgloszenia": zgloszenia,
+        "uzytkownik": uzytkownik,
     }
 
     return render(request, "zgloszenie/zgloszenie_lista_student.html", context)
@@ -78,8 +80,9 @@ def bk_zgloszenia_lista(request):
     context = {
         "pracownik_bk": uzytkownik,
         "zgloszenia": zgloszenia,
+        "uzytkownik": uzytkownik,
     }
-    return render(request, "bk/zgloszenia_lista.html", context)
+    return render(request, "bk/zgloszenia_lista.html",  context)
 
 
 @login_required
@@ -105,5 +108,26 @@ def bk_zgloszenie_edytuj(request, pk):
         "pracownik_bk": uzytkownik,
         "zgloszenie": zgloszenie,
         "form": form,
+        "uzytkownik": uzytkownik,
     }
+
     return render(request, "bk/zgloszenie_edytuj.html", context)
+
+@login_required
+def opiekun_lista_studentow(request):
+    uzytkownik = get_object_or_404(Uzytkownik, django_user=request.user)
+    opiekun = get_object_or_404(OpiekunPraktyk, uzytkownik=uzytkownik)
+
+    zgloszenia = Zgloszenie.objects.filter(opiekun_praktyk=opiekun).select_related("student", "oferta")
+
+    context = {
+        "zgloszenia": zgloszenia,
+        "opiekun": opiekun,
+        "uzytkownik": uzytkownik,
+    }
+
+    return render(
+        request,
+        "opiekun/lista_przypisanych_studentow.html",
+        context
+    )

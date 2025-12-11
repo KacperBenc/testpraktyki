@@ -337,6 +337,8 @@ body {
 .nav-link:not(.active):focus {
     outline-offset: 0;
     box-shadow: 0 0 3px 3px #061b3d;
+    margin-top: 3px;
+
 }
 
 .nav-link:hover:not(.active):hover {
@@ -454,6 +456,13 @@ body .navbar-light .navbar-brand {
     text-transform: uppercase;
 }
 
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
 main {
     padding-top: 0;
     margin-top: 4em;
@@ -466,7 +475,6 @@ main {
     padding-right: 3rem;
     scrollbar-width: thin;
     scrollbar-color: #868e96 #f8f9fa;
-    min-height: calc(100vh - 4em);
 }
 
 .main-container {
@@ -689,10 +697,12 @@ div.submit-button button:hover {
 footer {
     background-color: #373a3c;
     color: #fff;
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
 footer .main-container {
-    margin: 0 6rem 0 auto;
+    margin: 0 auto;
 }
 
 footer p {

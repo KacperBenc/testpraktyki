@@ -1,5 +1,15 @@
 {% extends "base.html" %}
-
+{% block title %} Edycja zgłoszenia #{{ zgloszenie.id }} {% endblock %}
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edycja zgłoszenia #{{ zgloszenie.id }}</li>
+  </ol>
+</nav>
+{% endblock %}
+{% block main_title %} <h1>Edycja zgłoszenia #{{ zgloszenie.id }}</h1> {% endblock %}
+{% load django_bootstrap5 %}
 {% block content %}
     <h1>Edycja zgłoszenia #{{ zgloszenie.id }}</h1>
 
@@ -14,10 +24,11 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-
-        <button type="submit">Zapisz zmiany</button>
-        <a href="{% url 'bk_zgloszenia_lista' %}">Powrót do listy</a>
+        {% bootstrap_form form %}
+<div class="d-flex mt-4 justify-content-between">
+    <button class="btn btn-primary" type="submit">Zapisz zmiany</button>
+    <a  class="btn btn btn-outline-secondary" href="{% url 'bk_zgloszenia_lista' %}">Powrót do listy</a>
+</div>
     </form>
 
 {% endblock %}

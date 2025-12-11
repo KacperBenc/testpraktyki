@@ -12,8 +12,6 @@
 {% block content %}
 
 <div class="text-end">
-
-        <a class="btn btn-primary " href="{% url 'rejestracja' %}" role="button">Dodaj użytkownika</a>
     </div>
     <table class="table">
         <thead>
@@ -38,20 +36,5 @@
         </tbody>
     </table>
 
-{#<a href="{% url 'rejestracja' %}">➕ zarejestruj sie</a>#}
-{##}
-{#<ul>#}
-{#    {% for uzytkownik in uzytkownicy %}#}
-{#        <li>#}
-{#            <strong> rola:{{ uzytkownik.rola}}</strong><br>#}
-{#            login: {{ uzytkownik.login }} <br>#}
-{#             email: {{ uzytkownik.adres_mailowy }} <br>#}
-{#            telefon: {{ uzytkownik.numer_telefonu }}<br>#}
-{##}
-{#        </li>#}
-{#    {% empty %}#}
-{#        <li>Brak danych.</li>#}
-{#    {% endfor %}#}
-{#</ul>#}
 
 {% endblock %}

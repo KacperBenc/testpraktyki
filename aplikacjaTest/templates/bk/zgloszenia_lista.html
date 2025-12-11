@@ -1,10 +1,18 @@
 {% extends "base.html" %}
-
+{% block title %} Zgłoszenia – panel Biura Karier {% endblock %}
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Zgłoszenia – panel Biura Karier</li>
+  </ol>
+</nav>
+{% endblock %}
+{% block main_title %} <h1>Zgłoszenia – panel Biura Karier</h1> {% endblock %}
 {% block content %}
-    <h1>Zgłoszenia – panel Biura Karier</h1>
 
     {% if zgloszenia %}
-        <table border="1" cellpadding="5" cellspacing="0">
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -37,7 +45,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{% url 'bk_zgloszenie_edytuj' z.id %}">Edytuj</a>
+                            <a class="btn btn btn-outline-primary" href="{% url 'bk_zgloszenie_edytuj' z.id %}">Edytuj</a>
                         </td>
                     </tr>
                 {% endfor %}

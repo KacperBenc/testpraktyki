@@ -1,10 +1,19 @@
 {% extends "base.html" %}
+{% block title %} Moje zgłoszenia na praktyki {% endblock %}
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Moje zgłoszenia na praktyki</li>
+  </ol>
+</nav>
+{% endblock %}
+{% block main_title %} <h1>Moje zgłoszenia na praktyki</h1> {% endblock %}
 
 {% block content %}
-    <h1>Moje zgłoszenia na praktyki</h1>
 
     {% if zgloszenia %}
-        <table border="1" cellpadding="5" cellspacing="0">
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID zgłoszenia</th>

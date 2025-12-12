@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Profil użytkownika{% endblock title %}
+
+{% block content %}
+  <h1>Profil użytkownika</h1>
+
+  <p><strong>Login:</strong> {{ uzytkownik.django_user.username }}</p>
+  <p><strong>Email:</strong> {{ uzytkownik.django_user.email }}</p>
+  <p><strong>Rola:</strong> {{ uzytkownik.get_rola_display }}</p>
+
+  {# dodaj inne pola modelu Uzytkownik, np.: #}
+  {# <p><strong>Imię:</strong> {{ uzytkownik.imie }}</p> #}
+  {# <p><strong>Nazwisko:</strong> {{ uzytkownik.nazwisko }}</p> #}
+{% endblock content %}

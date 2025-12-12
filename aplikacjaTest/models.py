@@ -1,6 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class TestPraktyki(models.Model):
+    name = models.CharField(max_length=100)
+    class Meta:
+        permissions = [
+            ("add_offer_portal", "Może dodawać ofertę w portalu"),
+            ("view_own_applications", "Może widzieć własne zgłoszenia"),
+            ("view_assigned_applications", "Może widzieć przypisane zgłoszenia"),
+            ("view_students", "Może widzieć listę studentów"),
+            ("view_tutors", "Może widzieć listę opiekunów"),
+            ("view_employers", "Może widzieć listę pracodawców"),
+        ]
 
 class Uzytkownik(models.Model):
     class Role(models.TextChoices):

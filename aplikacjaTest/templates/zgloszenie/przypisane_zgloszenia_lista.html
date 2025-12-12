@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Przypisane zgłoszenia studentów</h1>
+
+    {% if zgloszenia %}
+        <table border="1" cellpadding="5" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID zgłoszenia</th>
+                    <th>Student</th>
+                    <th>Oferta</th>
+                    <th>Pracodawca</th>
+                    <th>Data zgłoszenia</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for z in zgloszenia %}
+                    <tr>
+                        <td>{{ z.id }}</td>
+                        <td>{{ z.student.imie }} {{ z.student.nazwisko }}</td>
+                        <td>Oferta #{{ z.oferta.id }}</td>
+                        <td>{{ z.oferta.pracodawca.nazwa_firmy }}</td>
+                        <td>{{ z.data_zgloszenia }}</td>
+                        <td>{{ z.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nie masz jeszcze żadnych przypisanych zgłoszeń.</p>
+    {% endif %}
+
+{% endblock %}

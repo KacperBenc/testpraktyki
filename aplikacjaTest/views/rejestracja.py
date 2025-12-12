@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from aplikacjaTest.forms.rejestracjaForm import RejestracjaForm
 from aplikacjaTest.forms.adresForm import AdresForm
 from aplikacjaTest.forms.studentForm import StudentForm
@@ -68,6 +68,22 @@ def rejestracja(request):
                 password=haslo_raw,
                 email=main_form.cleaned_data["adres_mailowy"]
             )
+
+            # >>> 2a) PRZYPISANIE GRUPY NA PODSTAWIE ROLI <<<
+            role_to_group = {
+                "Student": "student",
+                "Pracodawca": "pracodawca",
+                "Opiekun Praktyk": "opiekun",
+                "Pracownik BK": "pracownikBK",
+            }
+            group_name = role_to_group.get(role)
+            if group_name:
+                try:
+                    group = Group.objects.get(name=group_name)
+                    django_user.groups.add(group)
+                except Group.DoesNotExist:
+                    # opcjonalnie: logowanie błędu albo utworzenie grupy
+                    pass
 
             user = main_form.save(commit=False)
             user.haslo = make_password(haslo_raw)   # możesz usunąć jeśli nie chcesz duplikatu

@@ -1,19 +1,16 @@
-from django.shortcuts import render, redirect
-from django.views import View
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+
 from aplikacjaTest.models import Oferta
 from aplikacjaTest.forms.ofertaForm import OfertaForm
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class OfertaCreateView(LoginRequiredMixin, View):
-    def get(self, request):
-        form = OfertaForm()
-        return render(request, "oferta/oferta_dodaj.html", {"form": form})
-    
-    def post(self, request):
-        form = OfertaForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("lista_ofert")
+class OfertaCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Oferta
+    form_class = OfertaForm
+    template_name = "oferta/oferta_dodaj.html"
+    success_url = reverse_lazy("lista_ofert")
 
-        return render(request, "oferta/oferta_dodaj.html", {"form": form})
+    permission_required = "aplikacjaTest.add_offer_portal"

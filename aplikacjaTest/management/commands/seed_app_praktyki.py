@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from datetime import date
 
 from aplikacjaTest.models import (
@@ -80,6 +80,22 @@ class Command(BaseCommand):
             )
             dj_user.set_password(password)
             dj_user.save()
+
+            # mapowanie ról z modelu Uzytkownik na nazwy grup
+            role_to_group = {
+                Uzytkownik.Role.STUDENT: "student",
+                Uzytkownik.Role.OPIEKUN: "opiekun",
+                Uzytkownik.Role.PRACOWNIK_BK: "pracownikBK",
+                Uzytkownik.Role.PRACODAWCA: "pracodawca",
+            }
+            group_name = role_to_group.get(rola)
+            if group_name:
+                try:
+                    group = Group.objects.get(name=group_name)
+                    dj_user.groups.add(group)
+                except Group.DoesNotExist:
+                    # jeśli grupy nie ma, możesz ją utworzyć albo zostawić bez roli
+                    pass
 
             uzytkownik, _ = Uzytkownik.objects.get_or_create(
                 login=login,

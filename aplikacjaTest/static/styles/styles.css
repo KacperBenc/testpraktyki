@@ -466,7 +466,7 @@ main {
     padding-right: 3rem;
     scrollbar-width: thin;
     scrollbar-color: #868e96 #f8f9fa;
-    min-height: calc(100vh - 4em);
+    /* min-height: calc(100vh - 4em); */
 }
 
 .main-container {

@@ -1,14 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from aplikacjaTest.models import Uzytkownik
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 
+class UzytkownikListView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = "aplikacjaTest.view_students"  # app_label + codename
 
-# =======================================
-#   LISTA WSZYSTKICH DOSTĘPNYCH OFERT
-# =======================================
-class UzytkownikListView(LoginRequiredMixin,View):
     def get(self, request):
-        uzytkownicy = Uzytkownik.objects.all()  # możesz dodać filtr tylko publiczne
+        uzytkownicy = Uzytkownik.objects.all()
         return render(request, "UzytkownicyLista.html", {"uzytkownicy": uzytkownicy})

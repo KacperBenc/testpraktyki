@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from aplikacjaTest.forms.zgloszenie_bk_form import ZgloszenieBKForm
@@ -8,6 +8,7 @@ from aplikacjaTest.models import (
     Student,
     Zgloszenie,
     Oferta,
+    OpiekunPraktyk
 )
 
 
@@ -40,6 +41,7 @@ def zgloszenie_na_oferte(request, oferta_id):
     return redirect("lista_ofert")
 
 
+@permission_required("aplikacjaTest.view_own_applications")
 def moje_zgloszenia(request):
     uzytkownik = get_object_or_404(Uzytkownik, django_user=request.user)
 
@@ -107,3 +109,30 @@ def bk_zgloszenie_edytuj(request, pk):
         "form": form,
     }
     return render(request, "bk/zgloszenie_edytuj.html", context)
+
+@login_required
+@permission_required("aplikacjaTest.view_assigned_applications", raise_exception=False)
+def przypisane_zgloszenia(request):
+    # Znajdź profil Uzytkownik powiązany z django_user
+    uzytkownik = get_object_or_404(
+        Uzytkownik,
+        django_user=request.user,
+        rola=Uzytkownik.Role.OPIEKUN,
+    )
+
+    # Znajdź model opiekuna
+    opiekun = get_object_or_404(OpiekunPraktyk, uzytkownik=uzytkownik)
+
+    # Zgłoszenia przypisane do tego opiekuna
+    zgloszenia = (
+        Zgloszenie.objects
+        .filter(opiekun_praktyk=opiekun)
+        .select_related("oferta", "oferta__pracodawca", "student")
+        .order_by("-data_zgloszenia")
+    )
+
+    context = {
+        "opiekun": opiekun,
+        "zgloszenia": zgloszenia,
+    }
+    return render(request, "zgloszenie/przypisane_zgloszenia_lista.html", context)

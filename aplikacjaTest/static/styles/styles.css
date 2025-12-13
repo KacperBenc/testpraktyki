@@ -550,7 +550,7 @@ main h1 {
     border: 1px solid #dadce0;
 }
 
-main > #logo {
+#logo {
     display: block;
     margin: 50px auto;
     max-width: min(90%, 350px);

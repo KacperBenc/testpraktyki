@@ -505,8 +505,9 @@ main h1 {
     padding: 0;
 }
 
+
 .main-content {
-    border-top: 2px solid #061b3d;
+    /* border-top: 2px solid #061b3d; */
     background: #fff;
     padding: 1rem;
     margin-bottom: 1rem !important;
@@ -514,7 +515,7 @@ main h1 {
 
 /*Logowanie*/
 
-body.login {
+.login {
     display: flex;
     flex-direction: column;
     justify-content: unset;
@@ -549,7 +550,7 @@ body.login {
     border: 1px solid #dadce0;
 }
 
-.login main > #logo {
+main > #logo {
     display: block;
     margin: 50px auto;
     max-width: min(90%, 350px);

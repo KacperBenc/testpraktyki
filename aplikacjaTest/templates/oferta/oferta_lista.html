@@ -14,7 +14,7 @@
 
     <div class="text-end">
 
-        <a class="btn btn-primary " href="{% url 'dodaj_oferte' %}" role="button">Dodaj nową ofertę</a>
+        <a class="btn btn-primary" href="{% url 'dodaj_oferte' %}" role="button">Dodaj nową ofertę</a>
     </div>
     <table class="table">
         <thead>
@@ -23,6 +23,7 @@
             <th scope="col">Rodzaj</th>
             <th scope="col">Dostępność</th>
             <th scope="col">Opis</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -32,9 +33,21 @@
                 <td>{{ oferta.rodzaj_zgloszenia }}</td>
                 <td>{{ oferta.dostepnosc_oferty }}</td>
                 <td>{{ oferta.opis }}</td>
+                <td>
+                    {% if user_role == "Student" %}
+                        {% if oferta.id in moje_zgloszenia %}
+                            <span style="color: green; font-weight: bold;">
+                                ✔ Już zgłoszone
+                            </span>
+                        {% else %}
+                            <form method="post" action="{% url 'zgloszenie_na_oferte' oferta.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-primary" type="submit">Zapisz się na tę ofertę</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </td>
             </tr>
-        {% empty %}
-            <li>Brak ofert.</li>
         {% endfor %}
         </tbody>
     </table>

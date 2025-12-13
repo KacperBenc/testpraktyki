@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+       <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+       <li class="breadcrumb-item active" aria-current="page">Profil</li>
+  </ol>
+</nav>
+{% endblock breadcrumb %}
+
 {% block title %}Profil użytkownika{% endblock title %}
 
 {% block content %}

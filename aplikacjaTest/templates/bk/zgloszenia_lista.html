@@ -1,10 +1,19 @@
 {% extends "base.html" %}
 
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Lista zgłoszeń</li>
+  </ol>
+</nav>
+{% endblock breadcrumb %}
+
 {% block content %}
     <h1>Zgłoszenia – panel Biura Karier</h1>
 
     {% if zgloszenia %}
-        <table border="1" cellpadding="5" cellspacing="0">
+        <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>

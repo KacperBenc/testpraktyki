@@ -59,15 +59,15 @@
                             <a class="nav-link" href="{% url 'profil' user.pk %}">Profil</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="{% url 'lista_ofert' %}">Lista ofert</a>
+                            <a class="nav-link" href="{% url 'lista_ofert' %}">Oferty</a>
                           </li>
 
                           <!-- student, pracodawca, pracownikBK: dodaj ofertę -->
-                          {% if perms.aplikacjaTest.add_offer_portal %}
-                          <li class="nav-item">
-                            <a class="nav-link" href="{% url 'dodaj_oferte' %}">Dodaj ofertę</a>
-                          </li>
-                          {% endif %}
+<!--                          {% if perms.aplikacjaTest.add_offer_portal %}-->
+<!--                          <li class="nav-item">-->
+<!--                            <a class="nav-link" href="{% url 'dodaj_oferte' %}">Dodaj ofertę</a>-->
+<!--                          </li>-->
+<!--                          {% endif %}-->
 
                           <!-- student: moje zgłoszenia -->
                           {% if perms.aplikacjaTest.view_own_applications %}
@@ -86,20 +86,14 @@
                           <!-- pracownikBK: listy użytkowników -->
                           {% if perms.aplikacjaTest.view_students %}
                           <li class="nav-item">
-                            <a class="nav-link" href="{% url 'przegladajUzytkownikow' %}">Lista studentów</a>
+                            <a class="nav-link" href="{% url 'przegladajUzytkownikow' %}">Użytkownicy</a>
                           </li>
                           {% endif %}
                           {% if perms.aplikacjaTest.view_tutors %}
                           <li class="nav-item">
-                            <a class="nav-link" href="{% url 'przegladajUzytkownikow' %}">Lista opiekunów</a>
+                            <a class="nav-link" href="{% url 'bk_zgloszenia_lista' %}">Zgłoszenia</a>
                           </li>
                           {% endif %}
-                          {% if perms.aplikacjaTest.view_employers %}
-                          <li class="nav-item">
-                            <a class="nav-link" href="{% url 'przegladajUzytkownikow' %}">Lista pracodawców</a>
-                          </li>
-                          {% endif %}
-
                         {% endif %}
                       </ul>
 

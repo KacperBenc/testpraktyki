@@ -94,8 +94,7 @@ class Command(BaseCommand):
                     group = Group.objects.get(name=group_name)
                     dj_user.groups.add(group)
                 except Group.DoesNotExist:
-                    # jeśli grupy nie ma, możesz ją utworzyć albo zostawić bez roli
-                    pass
+                    print(f"Brak grupy {group_name}.")
 
             uzytkownik, _ = Uzytkownik.objects.get_or_create(
                 login=login,

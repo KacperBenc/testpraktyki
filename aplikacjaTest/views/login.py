@@ -17,4 +17,8 @@ def login_view(request):
 
         messages.error(request, "Niepoprawny login lub hasło.")
 
-    return render(request, "login.html")
+    context = {
+        "is_login_page": True,
+    }
+
+    return render(request, "login.html", context)

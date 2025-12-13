@@ -28,7 +28,7 @@
                     <span class="text-muted">Toggleable via the navbar brand.</span>
                 </div>
             </div>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg {% if is_login_page %} header {% else %} navbar-light bg-light {% endif %}" id="header-content">
 
                 <button class="navbar-toggler"
                         type="button"
@@ -39,15 +39,18 @@
                         aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a href="{% url 'home' %}"
-                   class="navbar-brand d-none d-md-flex align-items-center m-0 me-4 p-0">
+                {% if is_login_page %}
+                {% else %}
+                    <a href="{% url 'home' %}"
+                       class="navbar-brand d-none d-md-flex align-items-center m-0 me-4 p-0">
 
-                    <img src="{% static 'images/moodle-logo-uthpraktyki.png' %}"
-                         class="img-fluid logo me-1"
-                         alt="Logo"
-                         height=""
-                         width="">
-                </a>
+                        <img src="{% static 'images/moodle-logo-uthpraktyki.png' %}"
+                             class="img-fluid logo me-1"
+                             alt="Logo"
+                             height=""
+                             width="">
+                    </a>
+                {% endif %}
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -126,7 +129,10 @@
                         </ul>
                     </div>
                 {% else %}
-                    <a href="{% url 'login' %}">Zaloguj się</a>
+                    {% if is_login_page %}
+                    {% else %}
+                        <a class="btn" href="{% url 'login' %}">Zaloguj się</a>
+                    {% endif %}
                 {% endif %}
             </nav>
 
@@ -147,16 +153,18 @@
 
                 </div>
             </section>
-            <section class="flex-grow-1 py-0">
+            <section class="container flex-grow-1 py-0">
 
                 {% block breadcrumb %}
                 {% endblock breadcrumb %}
-                {% block main_title %}
-                {% endblock main_title %}
-                <div class="main-content">
+                <div class="row">
+                    <div class="content">
+                        {% block main_title %}
+                        {% endblock main_title %}
 
-                    {% block content %}
-                    {% endblock content %}
+                        {% block content %}
+                        {% endblock content %}
+                    </div>
                 </div>
             </section>
         </main>

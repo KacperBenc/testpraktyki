@@ -301,7 +301,7 @@ body {
     text-transform: none;
     border-bottom: solid 1px rgb(144 144 144 / .35);
     box-shadow: 0 3px 6px rgb(0 0 0 / .1);
-    background-color: white !important;
+    /* background-color: white !important; */
     left: 0;
     position: fixed;
     top: 0;
@@ -528,26 +528,19 @@ main h1 {
     font-feature-settings: "liga", "kern";
     color: #000;
     background: #fff;
+    border-radius: 10px;
 }
 
-.login header #header-content {
+header #header-content {
     margin-right: auto;
     margin-left: auto;
-    max-width: 40rem;
+    /*max-width: 40rem;*/
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     padding: 16px;
-
-}
-
-.login main {
-    width: 40rem;
-    max-width: 100%;
-    border-radius: 8px;
-    margin: 2rem auto;
-    background: #fff;
-    border: 1px solid #dadce0;
+    background: rgba(45, 45, 45, 0.98);
+    color: white;
 }
 
 #logo {

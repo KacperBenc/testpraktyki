@@ -6,6 +6,10 @@ class ZgloszenieBKForm(forms.ModelForm):
     class Meta:
         model = Zgloszenie
         fields = ["status", "opiekun_praktyk"]
+        widgets = {
+            "status": forms.Select(attrs={"class": "form-control"}),
+            "opiekun_praktyk": forms.Select(attrs={"class": "form-control"}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 
+{% block title %} Lista zgłoszeń {% endblock title %}
+
 {% block breadcrumb %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Lista zgłoszeń</li>
-  </ol>
-</nav>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Lista zgłoszeń</li>
+      </ol>
+    </nav>
 {% endblock breadcrumb %}
 
 {% block content %}
-    <h1>Zgłoszenia – panel Biura Karier</h1>
+    <div class="row d-flex align-items-center">
+        <div class="col">
+           <h1>Zgłoszenia – panel Biura Karier</h1>
+        </div>
+    </div>
 
     {% if zgloszenia %}
         <table class="table">

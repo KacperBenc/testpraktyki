@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block title %} Lista ofert {% endblock %}
 
 {% block breadcrumb %}
@@ -8,14 +9,18 @@
             <li class="breadcrumb-item active" aria-current="page">Lista ofert</li>
         </ol>
     </nav>
-{% endblock %}
-{% block main_title %} <h1>Lista dostępnych ofert</h1> {% endblock %}
+{% endblock breadcrumb %}
+
 {% block content %}
-
-    <div class="text-end">
-
-        <a class="btn btn-primary" href="{% url 'dodaj_oferte' %}" role="button">Dodaj nową ofertę</a>
+    <div class="row d-flex align-items-center">
+        <div class="col">
+           <h1>Oferty – panel Biura Karier</h1>
+        </div>
+        <div class="col d-flex justify-content-end">
+           <a class="btn btn-primary " href="{% url 'dodaj_oferte' %}" role="button">Dodaj ofertę</a>
+        </div>
     </div>
+
     <table class="table">
         <thead>
         <tr>

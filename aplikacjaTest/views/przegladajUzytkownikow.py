@@ -9,4 +9,4 @@ class UzytkownikListView(LoginRequiredMixin, PermissionRequiredMixin, View):
 
     def get(self, request):
         uzytkownicy = Uzytkownik.objects.all()
-        return render(request, "UzytkownicyLista.html", {"uzytkownicy": uzytkownicy})
+        return render(request, "uzytkownicy_lista.html", {"uzytkownicy": uzytkownicy})

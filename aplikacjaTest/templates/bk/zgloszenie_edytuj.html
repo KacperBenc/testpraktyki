@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %} Lista zgłoszeń {% endblock %}
+
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -9,31 +11,33 @@
 </nav>
 {% endblock breadcrumb %}
 
+{% block main_title %} <h1>Lista zgłoszeń</h1> {% endblock %}
+
 {% block content %}
-<div>
-    <h1 class="mb-4">Edycja zgłoszenia #{{ zgloszenie.id }}</h1>
+    <div class="row">
+        <h1 class="mb-4">Edycja zgłoszenia #{{ zgloszenie.id }}</h1>
 
-    <p class="mb-3">
-        <strong>Student:</strong>
-        {{ zgloszenie.student.imie }} {{ zgloszenie.student.nazwisko }}
-        ({{ zgloszenie.student.numer_indeksu }})
-        <br>
-        <strong>Oferta:</strong>
-        Oferta #{{ zgloszenie.oferta.id }} – {{ zgloszenie.oferta.pracodawca.nazwa_firmy }}
-    </p>
+        <p class="mb-3">
+            <strong>Student:</strong>
+            {{ zgloszenie.student.imie }} {{ zgloszenie.student.nazwisko }}
+            ({{ zgloszenie.student.numer_indeksu }})
+            <br>
+            <strong>Oferta:</strong>
+            Oferta #{{ zgloszenie.oferta.id }} – {{ zgloszenie.oferta.pracodawca.nazwa_firmy }}
+        </p>
 
-    <form method="post" class="card p-3 shadow-sm">
-        {% csrf_token %}
-        {{ form.as_table }}
+        <form method="post" class="card p-3 shadow-sm">
+            {% csrf_token %}
+            {{ form.as_table }}
 
-        <div class="d-flex justify-content-between mt-3">
-            <a href="{% url 'bk_zgloszenia_lista' %}" class="btn btn-secondary">
-                Powrót do listy
-            </a>
-            <button type="submit" class="btn btn-primary">
-                Zapisz zmiany
-            </button>
-        </div>
-    </form>
-</div>
-{% endblock %}
+            <div class="d-flex justify-content-between mt-3">
+                <a href="{% url 'bk_zgloszenia_lista' %}" class="btn btn-secondary">
+                    Powrót do listy
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    Zapisz zmiany
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endblock %}

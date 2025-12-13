@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Lista użytkowników{% endblock title %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Lista użytkowników</li>
+      </ol>
+    </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <div class="row d-flex align-items-center">
+        <div class="col">
+           <h1>Użytkownicy – panel Biura Karier</h1>
+        </div>
+        <div class="col d-flex justify-content-end">
+           <a class="btn btn-primary " href="{% url 'rejestracja' %}" role="button">Dodaj użytkownika</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Rola</th>
+            <th scope="col">login</th>
+            <th scope="col">email</th>
+            <th scope="col">telefon</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for uzytkownik in uzytkownicy %}
+            <tr>
+                <td>{{ uzytkownik.rola}}</td>
+                <td>{{ uzytkownik.login }} </td>
+                <td>{{ uzytkownik.adres_mailowy }}</td>
+                <td>{{ uzytkownik.numer_telefonu }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

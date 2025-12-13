@@ -10,9 +10,7 @@
         {% load bootstrap5 %}
         {% load static %}
         {% bootstrap_css %}
-        <link rel="stylesheet"
-              href="{% static 'webfonts/fontawesome/css/all.min.css' %}"
-              type="text/css">
+
         <link rel="stylesheet"
               href="{% static 'styles/styles.css' %}"
               type="text/css">
@@ -143,16 +141,16 @@
                 <div class="container mt-4 text-center">
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                                 {{ message }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert">
                                 </button>
                             </div>
                         {% endfor %}
                     {% endif %}
-
                 </div>
             </section>
+
             <section class="container flex-grow-1 py-0">
 
                 {% block breadcrumb %}

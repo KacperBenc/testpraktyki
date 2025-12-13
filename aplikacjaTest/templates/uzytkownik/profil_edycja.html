@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block main_title %}<h1>Edycja profilu</h1>{% endblock main_title %}
+
+{% block content %}
+    <div class="row pb-4">
+        <form method="post">
+          {% csrf_token %}
+
+          <h3>Dane konta</h3>
+          {% bootstrap_form uzytkownik_form %}
+
+          {% if adres_form %}
+            <h3>Adres</h3>
+            {% bootstrap_form adres_form %}
+          {% endif %}
+
+          {% if role_form %}
+            <h3>Dane roli</h3>
+            {% bootstrap_form role_form %}
+          {% endif %}
+
+          <div class="d-flex mt-4 justify-content-between">
+            <button class="btn btn-primary" type="submit">Zapisz</button>
+            <a class="btn btn-outline-secondary" href="{% url 'profil' pk=uzytkownik.pk %}">Anuluj</a>
+          </div>
+        </form>
+    </div>
+{% endblock content %}

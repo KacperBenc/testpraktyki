@@ -1,5 +1,5 @@
 from django.urls import path
-from aplikacjaTest.views.profil import profile
+from aplikacjaTest.views.profil import profile, profile_edit
 from aplikacjaTest.views.home import home
 from aplikacjaTest.views.dodajOferte import OfertaCreateView
 from aplikacjaTest.views.przegladajOferty import OfertaListView
@@ -21,6 +21,7 @@ urlpatterns = [
     path("oferty/nowa/", OfertaCreateView.as_view(), name="dodaj_oferte"),
     path("rejestracja/", rejestracja, name="rejestracja"),
     path("profil/<int:pk>", profile, name="profil"),
+    path("profil/<int:pk>/edycja", profile_edit, name="profil_edycja"),
     path("uzytkownicy/", UzytkownikListView.as_view(), name="przegladajUzytkownikow"),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),

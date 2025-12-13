@@ -48,7 +48,6 @@ def rejestracja(request):
                 if not miasto_obj:
                     miasto_obj = Miasto.objects.create(nazwa=miasto_nazwa.title())
 
-                # stworzenie adresu
                 adres_instance = adres_form.save(commit=False)
                 adres_instance.miasto = miasto_obj
 
@@ -82,11 +81,10 @@ def rejestracja(request):
                     group = Group.objects.get(name=group_name)
                     django_user.groups.add(group)
                 except Group.DoesNotExist:
-                    # opcjonalnie: logowanie błędu albo utworzenie grupy
                     pass
 
             user = main_form.save(commit=False)
-            user.haslo = make_password(haslo_raw)   # możesz usunąć jeśli nie chcesz duplikatu
+            user.haslo = make_password(haslo_raw)
             user.django_user = django_user
             user.status_konta = None
             user.save()
@@ -99,7 +97,6 @@ def rejestracja(request):
                 role_obj.uzytkownik = user
 
                 if requires_address:
-                    # W tym momencie adres_instance istnieje ZAWSZE
                     role_obj.adres = adres_instance
 
                 role_obj.save()
@@ -115,7 +112,6 @@ def rejestracja(request):
         extra_form = None
         role = None
 
-    # domyślne formularze do wyświetlenia
     forms_map = {
         "student_form": StudentForm(prefix="Student"),
         "pracodawca_form": PracodawcaForm(prefix="Pracodawca"),
@@ -124,7 +120,6 @@ def rejestracja(request):
         "adres_form": adres_form,
     }
 
-    # PODSTAW formularz roli z błędami po POST
     if request.method == "POST" and extra_form is not None:
         if role == "Student":
             forms_map["student_form"] = extra_form

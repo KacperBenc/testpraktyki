@@ -291,7 +291,7 @@
 }
 
 body {
-    background-color: rgb(241, 241, 241)
+    background-color: rgb(241, 241, 241);
 }
 
 .navbar {
@@ -721,4 +721,12 @@ footer p {
     height: auto;
     overflow: visible;
     margin-top: 20px;
+}
+
+.alert-dismissible {
+  transition: opacity 0.5s ease-out;
+}
+
+.alert-dismissible.fade-out {
+  opacity: 0;
 }

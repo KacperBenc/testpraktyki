@@ -182,30 +182,12 @@
                 <i class="icon fa fa-arrow-up fa-fw " aria-hidden="true"></i>
             </a>w
         </div>
+
+        {% block scripts %}
+
+        {% endblock scripts %}
+        <script src="{% static 'js/base.js'  %}"></script>
     </body>
 
     {% bootstrap_javascript %}
-    <script>
-const scrollTop = document.getElementById("goto-top-link");
-
-window.onscroll = function(){
-    scrollFunction();
-};
-function scrollFunction(){
-
-    if( document.body.scrollTop > 20 || document.documentElement.scrollTop > 20){
-        scrollTop.style.display = "block";
-    } else {
-        scrollTop.style.display = "none";
-    }
-}
-
-scrollTop.addEventListener("click", function(){
-    window.scrollTo({
-        left: 0,
-        top: 0,
-        behavior: "smooth"
-    })
-})
-    </script>
 </html>

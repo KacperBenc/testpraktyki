@@ -730,3 +730,23 @@ footer p {
 .alert-dismissible.fade-out {
   opacity: 0;
 }
+
+.table-fixed {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.opis-col {
+  max-width: 99%;   /* dopasuj do szerokości layoutu */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nazwa-col { width: 20%; }
+
+.akcje-col { width: 15%; }
+
+.oferta-row {
+  cursor: pointer;
+}

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-!uzmcthg(dnf%nhekgg#ehl#a3-pms*r#%x4*a_1686t4)^01x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
+external_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if external_host:
+    ALLOWED_HOSTS.append(external_host)
 
 
 # Application definition

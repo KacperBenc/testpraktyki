@@ -1,3 +1,6 @@
-Django==6.0
+Django
+celery
+gunicorn
+psycopg
 django-bootstrap-v5==1.0.11
 django-bootstrap5==25.3

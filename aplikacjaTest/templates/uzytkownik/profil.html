@@ -18,61 +18,11 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
-            <p>Rola: {{ uzytkownik.rola }}</p>
-            <p>Status konta: {{ uzytkownik.status_konta }}</p>
-            <p>Telefon: {{ uzytkownik.numer_telefonu }}</p>
-            <p>Email: {{ uzytkownik.adres_mailowy }}</p>
-        </div>
+    {% include "uzytkownik/profil_szczegoly.html" %}
+
+    <div class="d-flex mt-4 justify-content-between">
+        <a href="{% url 'profil_edycja' pk=uzytkownik.pk %}" class="btn btn-primary">
+        Edytuj profil
+        </a>
     </div>
-
-    <div class="row pt-2">
-        {% if student %}
-        <div class="col">
-              <h2>Dane studenta</h2>
-              <p>Imię: {{ student.imie }}</p>
-              <p>Nazwisko: {{ student.nazwisko }}</p>
-              <p>Numer indeksu: {{ student.numer_indeksu }}</p>
-        </div>
-            {% endif %}
-
-        {% if pracodawca %}
-            <div class="col">
-          <h2>Dane pracodawcy</h2>
-          <p>Firma: {{ pracodawca.nazwa_firmy }}</p>
-          <p>NIP: {{ pracodawca.nip }}</p>
-          <p>Przedstawiciel: {{ pracodawca.imie_przedstawiciela }} {{ pracodawca.nazwisko_przedstawiciela }}</p>
-            </div>
-        {% endif %}
-
-        {% if opiekun %}
-            <div class="col">
-          <h2>Opiekun praktyk</h2>
-          <p>{{ opiekun.imie }} {{ opiekun.nazwisko }}</p>
-            </div>
-        {% endif %}
-
-        {% if pracownik_bk %}
-            <div class="col">
-          <h2>Pracownik BK</h2>
-          <p>{{ pracownik_bk.imie }} {{ pracownik_bk.nazwisko }}</p>
-            </div>
-        {% endif %}
-
-        {% if adres %}
-            <div class="col">
-          <h2>Adres</h2>
-          <p>{{ adres.ulica }} {{ adres.numer_budynku }}{% if adres.numer_lokalu %}/{{ adres.numer_lokalu }}{% endif %}</p>
-          <p>{{ adres.kod_pocztowy }} {{ adres.miasto.nazwa }}</p>
-          <p>{{ adres.kraj.nazwa }}</p>
-            </div>
-        {% endif %}
-        <div class="d-flex mt-4 justify-content-between">
-            <a href="{% url 'profil_edycja' pk=uzytkownik.pk %}" class="btn btn-primary">
-            Edytuj profil
-            </a>
-        </div>
-    </div>
-
 {% endblock content %}

@@ -23,7 +23,7 @@
 
           <div class="d-flex mt-4 justify-content-between">
             <button class="btn btn-primary" type="submit">Zapisz</button>
-            <a class="btn btn-outline-secondary" href="{% url 'profil' pk=uzytkownik.pk %}">Anuluj</a>
+            <a class="btn btn-outline-secondary" href="{{ back_url }}">Anuluj</a>
           </div>
         </form>
     </div>

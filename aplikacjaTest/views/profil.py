@@ -97,10 +97,51 @@ def profile_edit(request, pk):
         adres_form = AdresForm(instance=adres) if adres else None
         role_form = role_form_class(instance=role_instance) if role_form_class else None
 
+    back_url = reverse("profil", kwargs={"pk": uzytkownik.pk})
+    if request.GET.get("from") == "list":
+        back_url = reverse("przegladajUzytkownikow")  # nazwa URL listy użytkowników
+
     context = {
         "uzytkownik": uzytkownik,
         "uzytkownik_form": uzytkownik_form,
         "adres_form": adres_form,
         "role_form": role_form,
+        "back_url": back_url,
     }
     return render(request, "uzytkownik/profil_edycja.html", context)
+
+
+def uzytkownik_deaktywuj(request, pk):
+    if request.method != "POST":
+        return redirect("przegladajUzytkownikow")
+
+    uzytkownik = get_object_or_404(Uzytkownik, pk=pk)
+
+    uzytkownik.status_konta = False
+    uzytkownik.save(update_fields=["status_konta"])
+
+    messages.success(request, f"Konto użytkownika {uzytkownik.login} zostało dezaktywowane.")
+    return redirect(reverse("przegladajUzytkownikow"))
+
+def uzytkownik_toggle_aktywnosc(request, pk):
+    if request.method != "POST":
+        return redirect("przegladajUzytkownikow")
+
+    uzytkownik = get_object_or_404(Uzytkownik, pk=pk)
+
+    # przełączamy boolean
+    uzytkownik.status_konta = not uzytkownik.status_konta
+    uzytkownik.save(update_fields=["status_konta"])
+
+    if uzytkownik.status_konta:
+        messages.success(
+            request,
+            f"Konto użytkownika {uzytkownik.login} zostało aktywowane."
+        )
+    else:
+        messages.success(
+            request,
+            f"Konto użytkownika {uzytkownik.login} zostało dezaktywowane."
+        )
+
+    return redirect(reverse("przegladajUzytkownikow"))

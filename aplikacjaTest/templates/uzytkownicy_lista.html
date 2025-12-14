@@ -43,17 +43,63 @@
                 </th>
             </tr>
             </thead>
-            <tbody>
-            {% for uzytkownik in uzytkownicy %}
-                <tr>
+                <tbody>
+                {% for uzytkownik in uzytkownicy %}
+                  <tr class="uzytkownik-row link-row"
+                      data-bs-toggle="modal"
+                      data-bs-target="#uzytkownikModal{{ uzytkownik.id }}">
                     <td>{{ uzytkownik.rola }}</td>
                     <td>{{ uzytkownik.login }}</td>
                     <td>{{ uzytkownik.adres_mailowy }}</td>
                     <td>{{ uzytkownik.numer_telefonu }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
+                    <td>{% if uzytkownik.status_konta %}Aktywne{% else %}Nieaktywne{% endif %}</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
         </table>
     </form>
+
+    {% for uzytkownik in uzytkownicy %}
+        <div class="modal fade" id="uzytkownikModal{{ uzytkownik.id }}" tabindex="-1"
+             aria-labelledby="uzytkownikModalLabel{{ uzytkownik.id }}" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title" id="uzytkownikModalLabel{{ uzytkownik.id }}">
+                  Szczegóły użytkownika – {{ uzytkownik.login }}
+                </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+              </div>
+              <div class="modal-body">
+                {% include "uzytkownik/profil_szczegoly.html" with uzytkownik=uzytkownik student=uzytkownik.student_rel pracodawca=uzytkownik.pracodawca_rel opiekun=uzytkownik.opiekun_rel pracownik_bk=uzytkownik.pracownik_bk_rel adres=uzytkownik.adres_rel %}
+              </div>
+              <div class="modal-footer">
+                <a href="{% url 'profil_edycja' uzytkownik.id %}?from=list"
+                   class="btn btn-primary">
+                  Edytuj
+                </a>
+                <form method="post"
+                      action="{% url 'uzytkownik_toggle_aktywnosc' uzytkownik.id %}"
+                      class="d-inline">
+                  {% csrf_token %}
+                  {% if uzytkownik.status_konta %}
+                    <button type="submit" class="btn btn-warning">
+                      Deaktywuj
+                    </button>
+                  {% else %}
+                    <button type="submit" class="btn btn-success">
+                      Aktywuj
+                    </button>
+                  {% endif %}
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  Zamknij
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+
 
 {% endblock %}

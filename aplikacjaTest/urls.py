@@ -1,5 +1,5 @@
 from django.urls import path
-from aplikacjaTest.views.profil import profile, profile_edit
+from aplikacjaTest.views.profil import profile, profile_edit, uzytkownik_toggle_aktywnosc
 from aplikacjaTest.views.home import home
 from aplikacjaTest.views.dodajOferte import OfertaCreateView
 from aplikacjaTest.views.przegladajOferty import OfertaListView
@@ -22,6 +22,7 @@ urlpatterns = [
     path("rejestracja/", rejestracja, name="rejestracja"),
     path("profil/<int:pk>", profile, name="profil"),
     path("profil/<int:pk>/edycja", profile_edit, name="profil_edycja"),
+    path("profil/<int:pk>/toggle", uzytkownik_toggle_aktywnosc, name="uzytkownik_toggle_aktywnosc"),
     path("uzytkownicy/", UzytkownikListView.as_view(), name="przegladajUzytkownikow"),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),

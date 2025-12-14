@@ -21,24 +21,39 @@
         </div>
     </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Rola</th>
-            <th scope="col">login</th>
-            <th scope="col">email</th>
-            <th scope="col">telefon</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for uzytkownik in uzytkownicy %}
+    <form method="get">
+        <table class="table">
+            <thead>
             <tr>
-                <td>{{ uzytkownik.rola}}</td>
-                <td>{{ uzytkownik.login }} </td>
-                <td>{{ uzytkownik.adres_mailowy }}</td>
-                <td>{{ uzytkownik.numer_telefonu }}</td>
+                <th scope="col">
+                    {{ ofertaForm.rola }}
+                </th>
+                <th scope="col">
+                    {{ ofertaForm.login }}
+                </th>
+                <th scope="col">
+                    {{ ofertaForm.adres_mailowy }}
+                </th>
+                <th scope="col">
+                    {{ ofertaForm.numer_telefonu }}
+                </th>
+                <th scope="col" class="text-end">
+                    <button type="submit" class="btn btn-secondary">Filtruj</button>
+                    <a href="." class="btn btn-outline-secondary">Wyczyść</a>
+                </th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for uzytkownik in uzytkownicy %}
+                <tr>
+                    <td>{{ uzytkownik.rola }}</td>
+                    <td>{{ uzytkownik.login }}</td>
+                    <td>{{ uzytkownik.adres_mailowy }}</td>
+                    <td>{{ uzytkownik.numer_telefonu }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
 {% endblock %}

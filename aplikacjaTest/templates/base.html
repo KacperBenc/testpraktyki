@@ -2,18 +2,16 @@
 <html lang="pl">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>
             {% block title %}
                 System Praktyk
             {% endblock title %}
         </title>
-        {% load bootstrap5 %}
-        {% load static %}
-        {% bootstrap_css %}
-
-        <link rel="stylesheet"
-              href="{% static 'styles/styles.css' %}"
-              type="text/css">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+                integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+            {% load static %}
+            <link rel="stylesheet" href="{% static 'aplikacjaTest/styles/styles.css' %}" type="text/css">
 
     </head>
     <body class="d-flex flex-column vh-100">
@@ -42,7 +40,7 @@
                     <a href="{% url 'home' %}"
                        class="navbar-brand d-none d-md-flex align-items-center m-0 me-4 p-0">
 
-                        <img src="{% static 'images/moodle-logo-uthpraktyki.png' %}"
+                        <img src="{% static 'aplikacjaTest/images/moodle-logo-uthpraktyki.png' %}"
                              class="img-fluid logo me-1"
                              alt="Logo"
                              height=""
@@ -186,8 +184,9 @@
         {% block scripts %}
 
         {% endblock scripts %}
-        <script src="{% static 'js/base.js'  %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+        <script src="{% static 'aplikacjaTest/js/base.js' %}"></script>
     </body>
-
-    {% bootstrap_javascript %}
 </html>

@@ -5,34 +5,6 @@ from aplikacjaTest.models import Uzytkownik
 from aplikacjaTest.forms.ofertaForm import UzytkownikFilterForm
 
 
-# class UzytkownikListView(LoginRequiredMixin, PermissionRequiredMixin, View):
-#     permission_required = "aplikacjaTest.view_students"
-#
-#     def get(self, request):
-#         qs = Uzytkownik.objects.all()
-#         form = UzytkownikFilterForm(request.GET or None)
-#
-#         if form.is_valid():
-#             role = form.cleaned_data.get("rola")
-#             login = form.cleaned_data.get("login")
-#             email = form.cleaned_data.get("adres_mailowy")
-#             telefon = form.cleaned_data.get("numer_telefonu")
-#
-#             if role:
-#                 qs = qs.filter(rola__in=role)
-#             if login:
-#                 qs = qs.filter(login__icontains=login)
-#             if email:
-#                 qs = qs.filter(adres_mailowy__icontains=email)
-#             if telefon:
-#                 qs = qs.filter(numer_telefonu__icontains=telefon)
-#
-#         context = {
-#             "uzytkownicy": qs,
-#             "ofertaForm": form,
-#         }
-#         return render(request, "uzytkownicy_lista.html", context)
-
 class UzytkownikListView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = "aplikacjaTest.view_students"
 
@@ -77,8 +49,10 @@ class UzytkownikListView(LoginRequiredMixin, PermissionRequiredMixin, View):
                 u.adres_rel = u.student_rel.adres
             elif u.pracodawca_rel:
                 u.adres_rel = u.pracodawca_rel.adres
-            else:
-                u.adres_rel = None
+            elif u.opiekun_rel:
+                u.adres_rel = u.opiekun_rel.adres
+            elif u.pracownik_bk_rel:
+                u.adres_rel = u.pracownik_bk_rel.adres
 
         context = {
             "uzytkownicy": qs,

@@ -9,39 +9,41 @@ Logowanie – System Praktyk
 {% block main_title %}{% endblock main_title %}
 
 {% block content %}
-<div class="container login">
+<div class="row m-0 p-0 d-flex justify-content-center">
+    <div class="main-content col-12 col-sm-6">
 
-    <img src="{% static 'aplikacjaTest/images/logo_pl.png' %}" id="logo" alt="" aria-hidden="true">
+        <img src="{% static 'aplikacjaTest/images/logo_pl.png' %}" id="logo" alt="" aria-hidden="true">
 
 
-    <div id="content" class="content">
-        <div class="form edgeless">
-            <form method="POST" id="fm1">
-                {% csrf_token %}
-                <div class="new-input">
-                    <input type="text" id="login" title="Identyfikator" name="login" required>
-                    <label for="login">Identyfikator</label>
-                </div>
-                <div class="new-input">
-                    <input type="password" id="haslo" placeholder=" " title="Hasło" name="haslo" required>
-                    <label for="haslo">Hasło</label>
-                </div>
+        <div id="content" class="login">
+            <div class="form edgeless">
+                <form method="POST" id="fm1">
+                    {% csrf_token %}
+                    <div class="new-input">
+                        <input type="text" id="login" placeholder=" " title="Identyfikator" name="login" required>
+                        <label for="login">Identyfikator</label>
+                    </div>
+                    <div class="new-input">
+                        <input type="password" id="haslo" placeholder=" " title="Hasło" name="haslo" required>
+                        <label for="haslo">Hasło</label>
+                    </div>
 
-                <div class="form-button-row">
-                    <div class="submit-row">
-                        <div class="submit-button">
-                            <button class="form-button" name="submit" type="submit">
-                                Zaloguj się
-                            </button>
+                    <div class="form-button-row">
+                        <div class="submit-row">
+                            <div class="submit-button">
+                                <button class="form-button" name="submit" type="submit">
+                                    Zaloguj się
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
 
-        <div class="link-box m-3">
-            Nie masz konta?
-            <a href="{% url 'rejestracja' %}">Zarejestruj się</a>
+            <div class="link-box m-3">
+                Nie masz konta?
+                <a href="{% url 'rejestracja' %}">Zarejestruj się</a>
+            </div>
         </div>
     </div>
 </div>

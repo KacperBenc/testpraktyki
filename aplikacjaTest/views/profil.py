@@ -191,7 +191,7 @@ class UzytkownikUpdateView(LoginRequiredMixin, CanEditProfileMixin,UpdateView):
 
 
 class UzytkownikToggleAktywnoscView(LoginRequiredMixin, PermissionRequiredMixin, View):
-    permission_required = "aplikacjaTest.change_uzytkownik"
+    permission_required = "aplikacjaTest.change_user_status"
 
     def post(self, request, pk):
         uzytkownik = Uzytkownik.objects.get(pk=pk)

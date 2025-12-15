@@ -95,15 +95,18 @@
                                href="#"
                                id="dropdownMenuLink"
                                role="button"
-                               title="{{ request.user.username }}">
+                               title="{{ request.user }}">
                                 <span class="user-initials">
-                                    {{ request.user.username|slice:':1' }}
+                                    {{ request.user.username|slice:':2' }}
                                 </span>
 
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-end"
                                 aria-labelledby="dropdownMenuLink">
+                                <li class="dropdown-item disabled">
+                                    {{ request.user }}
+                                </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

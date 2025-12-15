@@ -21,7 +21,7 @@ def rejestracja(request):
     }
 
     if request.method == "POST":
-        main_form = RejestracjaForm(request.POST, prefix="main")
+        main_form = RejestracjaForm(request.POST, prefix="main", user=request.user)
         adres_form = AdresForm(request.POST, prefix="adres")
 
         role = request.POST.get("main-rola")
@@ -103,11 +103,11 @@ def rejestracja(request):
 
             messages.success(request, "Rejestracja przebiegła pomyślnie!")
             return redirect("home")
-        else:
-            messages.error(request, "Popraw błędy formularza.")
+
+        messages.error(request, "Popraw błędy formularza.")
 
     else:
-        main_form = RejestracjaForm(prefix="main")
+        main_form = RejestracjaForm(prefix="main", user=request.user)
         adres_form = AdresForm(prefix="adres")
         extra_form = None
         role = None

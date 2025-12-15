@@ -15,7 +15,7 @@ ROLES_PERMS = {
         "view_assigned_applications",
     ],
     "pracodawca": [
-        "view_user_profile"
+        "view_user_profile",
         "change_user_profile",
         "add_offer_portal",
     ],

@@ -1,76 +1,162 @@
-from django.http import HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import DetailView, View, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.db import transaction
 from django.contrib import messages
 
 from aplikacjaTest.models import Uzytkownik
-from django.shortcuts import render, get_object_or_404
-from aplikacjaTest.models import Uzytkownik, Student, Pracodawca, OpiekunPraktyk, PracownikBK
 from aplikacjaTest.forms.profilEdycjaForm import (
     UzytkownikForm, AdresForm,
     StudentForm, PracodawcaForm,
     OpiekunForm, PracownikBKForm,
 )
 
-def profile(request, pk):
-    uzytkownik = get_object_or_404(Uzytkownik, pk=pk)
 
-    student = getattr(uzytkownik, "student", None)
-    pracodawca = getattr(uzytkownik, "pracodawca", None)
-    opiekun = getattr(uzytkownik, "opiekunpraktyk", None)
-    pracownik_bk = getattr(uzytkownik, "pracownikbk", None)
+class CanEditProfileMixin(UserPassesTestMixin):
+    """
+    pracownik_bk: może edytować każdy profil
+    inni: tylko swój własny
+    """
 
-    adres = None
-    if student:
-        adres = student.adres
-    elif pracodawca:
-        adres = pracodawca.adres
-    elif opiekun:
-        adres = opiekun.adres
-    elif pracownik_bk:
-        adres = pracownik_bk.adres
+    def is_pracownik_bk(self, user):
+        # user = django.contrib.auth.models.User
+        uzytkownik = getattr(user, "uzytkownik", None)  # odwrotna relacja z OneToOneField
+        if uzytkownik is None:
+            return False
+        return uzytkownik.rola == Uzytkownik.Role.PRACOWNIK_BK
 
-    context = {
-        "uzytkownik": uzytkownik,
-        "student": student,
-        "pracodawca": pracodawca,
-        "opiekun": opiekun,
-        "pracownik_bk": pracownik_bk,
-        "adres": adres,
-    }
-    return render(request, "uzytkownik/profil.html", context)
+    def test_func(self):
+        # obiekt profilu, który edytujemy (Uzytkownik)
+        uzytkownik_obj = self.get_object()
 
-def profile_edit(request, pk):
-    uzytkownik = get_object_or_404(Uzytkownik, pk=pk)
+        # aktualnie zalogowany django.contrib.auth.models.User
+        user = self.request.user
 
-    student = getattr(uzytkownik, "student", None)
-    pracodawca = getattr(uzytkownik, "pracodawca", None)
-    opiekun = getattr(uzytkownik, "opiekunpraktyk", None)
-    pracownik_bk = getattr(uzytkownik, "pracownikbk", None)
+        # pracownik BK – pełny dostęp
+        if self.is_pracownik_bk(user):
+            return True
 
-    if student:
-        adres = student.adres
-        role_form_class = StudentForm
-        role_instance = student
-    elif pracodawca:
-        adres = pracodawca.adres
-        role_form_class = PracodawcaForm
-        role_instance = pracodawca
-    elif opiekun:
-        adres = opiekun.adres
-        role_form_class = OpiekunForm
-        role_instance = opiekun
-    elif pracownik_bk:
-        adres = pracownik_bk.adres
-        role_form_class = PracownikBKForm
-        role_instance = pracownik_bk
-    else:
+        # inni – tylko własny profil
+        uzytkownik = getattr(user, "uzytkownik", None)
+        return uzytkownik is not None and uzytkownik.pk == uzytkownik_obj.pk
+
+
+class CanViewProfileMixin(UserPassesTestMixin):
+    def is_pracownik_bk(self, user):
+        uzytkownik = getattr(user, "uzytkownik", None)
+        if uzytkownik is None:
+            return False
+        return uzytkownik.rola == Uzytkownik.Role.PRACOWNIK_BK
+
+    def test_func(self):
+        uzytkownik_obj = self.get_object()
+        user = self.request.user
+
+        if self.is_pracownik_bk(user):
+            return True
+
+        uzytkownik = getattr(user, "uzytkownik", None)
+        return uzytkownik is not None and uzytkownik.pk == uzytkownik_obj.pk
+
+
+
+class UzytkownikDetailView(LoginRequiredMixin, CanViewProfileMixin, DetailView):
+    model = Uzytkownik
+    template_name = "uzytkownik/profil.html"
+    context_object_name = "uzytkownik"
+    permission_required = "aplikacjaTest.view_user_profile"  # dostosuj do swoich perms
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        uzytkownik = self.object
+
+        student = getattr(uzytkownik, "student", None)
+        pracodawca = getattr(uzytkownik, "pracodawca", None)
+        opiekun = getattr(uzytkownik, "opiekunpraktyk", None)
+        pracownik_bk = getattr(uzytkownik, "pracownikbk", None)
+
         adres = None
-        role_form_class = None
-        role_instance = None
+        if student:
+            adres = student.adres
+        elif pracodawca:
+            adres = pracodawca.adres
+        elif opiekun:
+            adres = opiekun.adres
+        elif pracownik_bk:
+            adres = pracownik_bk.adres
 
-    if request.method == "POST":
+        context.update(
+            {
+                "student": student,
+                "pracodawca": pracodawca,
+                "opiekun": opiekun,
+                "pracownik_bk": pracownik_bk,
+                "adres": adres,
+            }
+        )
+        return context
+
+class UzytkownikUpdateView(LoginRequiredMixin, CanEditProfileMixin,UpdateView):
+    model = Uzytkownik
+    form_class = UzytkownikForm           # główny formularz
+    template_name = "uzytkownik/profil_edycja.html"
+    context_object_name = "uzytkownik"
+    permission_required = "aplikacjaTest.change_user_profile"  # dostosuj
+
+    def _get_role_data(self, uzytkownik):
+        student = getattr(uzytkownik, "student", None)
+        pracodawca = getattr(uzytkownik, "pracodawca", None)
+        opiekun = getattr(uzytkownik, "opiekunpraktyk", None)
+        pracownik_bk = getattr(uzytkownik, "pracownikbk", None)
+
+        if student:
+            return student.adres, StudentForm, student
+        elif pracodawca:
+            return pracodawca.adres, PracodawcaForm, pracodawca
+        elif opiekun:
+            return opiekun.adres, OpiekunForm, opiekun
+        elif pracownik_bk:
+            return pracownik_bk.adres, PracownikBKForm, pracownik_bk
+        return None, None, None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        uzytkownik = self.object
+
+        adres, role_form_class, role_instance = self._get_role_data(uzytkownik)
+
+        # jeśli formularze już są w kwargs (po POST), użyj ich
+        uzytkownik_form = kwargs.get("uzytkownik_form") or UzytkownikForm(instance=uzytkownik)
+        adres_form = kwargs.get("adres_form") or (AdresForm(instance=adres) if adres else None)
+        role_form = kwargs.get("role_form") or (
+            role_form_class(instance=role_instance) if role_form_class else None
+        )
+
+        back_url = reverse("profil", kwargs={"pk": uzytkownik.pk})
+        if self.request.GET.get("from") == "list":
+            back_url = reverse("przegladajUzytkownikow")
+
+        context.update(
+            {
+                "uzytkownik_form": uzytkownik_form,
+                "adres_form": adres_form,
+                "role_form": role_form,
+                "back_url": back_url,
+            }
+        )
+        return context
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return self.render_to_response(self.get_context_data())
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        uzytkownik = self.object
+
+        adres, role_form_class, role_instance = self._get_role_data(uzytkownik)
+
         uzytkownik_form = UzytkownikForm(request.POST, instance=uzytkownik)
         adres_form = AdresForm(request.POST, instance=adres) if adres else None
         role_form = role_form_class(request.POST, instance=role_instance) if role_form_class else None
@@ -94,58 +180,31 @@ def profile_edit(request, pk):
                     role.save()
             messages.success(request, "Profil został zaktualizowany.")
             return redirect(reverse("profil", kwargs={"pk": uzytkownik.pk}))
+
+        messages.error(request, "Nie udało się zapisać zmian. Sprawdź formularz.")
+        context = self.get_context_data(
+            uzytkownik_form=uzytkownik_form,
+            adres_form=adres_form,
+            role_form=role_form,
+        )
+        return self.render_to_response(context)
+
+
+class UzytkownikToggleAktywnoscView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = "aplikacjaTest.change_uzytkownik"
+
+    def post(self, request, pk):
+        uzytkownik = Uzytkownik.objects.get(pk=pk)
+        uzytkownik.status_konta = not uzytkownik.status_konta
+        uzytkownik.save(update_fields=["status_konta"])
+
+        if uzytkownik.status_konta:
+            messages.success(request, f"Konto użytkownika {uzytkownik.login} zostało aktywowane.")
         else:
-            messages.error(request, "Nie udało się zapisać zmian. Sprawdź formularz.")
-    else:
-        uzytkownik_form = UzytkownikForm(instance=uzytkownik)
-        adres_form = AdresForm(instance=adres) if adres else None
-        role_form = role_form_class(instance=role_instance) if role_form_class else None
+            messages.success(request, f"Konto użytkownika {uzytkownik.login} zostało dezaktywowane.")
 
-    back_url = reverse("profil", kwargs={"pk": uzytkownik.pk})
-    if request.GET.get("from") == "list":
-        back_url = reverse("przegladajUzytkownikow")  # nazwa URL listy użytkowników
+        return redirect(reverse("przegladajUzytkownikow"))
 
-    context = {
-        "uzytkownik": uzytkownik,
-        "uzytkownik_form": uzytkownik_form,
-        "adres_form": adres_form,
-        "role_form": role_form,
-        "back_url": back_url,
-    }
-    return render(request, "uzytkownik/profil_edycja.html", context)
-
-
-def uzytkownik_deaktywuj(request, pk):
-    if request.method != "POST":
+    def get(self, request, pk):
         return redirect("przegladajUzytkownikow")
 
-    uzytkownik = get_object_or_404(Uzytkownik, pk=pk)
-
-    uzytkownik.status_konta = False
-    uzytkownik.save(update_fields=["status_konta"])
-
-    messages.success(request, f"Konto użytkownika {uzytkownik.login} zostało dezaktywowane.")
-    return redirect(reverse("przegladajUzytkownikow"))
-
-def uzytkownik_toggle_aktywnosc(request, pk):
-    if request.method != "POST":
-        return redirect("przegladajUzytkownikow")
-
-    uzytkownik = get_object_or_404(Uzytkownik, pk=pk)
-
-    # przełączamy boolean
-    uzytkownik.status_konta = not uzytkownik.status_konta
-    uzytkownik.save(update_fields=["status_konta"])
-
-    if uzytkownik.status_konta:
-        messages.success(
-            request,
-            f"Konto użytkownika {uzytkownik.login} zostało aktywowane."
-        )
-    else:
-        messages.success(
-            request,
-            f"Konto użytkownika {uzytkownik.login} zostało dezaktywowane."
-        )
-
-    return redirect(reverse("przegladajUzytkownikow"))

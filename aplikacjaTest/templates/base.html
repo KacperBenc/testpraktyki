@@ -61,13 +61,6 @@
                             <a class="nav-link" href="{% url 'lista_ofert' %}">Oferty</a>
                           </li>
 
-                          <!-- student, pracodawca, pracownikBK: dodaj ofertę -->
-<!--                          {% if perms.aplikacjaTest.add_offer_portal %}-->
-<!--                          <li class="nav-item">-->
-<!--                            <a class="nav-link" href="{% url 'dodaj_oferte' %}">Dodaj ofertę</a>-->
-<!--                          </li>-->
-<!--                          {% endif %}-->
-
                           <!-- student: moje zgłoszenia -->
                           {% if perms.aplikacjaTest.view_own_applications %}
                           <li class="nav-item">

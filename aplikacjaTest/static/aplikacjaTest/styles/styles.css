@@ -358,7 +358,7 @@ body {
 }
 
 .navbar-toggler {
-    width: 10%;
+    width: 4rem;
 }
 
 .primary-navigation {
@@ -450,8 +450,8 @@ main {
     transition: 0.2s;
     left: 0;
     right: 0;
-    padding-left: 3rem;
-    padding-right: 3rem;
+    /*padding-left: 3rem;
+    padding-right: 3rem;*/
     scrollbar-width: thin;
     scrollbar-color: #868e96 #f8f9fa;
     /* min-height: calc(100vh - 4em); */

@@ -4,20 +4,29 @@ from django.contrib.auth.models import Group, Permission
 
 ROLES_PERMS = {
     "student": [
+        "view_user_profile",
+        "change_user_profile",
         "add_offer_portal",
         "view_own_applications",
     ],
     "opiekun": [
+        "view_user_profile",
+        "change_user_profile",
         "view_assigned_applications",
     ],
     "pracodawca": [
+        "view_user_profile"
+        "change_user_profile",
         "add_offer_portal",
     ],
     "pracownikBK": [
+        "view_user_profile",
+        "change_user_profile",
         "add_offer_portal",
         "view_students",
         "view_tutors",
         "view_employers",
+        "change_user_status",
     ],
 }
 

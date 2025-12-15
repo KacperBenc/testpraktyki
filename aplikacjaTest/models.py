@@ -11,6 +11,10 @@ class TestPraktyki(models.Model):
             ("view_students", "Może widzieć listę studentów"),
             ("view_tutors", "Może widzieć listę opiekunów"),
             ("view_employers", "Może widzieć listę pracodawców"),
+            ("view_users", "Może widzieć listę użytkowników"),
+            ("view_user_profile", "Może widzieć profil użytkownika"),
+            ("change_user_profile", "Może edytować profil użytkownika"),
+            ("change_user_status", "Może zmieniać status konta użytkownika"),
         ]
 
 

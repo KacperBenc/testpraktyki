@@ -43,7 +43,7 @@
                         <td>Oferta #{{ z.oferta.id }}</td>
                         <td>{{ z.oferta.pracodawca.nazwa_firmy }}</td>
                         <td>{{ z.data_zgloszenia }}</td>
-                        <td>{{ z.status }}</td>
+                        <td class="{% if z.status == 'Zaakceptowane' %}text-success{% elif z.status == 'Odrzucone' %}text-danger{% endif %}">{{ z.status }}</td>
                         <td>
                             {% if z.opiekun_praktyk %}
                                 {{ z.opiekun_praktyk.imie }} {{ z.opiekun_praktyk.nazwisko }}

@@ -29,7 +29,7 @@ def rejestracja(request):
         extra_prefix = role.replace(" ", "_") if extra_class else None
         extra_form = extra_class(request.POST, prefix=extra_prefix) if extra_class else None
 
-        requires_address = role in ["Student", "Pracodawca"]
+        requires_address = role in ["Student", "Pracodawca", "Opiekun Praktyk", "Pracownik BK"]
 
         valid_main = main_form.is_valid()
         valid_address = (not requires_address) or adres_form.is_valid()

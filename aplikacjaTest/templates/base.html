@@ -96,16 +96,59 @@
                                id="dropdownMenuLink"
                                role="button"
                                title="{{ request.user }}">
-                                <span class="user-initials">
-                                    {{ request.user.username|slice:':2' }}
-                                </span>
+                                {% with prof=request.user.uzytkownik %}
+                                  {% if prof.rola == "Student" %}
+                                    {% with imie=prof.student.imie nazwisko=prof.student.nazwisko %}
+                                      <span class="user-initials">
+                                        {{ imie|slice:":1" }}{{ nazwisko|slice:":1" }}
+                                      </span>
+                                    {% endwith %}
+                                  {% elif prof.rola == "Pracodawca" %}
+                                    {% with imie=prof.pracodawca.imie_przedstawiciela nazwisko=prof.pracodawca.nazwisko_przedstawiciela %}
+                                      <span class="user-initials">
+                                        {{ imie|slice:":1" }}{{ nazwsiko|slice:":1" }}
+                                      </span>
+                                    {% endwith %}
+                                  {% elif prof.rola == "Opiekun Praktyk" %}
+                                    {% with imie=prof.opiekunpraktyk.imie nazwisko=prof.opiekunpraktyk.nazwisko %}
+                                      <span class="user-initials">
+                                        {{ imie|slice:":1" }}{{ nazwisko|slice:":1" }}
+                                      </span>
+                                    {% endwith %}
+                                  {% elif prof.rola == "Pracownik BK" %}
+                                    {% with imie=prof.pracownikbk.imie nazwisko=prof.pracownikbk.nazwisko %}
+                                      <span class="user-initials">
+                                        {{ imie|slice:":1" }}{{ nazwisko|slice:":1" }}
+                                      </span>
+                                    {% endwith %}
+                                  {% endif %}
+                                {% endwith %}
+
 
                             </a>
 
                             <ul class="dropdown-menu dropdown-menu-end"
                                 aria-labelledby="dropdownMenuLink">
                                 <li class="dropdown-item disabled">
-                                    {{ request.user }}
+                                    {% with prof=request.user.uzytkownik %}
+                                      {% if prof.rola == "Student" %}
+                                          {% with imie=prof.student.imie nazwisko=prof.student.nazwisko %}
+                                            {{ imie }} {{ nazwisko }}
+                                          {% endwith %}
+                                      {% elif prof.rola == "Pracodawca" %}
+                                         {% with imie=prof.pracodawca.imie_przedstawiciela nazwisko=prof.pracodawca.nazwisko_przedstawiciela %}
+                                            {{ imie }} {{ nazwsiko }}
+                                         {% endwith %}
+                                      {% elif prof.rola == "Opiekun Praktyk" %}
+                                          {% with imie=prof.opiekunpraktyk.imie nazwisko=prof.opiekunpraktyk.nazwisko %}
+                                            {{ imie }} {{ nazwisko }}
+                                          {% endwith %}
+                                      {% elif prof.rola == "Pracownik BK" %}
+                                          {% with imie=prof.pracownikbk.imie nazwisko=prof.pracownikbk.nazwisko %}
+                                            {{ imie }} {{ nazwisko }}
+                                          {% endwith %}
+                                      {% endif %}
+                                    {% endwith %}
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">

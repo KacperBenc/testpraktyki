@@ -26,6 +26,10 @@ def profile(request, pk):
         adres = student.adres
     elif pracodawca:
         adres = pracodawca.adres
+    elif opiekun:
+        adres = opiekun.adres
+    elif pracownik_bk:
+        adres = pracownik_bk.adres
 
     context = {
         "uzytkownik": uzytkownik,
@@ -54,11 +58,11 @@ def profile_edit(request, pk):
         role_form_class = PracodawcaForm
         role_instance = pracodawca
     elif opiekun:
-        adres = None
+        adres = opiekun.adres
         role_form_class = OpiekunForm
         role_instance = opiekun
     elif pracownik_bk:
-        adres = None
+        adres = pracownik_bk.adres
         role_form_class = PracownikBKForm
         role_instance = pracownik_bk
     else:

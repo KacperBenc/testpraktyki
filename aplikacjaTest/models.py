@@ -13,6 +13,7 @@ class TestPraktyki(models.Model):
             ("view_employers", "Może widzieć listę pracodawców"),
         ]
 
+
 class Uzytkownik(models.Model):
     class Role(models.TextChoices):
         STUDENT = "Student", "Student"
@@ -70,6 +71,38 @@ class Pracodawca(models.Model):
         return self.nazwa_firmy or "(Pracodawca)"
 
 
+class Student(models.Model):
+    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
+    adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
+    imie = models.CharField(max_length=50)
+    nazwisko = models.CharField(max_length=50)
+    data_urodzenia = models.DateField()
+    numer_indeksu = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return f"{self.imie} {self.nazwisko} ({self.numer_indeksu})"
+
+
+class OpiekunPraktyk(models.Model):
+    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
+    adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
+    imie = models.CharField(max_length=50, null=True)
+    nazwisko = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return f"{self.imie} {self.nazwisko}"
+
+
+class PracownikBK(models.Model):
+    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
+    adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
+    imie = models.CharField(max_length=50, null=True)
+    nazwisko = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return f"{self.imie} {self.nazwisko}"
+
+
 class Oferta(models.Model):
     class Rodzaj(models.TextChoices):
         PRACA = "Praca zawodowa", "Praca zawodowa"
@@ -88,27 +121,6 @@ class Oferta(models.Model):
 
     def __str__(self):
         return f"Oferta #{self.id} - {self.pracodawca}"
-
-
-class OpiekunPraktyk(models.Model):
-    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
-    imie = models.CharField(max_length=50, null=True)
-    nazwisko = models.CharField(max_length=50, null=True)
-
-    def __str__(self):
-        return f"{self.imie} {self.nazwisko}"
-
-
-class Student(models.Model):
-    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
-    adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
-    imie = models.CharField(max_length=50)
-    nazwisko = models.CharField(max_length=50)
-    data_urodzenia = models.DateField()
-    numer_indeksu = models.CharField(max_length=20, unique=True)
-
-    def __str__(self):
-        return f"{self.imie} {self.nazwisko} ({self.numer_indeksu})"
 
 
 class Zgloszenie(models.Model):
@@ -166,11 +178,3 @@ class OcenaDlaPracodawcy(models.Model):
     def __str__(self):
         return f"Ocena #{self.id}"
 
-
-class PracownikBK(models.Model):
-    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
-    imie = models.CharField(max_length=50, null=True)
-    nazwisko = models.CharField(max_length=50, null=True)
-
-    def __str__(self):
-        return f"{self.imie} {self.nazwisko}"

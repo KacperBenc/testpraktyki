@@ -1,44 +1,142 @@
 {% extends "base.html" %}
 
 {% block breadcrumb %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Przypisane zgłoszenia</li>
-  </ol>
-</nav>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}">Strona główna</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Przypisane zgłoszenia
+            </li>
+        </ol>
+    </nav>
 {% endblock breadcrumb %}
 
 {% block content %}
-    <h1>Przypisane zgłoszenia studentów</h1>
+    <h1>
+        Przypisane zgłoszenia studentów
+    </h1>
 
     {% if zgloszenia %}
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID zgłoszenia</th>
-                    <th>Student</th>
-                    <th>Oferta</th>
-                    <th>Pracodawca</th>
-                    <th>Data zgłoszenia</th>
-                    <th>Status</th>
+                    <th>
+                        ID zgłoszenia
+                    </th>
+                    <th>
+                        Student
+                    </th>
+                    <th>
+                        Oferta
+                    </th>
+                    <th>
+                        Pracodawca
+                    </th>
+                    <th>
+                        Data zgłoszenia
+                    </th>
+                    <th>
+                        Status
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 {% for z in zgloszenia %}
-                    <tr>
-                        <td>{{ z.id }}</td>
-                        <td>{{ z.student.imie }} {{ z.student.nazwisko }}</td>
-                        <td>Oferta #{{ z.oferta.id }}</td>
-                        <td>{{ z.oferta.pracodawca.nazwa_firmy }}</td>
-                        <td>{{ z.data_zgloszenia }}</td>
-                        <td>{{ z.status }}</td>
+                    <tr class="link-row" data-zgloszenie-id="{{ z.id }}">
+                        <td>
+                            {{ z.id }}
+                        </td>
+                        <td>
+                            {{ z.student.imie }} {{ z.student.nazwisko }}
+                        </td>
+                        <td>
+                            {{ z.opis_bez_dopelnienia }}
+                        </td>
+                        <td>
+                            {{ z.oferta.pracodawca.nazwa_firmy }}
+                        </td>
+                        <td>
+                            {{ z.data_zgloszenia }}
+                        </td>
+                        <td>
+                            {{ z.status }}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>Nie masz jeszcze żadnych przypisanych zgłoszeń.</p>
+        <p>
+            Nie masz jeszcze żadnych przypisanych zgłoszeń.
+        </p>
     {% endif %}
 
-{% endblock %}
+    {% for z in zgloszenia %}
+        <div class="modal fade"
+             id="zgloszenieModal{{ z.id }}"
+             tabindex="-1"
+             aria-labelledby="zgloszenieModalLabel{{ z.id }}"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="zgloszenieModalLabel{{ z.id }}">
+                            Zgłoszenie #{{ z.id }} — {{ z.student.imie }} {{ z.student.nazwisko }}
+                        </h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Zamknij">
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>
+                            <strong>Oferta:</strong> {{ z.oferta.pracodawca.nazwafirmy }} {{ z.oferta.opis }}
+                        </p>
+                        <p>
+                            <strong>Data zgłoszenia:</strong> {{ z.data_zgloszenia }}
+                        </p>
+                        <p>
+                            <strong>Status:</strong> {{ z.status }}
+                        </p>
+                        <p>
+                            <strong>Opiekun praktyk:</strong>
+                            {% if z.opiekun_praktyk %}
+                                {{ z.opiekun_praktyk.imie }} {{ z.opiekun_praktyk.nazwisko }}
+                            {% else %}
+                                nieprzypisany
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <!-- edycja statusu na wzór pracownika BK -->
+                        <a href="{% url 'bk_zgloszenie_edytuj' z.id %}?next={% if request.resolver_match.view_name == 'bk_zgloszenia_lista' %}bk_zgloszenia_lista{% elif request.resolver_match.view_name == 'przypisane_zgloszenia' %}przypisane_zgloszenia{% endif %}"
+                           class="btn btn-outline-primary">
+                            Edytuj status
+                        </a>
+
+                        <!-- atrapa linku do przebiegu praktyk -->
+                        <button type="button" class="btn btn-outline-secondary">
+                            Szczegóły przebiegu praktyk
+                        </button>
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Zamknij
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock content %}
+
+{% load static %}
+
+{% block scripts %}
+    <script src="{% static 'aplikacjaTest/js/zgloszenia_lista.js' %}"></script>
+{% endblock scripts %}

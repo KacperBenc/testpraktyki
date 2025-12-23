@@ -1,21 +1,34 @@
 {% extends "base.html" %}
 
-{% block title %} Lista zgłoszeń {% endblock %}
+{% block title %}
+    Lista zgłoszeń
+{% endblock title %}
 
 {% block breadcrumb %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-       <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
-       <li class="breadcrumb-item active" aria-current="page">Edycja zgłoszenia</li>
-  </ol>
-</nav>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}">Strona główna</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Edycja zgłoszenia
+            </li>
+        </ol>
+    </nav>
 {% endblock breadcrumb %}
 
-{% block main_title %} <h1>Lista zgłoszeń</h1> {% endblock %}
+{% block main_title %}
+
+    <h1>
+        Lista zgłoszeń
+    </h1>
+{% endblock main_title %}
 
 {% block content %}
     <div class="row">
-        <h1 class="mb-4">Edycja zgłoszenia #{{ zgloszenie.id }}</h1>
+        <h1 class="mb-4">
+            Edycja zgłoszenia #{{ zgloszenie.id }}
+        </h1>
 
         <p class="mb-3">
             <strong>Student:</strong>
@@ -31,8 +44,8 @@
             {{ form.as_table }}
 
             <div class="d-flex justify-content-between mt-3">
-                <a href="{% url 'bk_zgloszenia_lista' %}" class="btn btn-secondary">
-                    Powrót do listy
+                <a href="{% url powrot_url %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Powrót do listy
                 </a>
                 <button type="submit" class="btn btn-primary">
                     Zapisz zmiany
@@ -40,4 +53,4 @@
             </div>
         </form>
     </div>
-    {% endblock %}
+{% endblock content %}

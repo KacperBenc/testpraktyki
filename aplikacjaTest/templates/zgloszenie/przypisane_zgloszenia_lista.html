@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block breadcrumb %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -135,7 +137,6 @@
 
 {% endblock content %}
 
-{% load static %}
 
 {% block scripts %}
     <script src="{% static 'aplikacjaTest/js/zgloszenia_lista.js' %}"></script>

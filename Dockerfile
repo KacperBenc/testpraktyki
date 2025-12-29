@@ -22,7 +22,7 @@ RUN pip install --upgrade pip && \
 COPY . /app/
 
 # Zbieranie statyk (już z DEBUG=False)
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --clear --noinput
 
 EXPOSE 8000
 

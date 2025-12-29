@@ -18,15 +18,18 @@ ROLES_PERMS = {
         "view_user_profile",
         "change_user_profile",
         "add_offer_portal",
+        "change_offer_portal",
     ],
     "pracownikBK": [
         "view_user_profile",
         "change_user_profile",
-        "add_offer_portal",
+        "change_user_status",
         "view_students",
         "view_tutors",
         "view_employers",
-        "change_user_status",
+        "add_offer_portal",
+        "change_offer_portal",
+        "delete_offer_portal",
     ],
 }
 

@@ -25,7 +25,9 @@
       </h1>
     </div>
     <div class="col d-flex justify-content-end">
-      <a class="btn btn-primary" href="{% url 'dodaj_oferte' %}" role="button">Dodaj ofertę</a>
+      {% if perms.aplikacjaTest.add_offer_portal %}
+        <a class="btn btn-primary" href="{% url 'dodaj_oferte' %}" role="button">Dodaj ofertę</a>
+      {% endif %}
     </div>
   </div>
 
@@ -37,9 +39,6 @@
         </th>
         <th scope="col" class="opis-col">
           Opis
-        </th>
-        <th scope="col" class="text-end akcje-col">
-          Akcje
         </th>
       </tr>
     </thead>
@@ -55,28 +54,6 @@
                 {{ oferta.opis|safe }}
               </p>
             </span>
-          </td>
-          <td class="text-end akcje-col" data-bs-toggle="none">
-            {% if user_role == "Student" %}
-              {% if oferta.id in moje_zgloszenia %}
-                <button type="button"
-                        class="btn btn-outline-success btn-sm"
-                        disabled
-                        aria-disabled="true">
-                  ✔ Już zgłoszone
-                </button>
-              {% else %}
-                <form method="post"
-                      action="{% url 'zgloszenie_na_oferte' oferta.id %}"
-                      class="d-inline"
-                      onclick="event.stopPropagation();">
-                  {% csrf_token %}
-                  <button class="btn btn-outline-primary btn-sm" type="submit">
-                    Zapisz się
-                  </button>
-                </form>
-              {% endif %}
-            {% endif %}
           </td>
         </tr>
       {% endfor %}
@@ -107,6 +84,47 @@
             </p>
           </div>
           <div class="modal-footer">
+            {% if user.is_authenticated %}
+              {# Student - zapisywanie się na oferty #}
+              {% if perms.aplikacjaTest.view_own_applications %}
+                {% if oferta.id in moje_zgloszenia %}
+                  <button type="button" class="btn btn-outline-success btn-sm" disabled>
+                    ✔ Już zgłoszone
+                  </button>
+                {% else %}
+                  <form method="post"
+                        action="{% url 'zgloszenie_na_oferte' oferta.id %}"
+                        class="d-inline"
+                        onclick="event.stopPropagation();">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-primary btn-sm" type="submit">
+                      Zapisz się
+                    </button>
+                  </form>
+                {% endif %}
+              {% endif %}
+
+              {# Pracodawca - edycja własnych ofert #}
+              {% if perms.aplikacjaTest.add_offer_portal and not perms.aplikacjaTest.view_students %}
+                {% if oferta.pracodawca.uzytkownik.django_user == user %}
+                  <a href="{% url 'edytuj_oferte' oferta.id %}" class="btn btn-primary">
+                    Edytuj
+                  </a>
+                {% endif %}
+              {% endif %}
+
+              {# Pracownik BK - pełne zarządzanie #}
+              {% if perms.aplikacjaTest.view_students %}
+                <a href="{% url 'edytuj_oferte' oferta.id %}" class="btn btn-primary">
+                  Edytuj
+                </a>
+                <a href="{% url 'usun_oferte' oferta.id %}"
+                   class="btn btn-danger"
+                   onclick="return confirm('Czy na pewno usunąć ofertę?')">
+                  Usuń
+                </a>
+              {% endif %}
+            {% endif %}
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
               Zamknij
             </button>

@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+    Usuń ofertę
+{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <h2>
+            Potwierdzenie usunięcia
+        </h2>
+
+        <div class="alert alert-warning">
+            <p>
+                Czy na pewno chcesz usunąć ofertę <strong>{{ object }}</strong>?
+            </p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">
+                    Usuń ofertę
+                </button>
+                <a href="{% url 'lista_ofert' %}" class="btn btn-secondary">Anuluj</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

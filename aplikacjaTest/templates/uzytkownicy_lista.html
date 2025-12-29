@@ -1,105 +1,135 @@
 {% extends "base.html" %}
 
-{% block title %}Lista użytkowników{% endblock title %}
+{% block title %}
+  Lista użytkowników
+{% endblock title %}
 
 {% block breadcrumb %}
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Lista użytkowników</li>
-      </ol>
-    </nav>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'home' %}">Strona główna</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Lista użytkowników
+      </li>
+    </ol>
+  </nav>
 {% endblock breadcrumb %}
 
 {% block content %}
-    <div class="row d-flex align-items-center">
-        <div class="col">
-           <h1>Użytkownicy – panel Biura Karier</h1>
-        </div>
-        <div class="col d-flex justify-content-end">
-           <a class="btn btn-primary " href="{% url 'rejestracja' %}" role="button">Dodaj użytkownika</a>
-        </div>
+  <div class="row d-flex align-items-center">
+    <div class="col">
+      <h1>
+        Użytkownicy – panel Biura Karier
+      </h1>
     </div>
+    <div class="col d-flex justify-content-end">
+      <a class="btn btn-primary " href="{% url 'rejestracja' %}" role="button">Dodaj użytkownika</a>
+    </div>
+  </div>
 
-    <form method="get">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">
-                    {{ ofertaForm.rola }}
-                </th>
-                <th scope="col">
-                    {{ ofertaForm.login }}
-                </th>
-                <th scope="col">
-                    {{ ofertaForm.adres_mailowy }}
-                </th>
-                <th scope="col">
-                    {{ ofertaForm.numer_telefonu }}
-                </th>
-                <th scope="col" class="text-end">
-                    <button type="submit" class="btn btn-secondary">Filtruj</button>
-                    <a href="." class="btn btn-outline-secondary">Wyczyść</a>
-                </th>
-            </tr>
-            </thead>
-                <tbody>
-                {% for uzytkownik in uzytkownicy %}
-                  <tr class="uzytkownik-row link-row"
-                      data-bs-toggle="modal"
-                      data-bs-target="#uzytkownikModal{{ uzytkownik.id }}">
-                    <td>{{ uzytkownik.rola }}</td>
-                    <td>{{ uzytkownik.login }}</td>
-                    <td>{{ uzytkownik.adres_mailowy }}</td>
-                    <td>{{ uzytkownik.numer_telefonu }}</td>
-                    <td>{% if uzytkownik.status_konta %}Aktywne{% else %}Nieaktywne{% endif %}</td>
-                  </tr>
-                {% endfor %}
-                </tbody>
-        </table>
-    </form>
+  <form method="get">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">
+            {{ ofertaForm.rola }}
+          </th>
+          <th scope="col">
+            {{ ofertaForm.login }}
+          </th>
+          <th scope="col">
+            {{ ofertaForm.adres_mailowy }}
+          </th>
+          <th scope="col">
+            {{ ofertaForm.numer_telefonu }}
+          </th>
+          <th scope="col" class="text-end">
+            <button type="submit" class="btn btn-secondary">
+              Filtruj
+            </button>
+            <a href="." class="btn btn-outline-secondary">Wyczyść</a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for uzytkownik in uzytkownicy %}
+          <tr class="uzytkownik-row link-row"
+              data-bs-toggle="modal"
+              data-bs-target="#uzytkownikModal{{ uzytkownik.id }}">
+            <td>
+              {{ uzytkownik.rola }}
+            </td>
+            <td>
+              {{ uzytkownik.login }}
+            </td>
+            <td>
+              {{ uzytkownik.adres_mailowy }}
+            </td>
+            <td>
+              {{ uzytkownik.numer_telefonu }}
+            </td>
+            <td>
+              {% if uzytkownik.status_konta %}
+                Aktywne
+              {% else %}
+                Nieaktywne
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </form>
 
-    {% for uzytkownik in uzytkownicy %}
-        <div class="modal fade" id="uzytkownikModal{{ uzytkownik.id }}" tabindex="-1"
-             aria-labelledby="uzytkownikModalLabel{{ uzytkownik.id }}" aria-hidden="true">
-          <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h2 class="modal-title" id="uzytkownikModalLabel{{ uzytkownik.id }}">
-                  Szczegóły użytkownika – {{ uzytkownik.login }}
-                </h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
-              </div>
-              <div class="modal-body">
-                {% include "uzytkownik/profil_szczegoly.html" with uzytkownik=uzytkownik student=uzytkownik.student_rel pracodawca=uzytkownik.pracodawca_rel opiekun=uzytkownik.opiekun_rel pracownik_bk=uzytkownik.pracownik_bk_rel adres=uzytkownik.adres_rel %}
-              </div>
-              <div class="modal-footer">
-                <a href="{% url 'profil_edycja' uzytkownik.id %}?from=list"
-                   class="btn btn-primary">
-                  Edytuj
-                </a>
-                <form method="post"
-                      action="{% url 'uzytkownik_toggle_aktywnosc' uzytkownik.id %}"
-                      class="d-inline">
-                  {% csrf_token %}
-                  {% if uzytkownik.status_konta %}
-                    <button type="submit" class="btn btn-warning">
-                      Deaktywuj
-                    </button>
-                  {% else %}
-                    <button type="submit" class="btn btn-success">
-                      Aktywuj
-                    </button>
-                  {% endif %}
-                </form>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  Zamknij
+  {% for uzytkownik in uzytkownicy %}
+    <div class="modal fade"
+         id="uzytkownikModal{{ uzytkownik.id }}"
+         tabindex="-1"
+         aria-labelledby="uzytkownikModalLabel{{ uzytkownik.id }}"
+         aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="uzytkownikModalLabel{{ uzytkownik.id }}">
+              Szczegóły użytkownika – {{ uzytkownik.login }}
+            </h2>
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Zamknij">
+            </button>
+          </div>
+          <div class="modal-body">
+            {% include "uzytkownik/profil_szczegoly.html" with uzytkownik=uzytkownik student=uzytkownik.student_rel pracodawca=uzytkownik.pracodawca_rel opiekun=uzytkownik.opiekun_rel pracownik_bk=uzytkownik.pracownik_bk_rel adres=uzytkownik.adres_rel %}
+          </div>
+          <div class="modal-footer">
+            <a href="{% url 'profil_edycja' uzytkownik.id %}?from=list"
+               class="btn btn-primary">
+              Edytuj
+            </a>
+            <form method="post"
+                  action="{% url 'uzytkownik_toggle_aktywnosc' uzytkownik.id %}"
+                  class="d-inline">
+              {% csrf_token %}
+              {% if uzytkownik.status_konta %}
+                <button type="submit" class="btn btn-warning">
+                  Deaktywuj
                 </button>
-              </div>
-            </div>
+              {% else %}
+                <button type="submit" class="btn btn-success">
+                  Aktywuj
+                </button>
+              {% endif %}
+            </form>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Zamknij
+            </button>
           </div>
         </div>
-    {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
 
-
-{% endblock %}
+{% endblock content %}

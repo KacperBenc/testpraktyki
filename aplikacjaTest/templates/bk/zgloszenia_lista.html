@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}
     Lista zgłoszeń
 {% endblock title %}
@@ -51,14 +53,11 @@
                     <th>
                         Opiekun praktyk
                     </th>
-                    <th>
-                        Akcje
-                    </th>
                 </tr>
             </thead>
             <tbody>
                 {% for z in zgloszenia %}
-                    <tr>
+                    <tr class="link-row" data-zgloszenie-id="{{ z.id }}">
                         <td>
                             {{ z.id }}
                         </td>
@@ -89,10 +88,6 @@
                                 (nieprzypisany)
                             {% endif %}
                         </td>
-                        <td>
-                            <a class="btn btn btn-outline-primary"
-                               href="{% url 'bk_zgloszenie_edytuj' z.id %}">Edytuj</a>
-                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -103,4 +98,64 @@
         </p>
     {% endif %}
 
+    {% for z in zgloszenia %}
+        <div class="modal fade"
+             id="zgloszenieModal{{ z.id }}"
+             tabindex="-1"
+             aria-labelledby="zgloszenieModalLabel{{ z.id }}"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="zgloszenieModalLabel{{ z.id }}">
+                            Zgłoszenie #{{ z.id }} — {{ z.student.imie }} {{ z.student.nazwisko }}
+                        </h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Zamknij">
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>
+                            <strong>Student:</strong> {{ z.student.imie }} {{ z.student.nazwisko }} ({{ z.student.numer_indeksu }})
+                        </p>
+                        <p>
+                            <strong>Oferta:</strong> Oferta #{{ z.oferta.id }} - {{ z.oferta.pracodawca.nazwa_firmy }}
+                        </p>
+                        <p>
+                            <strong>Data zgłoszenia:</strong> {{ z.data_zgloszenia }}
+                        </p>
+                        <p>
+                            <strong>Status:</strong> {{ z.status }}
+                        </p>
+                        <p>
+                            <strong>Opiekun praktyk:</strong>
+                            {% if z.opiekun_praktyk %}
+                                {{ z.opiekun_praktyk.imie }} {{ z.opiekun_praktyk.nazwisko }}
+                            {% else %}
+                                (nieprzypisany)
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="{% url 'bk_zgloszenie_edytuj' z.id %}" class="btn btn-primary">
+                            Edytuj status
+                        </a>
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Zamknij
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
 {% endblock content %}
+
+{% block scripts %}
+    <script src="{% static 'aplikacjaTest/js/zgloszenia_lista.js' %}"></script>
+{% endblock scripts %}

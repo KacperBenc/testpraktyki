@@ -1,11 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class TestPraktyki(models.Model):
     name = models.CharField(max_length=100)
+
     class Meta:
         permissions = [
             ("add_offer_portal", "Może dodawać ofertę w portalu"),
+            ("change_offer_portal", "Może edytować ofertę w portalu"),
+            ("delete_offer_portal", "Może usuwać ofertę z portalu"),
             ("view_own_applications", "Może widzieć własne zgłoszenia"),
             ("view_assigned_applications", "Może widzieć przypisane zgłoszenia"),
             ("view_students", "Może widzieć listę studentów"),
@@ -137,7 +141,9 @@ class Zgloszenie(models.Model):
 
     oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    opiekun_praktyk = models.ForeignKey(OpiekunPraktyk, on_delete=models.SET_NULL, null=True, blank=True)
+    opiekun_praktyk = models.ForeignKey(
+        OpiekunPraktyk, on_delete=models.SET_NULL, null=True, blank=True
+    )
     data_zgloszenia = models.DateTimeField(null=True)
     status = models.CharField(max_length=20, choices=Status.choices, null=True)
     ocena_dla_pracodawcy = models.IntegerField(null=True)
@@ -181,4 +187,3 @@ class OcenaDlaPracodawcy(models.Model):
 
     def __str__(self):
         return f"Ocena #{self.id}"
-

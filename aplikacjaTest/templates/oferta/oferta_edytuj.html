@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+    Edycja oferty
+{% endblock title %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}">Strona główna</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Edycja oferty
+            </li>
+        </ol>
+    </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+
+    <div class="row pb-4">
+        <form method="post">
+            {% csrf_token %}
+
+            <h3>
+                Edytuj ofertę
+            </h3>
+            {% bootstrap_form oferta_form %}
+
+            <div class="d-flex mt-4 justify-content-between">
+                <button type="submit" class="btn btn-primary">
+                    Zapisz zmiany
+                </button>
+                <a href="{% url 'lista_ofert' %}" class="btn btn-secondary">Anuluj</a>
+            </div>
+        </form>
+    </div>
+
+{% endblock content %}

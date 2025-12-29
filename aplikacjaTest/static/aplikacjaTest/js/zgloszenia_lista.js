@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+  console.log('zgloszenia_lista.js loaded');
   const rows = document.querySelectorAll('tr.link-row');
 
   rows.forEach(row => {

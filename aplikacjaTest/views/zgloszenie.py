@@ -115,25 +115,22 @@ def bk_zgloszenie_edytuj(request, pk):
 
             # Redirect w zależności od roli
             if uzytkownik.rola == Uzytkownik.Role.PRACOWNIK_BK:
-                return redirect(next_url or "bk_zgloszenia_lista")
+                return redirect("bk_zgloszenia_lista")
             else:
-                return redirect(next_url or "przypisane_zgloszenia")
+                return redirect("przypisane_zgloszenia")
     else:
-        # Obsługa formularza GET
         form = ZgloszenieBKForm(
             instance=zgloszenie, current_user=uzytkownik, current_zgloszenie=zgloszenie
         )
 
-    # Kontekst dla template
-    # Po walidacji formularza (GET/POST):
     context = {
         "uzytkownik": uzytkownik,
         "zgloszenie": zgloszenie,
         "form": form,
-        "rola": uzytkownik.rola,  # ✅ STRING, nie enum.name!
+        "rola": uzytkownik.rola,
         "powrot_url": (
             "bk_zgloszenia_lista"
-            if uzytkownik.rola == "PRACOWNIK_BK"
+            if uzytkownik.rola == Uzytkownik.Role.PRACOWNIK_BK
             else "przypisane_zgloszenia"
         ),
     }

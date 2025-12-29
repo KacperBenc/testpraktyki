@@ -75,9 +75,9 @@
                         <td>
                             {{ z.data_zgloszenia }}
                         </td>
-                        <td class="{% if z.status == 'Zaakceptowane' %}
+                        <td class="{% if z.status == 'Zaakceptowane' or z.status == 'Zaliczone' %}
                                        text-success
-                                   {% elif z.status == 'Odrzucone' %}
+                                   {% elif z.status == 'Odrzucone' or z.status == 'Niezaliczone' %}
                                        text-danger
                                    {% endif %}">
                             {{ z.status }}

@@ -133,4 +133,6 @@ def rejestracja(request):
     return render(request, "rejestracja.html", {
         "form": main_form,
         **forms_map,
+        "istniejace_kraje": adres_form.istniejace_kraje,
+        "istniejace_miasta": adres_form.istniejace_miasta,
     })

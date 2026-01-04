@@ -10,4 +10,6 @@ def home(request):
         except Uzytkownik.DoesNotExist:
             pass
 
+        print(request.user, request.user.is_authenticated, request.user.username)
+
     return render(request, "home.html", {"uzytkownik": uzytkownik})

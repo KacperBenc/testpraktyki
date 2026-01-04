@@ -1,28 +1,69 @@
 {% extends "base.html" %}
 
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}">Strona główna</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Moje zgłoszenia
+            </li>
+        </ol>
+    </nav>
+{% endblock breadcrumb %}
+
 {% block content %}
-    <h1>Moje zgłoszenia na praktyki</h1>
+    <h1>
+        Moje zgłoszenia na praktyki
+    </h1>
 
     {% if zgloszenia %}
-        <table border="1" cellpadding="5" cellspacing="0">
+        <table class="table">
             <thead>
                 <tr>
-                    <th>ID zgłoszenia</th>
-                    <th>Oferta</th>
-                    <th>Pracodawca</th>
-                    <th>Data zgłoszenia</th>
-                    <th>Status</th>
-                    <th>Opiekun praktyk</th>
+                    <th>
+                        ID zgłoszenia
+                    </th>
+                    <th>
+                        Oferta
+                    </th>
+                    <th>
+                        Pracodawca
+                    </th>
+                    <th>
+                        Data zgłoszenia
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Opiekun praktyk
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 {% for z in zgloszenia %}
                     <tr>
-                        <td>{{ z.id }}</td>
-                        <td>Oferta #{{ z.oferta.id }}</td>
-                        <td>{{ z.oferta.pracodawca.nazwa_firmy }}</td>
-                        <td>{{ z.data_zgloszenia }}</td>
-                        <td>{{ z.status }}</td>
+                        <td>
+                            {{ z.id }}
+                        </td>
+                        <td>
+                            Oferta #{{ z.oferta.id }}
+                        </td>
+                        <td>
+                            {{ z.oferta.pracodawca.nazwa_firmy }}
+                        </td>
+                        <td>
+                            {{ z.data_zgloszenia }}
+                        </td>
+                        <td class="{% if z.status == 'Zaakceptowane' or z.status == 'Zaliczone' %}
+                                       text-success
+                                   {% elif z.status == 'Odrzucone' %}
+                                       text-danger
+                                   {% endif %}">
+                            {{ z.status }}
+                        </td>
                         <td>
                             {% if z.opiekun_praktyk %}
                                 {{ z.opiekun_praktyk.imie }} {{ z.opiekun_praktyk.nazwisko }}
@@ -35,7 +76,9 @@
             </tbody>
         </table>
     {% else %}
-        <p>Nie masz jeszcze żadnych zgłoszeń.</p>
+        <p>
+            Nie ma jeszcze żadnych zgłoszeń.
+        </p>
     {% endif %}
 
-{% endblock %}
+{% endblock content %}

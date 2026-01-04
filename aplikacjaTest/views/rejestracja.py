@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from aplikacjaTest.forms.rejestracjaForm import RejestracjaForm
 from aplikacjaTest.forms.adresForm import AdresForm
 from aplikacjaTest.forms.studentForm import StudentForm
@@ -21,7 +21,7 @@ def rejestracja(request):
     }
 
     if request.method == "POST":
-        main_form = RejestracjaForm(request.POST, prefix="main")
+        main_form = RejestracjaForm(request.POST, prefix="main", user=request.user)
         adres_form = AdresForm(request.POST, prefix="adres")
 
         role = request.POST.get("main-rola")
@@ -29,7 +29,7 @@ def rejestracja(request):
         extra_prefix = role.replace(" ", "_") if extra_class else None
         extra_form = extra_class(request.POST, prefix=extra_prefix) if extra_class else None
 
-        requires_address = role in ["Student", "Pracodawca"]
+        requires_address = role in ["Student", "Pracodawca", "Opiekun Praktyk", "Pracownik BK"]
 
         valid_main = main_form.is_valid()
         valid_address = (not requires_address) or adres_form.is_valid()
@@ -48,7 +48,6 @@ def rejestracja(request):
                 if not miasto_obj:
                     miasto_obj = Miasto.objects.create(nazwa=miasto_nazwa.title())
 
-                # stworzenie adresu
                 adres_instance = adres_form.save(commit=False)
                 adres_instance.miasto = miasto_obj
 
@@ -69,8 +68,23 @@ def rejestracja(request):
                 email=main_form.cleaned_data["adres_mailowy"]
             )
 
+            # >>> 2a) PRZYPISANIE GRUPY NA PODSTAWIE ROLI <<<
+            role_to_group = {
+                "Student": "student",
+                "Pracodawca": "pracodawca",
+                "Opiekun Praktyk": "opiekun",
+                "Pracownik BK": "pracownikBK",
+            }
+            group_name = role_to_group.get(role)
+            if group_name:
+                try:
+                    group = Group.objects.get(name=group_name)
+                    django_user.groups.add(group)
+                except Group.DoesNotExist:
+                    pass
+
             user = main_form.save(commit=False)
-            user.haslo = make_password(haslo_raw)   # możesz usunąć jeśli nie chcesz duplikatu
+            user.haslo = make_password(haslo_raw)
             user.django_user = django_user
             user.status_konta = None
             user.save()
@@ -83,23 +97,21 @@ def rejestracja(request):
                 role_obj.uzytkownik = user
 
                 if requires_address:
-                    # W tym momencie adres_instance istnieje ZAWSZE
                     role_obj.adres = adres_instance
 
                 role_obj.save()
 
             messages.success(request, "Rejestracja przebiegła pomyślnie!")
             return redirect("home")
-        else:
-            messages.error(request, "Popraw błędy formularza.")
+
+        messages.error(request, "Popraw błędy formularza.")
 
     else:
-        main_form = RejestracjaForm(prefix="main")
+        main_form = RejestracjaForm(prefix="main", user=request.user)
         adres_form = AdresForm(prefix="adres")
         extra_form = None
         role = None
 
-    # domyślne formularze do wyświetlenia
     forms_map = {
         "student_form": StudentForm(prefix="Student"),
         "pracodawca_form": PracodawcaForm(prefix="Pracodawca"),
@@ -108,7 +120,6 @@ def rejestracja(request):
         "adres_form": adres_form,
     }
 
-    # PODSTAW formularz roli z błędami po POST
     if request.method == "POST" and extra_form is not None:
         if role == "Student":
             forms_map["student_form"] = extra_form

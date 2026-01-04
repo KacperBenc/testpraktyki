@@ -1,23 +1,56 @@
 {% extends "base.html" %}
 
+{% block title %}
+    Lista zgłoszeń
+{% endblock title %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}">Strona główna</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Edycja zgłoszenia
+            </li>
+        </ol>
+    </nav>
+{% endblock breadcrumb %}
+
+{% block main_title %}
+
+    <h1>
+        Lista zgłoszeń
+    </h1>
+{% endblock main_title %}
+
 {% block content %}
-    <h1>Edycja zgłoszenia #{{ zgloszenie.id }}</h1>
+    <div class="row">
+        <h1 class="mb-4">
+            Edycja zgłoszenia #{{ zgloszenie.id }}
+        </h1>
 
-    <p>
-        <strong>Student:</strong>
-        {{ zgloszenie.student.imie }} {{ zgloszenie.student.nazwisko }}
-        ({{ zgloszenie.student.numer_indeksu }})
-        <br>
-        <strong>Oferta:</strong>
-        Oferta #{{ zgloszenie.oferta.id }} – {{ zgloszenie.oferta.pracodawca.nazwa_firmy }}
-    </p>
+        <p class="mb-3">
+            <strong>Student:</strong>
+            {{ zgloszenie.student.imie }} {{ zgloszenie.student.nazwisko }}
+            ({{ zgloszenie.student.numer_indeksu }})
+            <br>
+            <strong>Oferta:</strong>
+            Oferta #{{ zgloszenie.oferta.id }} – {{ zgloszenie.oferta.pracodawca.nazwa_firmy }}
+        </p>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
+        <form method="post" class="card p-3 shadow-sm">
+            {% csrf_token %}
+            {{ form.as_table }}
 
-        <button type="submit">Zapisz zmiany</button>
-        <a href="{% url 'bk_zgloszenia_lista' %}">Powrót do listy</a>
-    </form>
-
-{% endblock %}
+            <div class="d-flex justify-content-between mt-3">
+                <a href="{% url powrot_url %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Powrót do listy
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    Zapisz zmiany
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

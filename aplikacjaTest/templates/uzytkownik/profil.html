@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Profil użytkownika{% endblock title %}
+
+{% block breadcrumb %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
+           <li class="breadcrumb-item active" aria-current="page">Profil</li>
+      </ol>
+    </nav>
+{% endblock breadcrumb %}
+
+{% block content %}
+    <div class="row d-flex align-items-center">
+        <div class="col">
+           <h1>Użytkownik: {{ uzytkownik.login }}</h1>
+        </div>
+    </div>
+
+    {% include "uzytkownik/profil_szczegoly.html" %}
+
+    <div class="d-flex mt-4 justify-content-between">
+        <a href="{% url 'profil_edycja' pk=uzytkownik.pk %}" class="btn btn-primary">
+        Edytuj profil
+        </a>
+    </div>
+{% endblock content %}

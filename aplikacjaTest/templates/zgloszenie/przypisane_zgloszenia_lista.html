@@ -2,10 +2,6 @@
 
 {% load static %}
 
-{% block title %}
-    Lista zgłoszeń
-{% endblock title %}
-
 {% block breadcrumb %}
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -13,27 +9,23 @@
                 <a href="{% url 'home' %}">Strona główna</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Lista zgłoszeń
+                Przypisane zgłoszenia
             </li>
         </ol>
     </nav>
 {% endblock breadcrumb %}
 
 {% block content %}
-    <div class="row d-flex align-items-center">
-        <div class="col">
-            <h1>
-                Zgłoszenia – panel Biura Karier
-            </h1>
-        </div>
-    </div>
+    <h1>
+        Przypisane zgłoszenia studentów
+    </h1>
 
     {% if zgloszenia %}
         <table class="table">
             <thead>
                 <tr>
                     <th>
-                        ID
+                        ID zgłoszenia
                     </th>
                     <th>
                         Student
@@ -50,9 +42,6 @@
                     <th>
                         Status
                     </th>
-                    <th>
-                        Opiekun praktyk
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -63,10 +52,9 @@
                         </td>
                         <td>
                             {{ z.student.imie }} {{ z.student.nazwisko }}
-                            ({{ z.student.numer_indeksu }})
                         </td>
                         <td>
-                            Oferta #{{ z.oferta.id }}
+                            {{ z.opis_bez_dopelnienia }}
                         </td>
                         <td>
                             {{ z.oferta.pracodawca.nazwa_firmy }}
@@ -74,19 +62,8 @@
                         <td>
                             {{ z.data_zgloszenia }}
                         </td>
-                        <td class="{% if z.status == 'Zaakceptowane' or z.status == 'Zaliczone' %}
-                                       text-success
-                                   {% elif z.status == 'Odrzucone' or z.status == 'Niezaliczone' %}
-                                       text-danger
-                                   {% endif %}">
-                            {{ z.status }}
-                        </td>
                         <td>
-                            {% if z.opiekun_praktyk %}
-                                {{ z.opiekun_praktyk.imie }} {{ z.opiekun_praktyk.nazwisko }}
-                            {% else %}
-                                (nieprzypisany)
-                            {% endif %}
+                            {{ z.status }}
                         </td>
                     </tr>
                 {% endfor %}
@@ -94,7 +71,7 @@
         </table>
     {% else %}
         <p>
-            Brak zgłoszeń.
+            Nie masz jeszcze żadnych przypisanych zgłoszeń.
         </p>
     {% endif %}
 
@@ -119,10 +96,7 @@
 
                     <div class="modal-body">
                         <p>
-                            <strong>Student:</strong> {{ z.student.imie }} {{ z.student.nazwisko }} ({{ z.student.numer_indeksu }})
-                        </p>
-                        <p>
-                            <strong>Oferta:</strong> Oferta #{{ z.oferta.id }} - {{ z.oferta.pracodawca.nazwa_firmy }}
+                            <strong>Oferta:</strong> {{ z.oferta.pracodawca.nazwafirmy }} {{ z.oferta.opis }}
                         </p>
                         <p>
                             <strong>Data zgłoszenia:</strong> {{ z.data_zgloszenia }}
@@ -135,15 +109,22 @@
                             {% if z.opiekun_praktyk %}
                                 {{ z.opiekun_praktyk.imie }} {{ z.opiekun_praktyk.nazwisko }}
                             {% else %}
-                                (nieprzypisany)
+                                nieprzypisany
                             {% endif %}
                         </p>
                     </div>
 
                     <div class="modal-footer">
-                        <a href="{% url 'bk_zgloszenie_edytuj' z.id %}" class="btn btn-primary">
+                        <!-- edycja statusu na wzór pracownika BK -->
+                        <a href="{% url 'bk_zgloszenie_edytuj' z.id %}?next={% if request.resolver_match.view_name == 'bk_zgloszenia_lista' %}bk_zgloszenia_lista{% elif request.resolver_match.view_name == 'przypisane_zgloszenia' %}przypisane_zgloszenia{% endif %}"
+                           class="btn btn-outline-primary">
                             Edytuj status
                         </a>
+
+                        <!-- atrapa linku do przebiegu praktyk -->
+                        <button type="button" class="btn btn-outline-secondary">
+                            Szczegóły przebiegu praktyk
+                        </button>
 
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             Zamknij

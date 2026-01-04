@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -14,7 +14,8 @@ class OfertaListView(LoginRequiredMixin, View):
     """
     Lista wszystkich dostępnych ofert.
     """
-    def get(self, request):
+
+    def get(self, request, *args, **kwargs):
         oferty = Oferta.objects.select_related("pracodawca").all()
 
         uzytkownik = Uzytkownik.objects.filter(django_user=request.user).first()
@@ -22,7 +23,6 @@ class OfertaListView(LoginRequiredMixin, View):
 
         moje_zgloszenia = set()
 
-        # tylko studentom liczymy zgłoszenia
         if uzytkownik and uzytkownik.rola == Uzytkownik.Role.STUDENT:
             student = Student.objects.filter(uzytkownik=uzytkownik).first()
             if student:

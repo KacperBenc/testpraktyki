@@ -1,41 +1,141 @@
 {% extends "base.html" %}
-{% block title %} Lista ofert {% endblock %}
+
+{% block title %}
+  Lista ofert
+{% endblock title %}
 
 {% block breadcrumb %}
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Lista ofert</li>
-        </ol>
-    </nav>
-{% endblock %}
-{% block main_title %} <h1>Lista dostępnych ofert</h1> {% endblock %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'home' %}">Strona główna</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Lista ofert
+      </li>
+    </ol>
+  </nav>
+{% endblock breadcrumb %}
+
 {% block content %}
-
-    <div class="text-end">
-
-        <a class="btn btn-primary " href="{% url 'dodaj_oferte' %}" role="button">Dodaj nową ofertę</a>
+  <div class="row d-flex align-items-center">
+    <div class="col">
+      <h1>
+        Oferty
+      </h1>
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Nazwa firmy</th>
-            <th scope="col">Rodzaj</th>
-            <th scope="col">Dostępność</th>
-            <th scope="col">Opis</th>
+    <div class="col d-flex justify-content-end">
+      {% if perms.aplikacjaTest.add_offer_portal %}
+        <a class="btn btn-primary" href="{% url 'dodaj_oferte' %}" role="button">Dodaj ofertę</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <table class="table table-fixed">
+    <thead>
+      <tr>
+        <th scope="col" class="nazwa-col">
+          Nazwa firmy
+        </th>
+        <th scope="col" class="opis-col">
+          Opis
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for oferta in oferty %}
+        <tr class="link-row nazwa-col" data-oferta-id="{{ oferta.id }}">
+          <td>
+            {{ oferta.pracodawca.nazwa_firmy }}
+          </td>
+          <td>
+            <span class="d-inline-block text-truncate opis-col">
+              <p class="mb-2">
+                {{ oferta.opis|safe }}
+              </p>
+            </span>
+          </td>
         </tr>
-        </thead>
-        <tbody>
-        {% for oferta in oferty %}
-            <tr>
-                <td>{{ oferta.pracodawca.nazwa_firmy }}</td>
-                <td>{{ oferta.rodzaj_zgloszenia }}</td>
-                <td>{{ oferta.dostepnosc_oferty }}</td>
-                <td>{{ oferta.opis }}</td>
-            </tr>
-        {% empty %}
-            <li>Brak ofert.</li>
-        {% endfor %}
-        </tbody>
-    </table>
-{% endblock %}
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% for oferta in oferty %}
+    <div class="modal fade"
+         id="ofertaModal{{ oferta.id }}"
+         tabindex="-1"
+         aria-labelledby="ofertaModalLabel{{ oferta.id }}"
+         aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ofertaModalLabel{{ oferta.id }}">
+              {{ oferta.pracodawca.nazwa_firmy }} – szczegóły oferty
+            </h5>
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Zamknij">
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              {{ oferta.opis }}
+            </p>
+          </div>
+          <div class="modal-footer">
+            {% if user.is_authenticated %}
+              {# Student - zapisywanie się na oferty #}
+              {% if perms.aplikacjaTest.view_own_applications %}
+                {% if oferta.id in moje_zgloszenia %}
+                  <button type="button" class="btn btn-outline-success btn-sm" disabled>
+                    ✔ Już zgłoszone
+                  </button>
+                {% else %}
+                  <form method="post"
+                        action="{% url 'zgloszenie_na_oferte' oferta.id %}"
+                        class="d-inline"
+                        onclick="event.stopPropagation();">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-primary btn-sm" type="submit">
+                      Zapisz się
+                    </button>
+                  </form>
+                {% endif %}
+              {% endif %}
+
+              {# Pracodawca - edycja własnych ofert #}
+              {% if perms.aplikacjaTest.add_offer_portal and not perms.aplikacjaTest.view_students %}
+                {% if oferta.pracodawca.uzytkownik.django_user == user %}
+                  <a href="{% url 'edytuj_oferte' oferta.id %}" class="btn btn-primary">
+                    Edytuj
+                  </a>
+                {% endif %}
+              {% endif %}
+
+              {# Pracownik BK - pełne zarządzanie #}
+              {% if perms.aplikacjaTest.view_students %}
+                <a href="{% url 'edytuj_oferte' oferta.id %}" class="btn btn-primary">
+                  Edytuj
+                </a>
+                <a href="{% url 'usun_oferte' oferta.id %}"
+                   class="btn btn-danger">
+                  Usuń
+                </a>
+              {% endif %}
+            {% endif %}
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Zamknij
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock content %}
+
+{% load static %}
+{% block scripts %}
+  <script src="{% static 'aplikacjaTest/js/oferta_lista.js' %}"></script>
+{% endblock scripts %}

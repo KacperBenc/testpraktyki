@@ -1,135 +1,243 @@
 <!DOCTYPE html>
 <html lang="pl">
-<head>
+  <head>
     <meta charset="UTF-8">
-    <title>{% block title %}System Praktyk{% endblock %}</title>
-    {% load bootstrap5 %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      {% block title %}
+        System Praktyk
+      {% endblock title %}
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     {% load static %}
-    {% bootstrap_css %}
-    <link rel="stylesheet" href="{% static '/styles/styles.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static '/webfonts/fontawesome/css/all.min.css' %}" type="text/css">
+    <link rel="stylesheet"
+          href="{% static 'aplikacjaTest/styles/styles.css' %}"
+          type="text/css">
 
-</head>
-<body>
-<header>
-    <div class="collapse" id="navbarToggleExternalContent">
-        <div class="bg-dark p-4">
-            <h5 class="text-white h4">Collapsed content</h5>
-            <span class="text-muted">Toggleable via the navbar brand.</span>
-        </div>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  </head>
+  <body class="d-flex flex-column vh-100">
+    <header>
+      <nav class="navbar navbar-expand-md
+                  {% if is_login_page %}
+                    header
+                  {% else %}
+                    navbar-light bg-light
+                  {% endif %}"
+           id="header-content">
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+        <div class="order-1">
+          <button class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>
-        <a href="{% url 'home' %}" class="navbar-brand d-none d-md-flex align-items-center m-0 me-4 p-0">
+          </button>
+          {% if is_login_page %}
+          {% else %}
+            <a href="{% url 'home' %}"
+               class="navbar-brand d-none d-lg-flex align-items-center m-0 me-4 p-0">
 
-            <img src="{% static 'images/moodle-logo-uthpraktyki.png' %}" class="img-fluid logo me-1"
-                 alt="Logo">
-        </a>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-
-            <ul class="nav more-nav navbar-nav">
-
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link  {% if request.path == '/rejestracja/' %}active{% endif %}"
-                                            href="{% url 'rejestracja' %}">Rejestracja {{ request.GET.urlencode }}</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link {% if request.path == '/oferty/nowa/' %}active{% endif %}"
-                                            href="{% url 'dodaj_oferte' %}">Dodaj ofertę</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link  {% if request.path == '/oferty/' %}active{% endif %}"
-                                            href="{% url 'lista_ofert' %}">Lista ofert</a></li>
-                    <li class="nav-item"><a class="nav-link  {% if request.path == '/uzytkownicy/' %}active{% endif %}"
-                                            href="{% url 'przegladajUzytkownikow' %}">Lista
-                        użytkowników</a></li>
-                {% endif %}
-            </ul>
-
+              <img src="{% static 'aplikacjaTest/images/moodle-logo-uthpraktyki.png' %}"
+                   class="img-fluid logo me-1"
+                   alt="Logo"
+                   height=""
+                   width="">
+            </a>
+          {% endif %}
         </div>
 
-        {% if request.user.is_authenticated %}
+        <div class="collapse navbar-collapse order-3 order-sm-2"
+             id="navbarSupportedContent">
+
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            {% if user.is_authenticated %}
+              <!-- Wszyscy: profil, lista ofert -->
+              <!--
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'profil' user.pk %}">Profil</a>
+              </li>
+          -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'lista_ofert' %}">Oferty</a>
+              </li>
+
+              <!-- student: moje zgłoszenia -->
+              {% if perms.aplikacjaTest.view_own_applications %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'moje_zgloszenia' %}">Moje zgłoszenia</a>
+                </li>
+              {% endif %}
+
+              <!-- opiekun: przypisane zgłoszenia -->
+              {% if perms.aplikacjaTest.view_assigned_applications %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'przypisane_zgloszenia' %}">Przypisane zgłoszenia</a>
+                </li>
+              {% endif %}
+
+              <!-- pracownikBK: listy użytkowników -->
+              {% if perms.aplikacjaTest.view_students %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'przegladajUzytkownikow' %}">Użytkownicy</a>
+                </li>
+              {% endif %}
+              {% if perms.aplikacjaTest.view_tutors %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'bk_zgloszenia_lista' %}">Zgłoszenia</a>
+                </li>
+              {% endif %}
+            {% endif %}
+          </ul>
+        </div>
+
+        <div class="order-2 order-sm-3">
+          {% if request.user.is_authenticated %}
             <div class="dropdown me-4">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                   data-bs-toggle="dropdown" aria-expanded="false"
-                   title="{{ request.user.username }}" aria-label="{{ request.user.username }}" role="img">
-                    <span class="user-initials">
-                        {{ request.user.username|slice:':1' }}
-                    </span>
+              <a aria-expanded="false"
+                 aria-label="{{ request.user.username }}"
+                 class="btn btn-secondary dropdown-toggle"
+                 data-bs-toggle="dropdown"
+                 href="#"
+                 id="dropdownMenuLink"
+                 role="button"
+                 title="{{ request.user }}">
+                {% with prof=request.user.uzytkownik %}
+                  {% if prof.rola == "Student" %}
+                    {% with imie=prof.student.imie nazwisko=prof.student.nazwisko %}
+                      <span class="user-initials">
+                        {{ imie|slice:":1" }}{{ nazwisko|slice:":1" }}
+                      </span>
+                    {% endwith %}
+                  {% elif prof.rola == "Pracodawca" %}
+                    {% with imie=prof.pracodawca.imie_przedstawiciela nazwisko=prof.pracodawca.nazwisko_przedstawiciela %}
+                      <span class="user-initials">
+                        {{ imie|slice:":1" }}{{ nazwisko|slice:":1" }}
+                      </span>
+                    {% endwith %}
+                  {% elif prof.rola == "Opiekun Praktyk" %}
+                    {% with imie=prof.opiekunpraktyk.imie nazwisko=prof.opiekunpraktyk.nazwisko %}
+                      <span class="user-initials">
+                        {{ imie|slice:":1" }}{{ nazwisko|slice:":1" }}
+                      </span>
+                    {% endwith %}
+                  {% elif prof.rola == "Pracownik BK" %}
+                    {% with imie=prof.pracownikbk.imie nazwisko=prof.pracownikbk.nazwisko %}
+                      <span class="user-initials">
+                        {{ imie|slice:":1" }}{{ nazwisko|slice:":1" }}
+                      </span>
+                    {% endwith %}
+                  {% endif %}
+                {% endwith %}
 
-                </a>
+              </a>
 
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="{% url 'logout' %}">Wyloguj</a></li>
-                </ul>
+              <ul class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="dropdownMenuLink">
+                <li class="dropdown-item disabled">
+                  {% with prof=request.user.uzytkownik %}
+                    {% if prof.rola == "Student" %}
+                      {% with imie=prof.student.imie nazwisko=prof.student.nazwisko %}
+                        {{ imie }} {{ nazwisko }}
+                      {% endwith %}
+                    {% elif prof.rola == "Pracodawca" %}
+                      {% with imie=prof.pracodawca.imie_przedstawiciela nazwisko=prof.pracodawca.nazwisko_przedstawiciela %}
+                        {{ imie }} {{ nazwsiko }}
+                      {% endwith %}
+                    {% elif prof.rola == "Opiekun Praktyk" %}
+                      {% with imie=prof.opiekunpraktyk.imie nazwisko=prof.opiekunpraktyk.nazwisko %}
+                        {{ imie }} {{ nazwisko }}
+                      {% endwith %}
+                    {% elif prof.rola == "Pracownik BK" %}
+                      {% with imie=prof.pracownikbk.imie nazwisko=prof.pracownikbk.nazwisko %}
+                        {{ imie }} {{ nazwisko }}
+                      {% endwith %}
+                    {% endif %}
+                  {% endwith %}
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'profil' user.pk %}">Profil</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Wyloguj</a>
+                </li>
+              </ul>
             </div>
-        {% else %}
-            <a href="{% url 'login' %}">Zaloguj się</a>
-        {% endif %}
-    </nav>
-
-
-</header>
-
-<main>
-    <section class="main-container">
-
-        {% block breadcrumb %}{% endblock %}
-        {% block main_title %}{% endblock %}
-        <div class="main-content">
-
-            {% block content %}{% endblock %}
+          {% else %}
+            {% if is_login_page %}
+            {% else %}
+              <a class="btn" href="{% url 'login' %}">Zaloguj się</a>
+            {% endif %}
+          {% endif %}
         </div>
-    </section>
-</main>
-<footer>
-    <div class="main-container">
+      </nav>
 
-        <p>Wsparcie techniczne<br>helpdeskit@uth.edu.pl</p>
+    </header>
+
+    <main>
+      <section>
+        <div class="container mt-4 text-center">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                   role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert">
+                </button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="container flex-grow-1 py-0">
+
+        {% block breadcrumb %}
+        {% endblock breadcrumb %}
+        <div class="row">
+          <div class="col">
+            {% block content %}
+            {% endblock content %}
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="text-center mt-auto pt-3">
+      <div>
+
+        <p>
+          Wsparcie techniczne
+          <br>
+          helpdeskit@uth.edu.pl
+        </p>
+      </div>
+    </footer>
+    <div id="goto-top-link">
+      <a class="btn btn-light m-0"
+         role="button"
+         href="#"
+         onclick="const main = document.getElementById('main'); main.scrollTo({ top: 0, left: 0, behavior: 'smooth' });"
+         aria-label="Go to top">
+        <i class="icon fa fa-arrow-up fa-fw" aria-hidden="true"></i>
+      </a>
     </div>
-</footer>
-<div id="goto-top-link">
-        <a class="btn btn-light m-0" role="button" href="#" onclick="const main = document.getElementById('main'); main.scrollTo({
-                top: 0,
-                left: 0,
-                behavior: 'smooth'
-            });" aria-label="Go to top">
-            <i class="icon fa fa-arrow-up fa-fw " aria-hidden="true"></i>
-        </a>
-    </div>
-</body>
 
-
-{% bootstrap_javascript %}
-<script>
-const scrollTop = document.getElementById("goto-top-link");
-
-window.onscroll = function(){
-    scrollFunction();
-};
-function scrollFunction(){
-
-    if( document.body.scrollTop > 20 || document.documentElement.scrollTop > 20){
-        scrollTop.style.display = "block";
-    } else {
-        scrollTop.style.display = "none";
-    }
-}
-
-scrollTop.addEventListener("click", function(){
-    window.scrollTo({
-        left: 0,
-        top: 0,
-        behavior: "smooth"
-    })
-})
-</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+    <script src="{% static 'aplikacjaTest/js/base.js' %}"></script>
+  </body>
 </html>

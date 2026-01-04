@@ -10,110 +10,57 @@
   </ol>
 </nav>
 {% endblock %}
-{% block main_title %} <h1>Rejestracja</h1> {% endblock %}
+
+{% block main_title %}
+<div class="row"><h1>Rejestracja</h1></div> {% endblock %}
+
 {% block content %}
+<div class="row py-3">
+    <div class="col">
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        <!-- ========================== UŻYTKOWNIK ========================== -->
+        <h3>Dane użytkownika</h3>
+        {% bootstrap_form form %}
 
-<form method="POST" novalidate>
-    {% csrf_token %}
-    <!-- ========================== UŻYTKOWNIK ========================== -->
-    <h3>Dane użytkownika</h3>
-    {% bootstrap_form form %}
+        <!-- ============================ ADRES ============================== -->
+        <div id="adres_fields" class="hidden">
+            <h3>Adres</h3>
+           {% bootstrap_form adres_form %}
+        </div>
 
-    <!-- ============================ ADRES ============================== -->
-    <div id="adres_fields" class="hidden">
-        <h3>Adres</h3>
-       {% bootstrap_form adres_form %}
+        <!-- ============================ STUDENT ============================ -->
+        <div id="student_fields" class="hidden">
+            <h3>Dane studenta</h3>
+           {% bootstrap_form student_form %}
+        </div>
+
+        <!-- ============================ OPIEKUN ============================ -->
+        <div id="opiekun_fields" class="hidden">
+            <h3>Dane opiekuna</h3>
+           {% bootstrap_form opiekun_form %}
+        </div>
+
+        <!-- ============================ PRACODAWCA ============================ -->
+        <div id="pracodawca_fields" class="hidden">
+            <h3>Dane pracodawcy</h3>
+           {% bootstrap_form pracodawca_form %}
+        </div>
+
+        <!-- ============================ PRACOWNIK BK ============================ -->
+        <div id="pracownikbk_fields" class="hidden">
+            <h3>Dane pracownika BK</h3>
+           {% bootstrap_form pracownikbk_form %}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Zarejestruj</button>
+    </form>
+
+    {% load static %}
+    {% block scripts %}
+        <script src="{% static 'aplikacjaTest/js/rejestracja.js' %}"></script>
+    {% endblock scripts %}
     </div>
-
-    <!-- ============================ STUDENT ============================ -->
-    <div id="student_fields" class="hidden">
-        <h3>Dane studenta</h3>
-       {% bootstrap_form student_form %}
-    </div>
-
-    <!-- ============================ OPIEKUN ============================ -->
-    <div id="opiekun_fields" class="hidden">
-        <h3>Dane opiekuna</h3>
-       {% bootstrap_form opiekun_form %}
-    </div>
-
-    <!-- ============================ PRACODAWCA ============================ -->
-    <div id="pracodawca_fields" class="hidden">
-        <h3>Dane pracodawcy</h3>
-       {% bootstrap_form pracodawca_form %}
-    </div>
-
-    <!-- ============================ PRACOWNIK BK ============================ -->
-    <div id="pracownikbk_fields" class="hidden">
-        <h3>Dane pracownika BK</h3>
-       {% bootstrap_form pracownikbk_form %}
-    </div>
-
-    <button type="submit" class="btn btn-primary mt-3">Zarejestruj</button>
-</form>
-
-
-<!-- ============================ JAVASCRIPT ============================ -->
-
-<script>
-function setRequired(sectionId, enable) {
-    document.querySelectorAll(`#${sectionId} input, #${sectionId} select`)
-        .forEach(el => {
-            el.required = enable;
-        });
-}
-
-function hideAll() {
-    [
-        "adres_fields",
-        "student_fields",
-        "pracodawca_fields",
-        "opiekun_fields",
-        "pracownikbk_fields"
-    ].forEach(id => {
-        document.getElementById(id).className = "hidden";
-        setRequired(id, false);
-    });
-}
-
-function updateRoleFields() {
-    hideAll();
-
-    const role = document.getElementById("id_main-rola").value;
-
-    if (role === "Student") {
-        document.getElementById("student_fields").className = "visible";
-        document.getElementById("adres_fields").className = "visible";
-
-        setRequired("student_fields", true);
-        setRequired("adres_fields", true);
-    }
-
-    if (role === "Pracodawca") {
-        document.getElementById("pracodawca_fields").className = "visible";
-        document.getElementById("adres_fields").className = "visible";
-
-        setRequired("pracodawca_fields", true);
-        setRequired("adres_fields", true);
-    }
-
-    if (role === "Opiekun Praktyk") {
-        document.getElementById("opiekun_fields").className = "visible";
-        setRequired("opiekun_fields", true);
-    }
-
-    if (role === "Pracownik BK") {
-        document.getElementById("pracownikbk_fields").className = "visible";
-        setRequired("pracownikbk_fields", true);
-    }
-}
-
-// odśwież po załadowaniu
-document.addEventListener("DOMContentLoaded", updateRoleFields);
-
-// przełącz po zmianie roli
-document.getElementById("id_main-rola").addEventListener("change", updateRoleFields);
-</script>
-
-
+</div>
 {% endblock %}
+

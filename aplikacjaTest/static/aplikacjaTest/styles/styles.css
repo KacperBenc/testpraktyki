@@ -278,20 +278,8 @@
     src: url(../webfonts/Lato/Lato-BlackItalic.ttf) format("truetype")
 }
 
-@font-face {
-    font-family: "Font Awesome 6 Free";
-    font-weight: 400;
-    src: url(../webfonts/fontawesome/webfonts/fa-regular-400.ttf) format("woff2"), url("../webfonts/fontawesome/webfonts/fa-regular-400.ttf") format("truetype");;
-}
-
-@font-face {
-    font-family: "Font Awesome 6 Free";
-    font-weight: 900;
-    src: url(../webfonts/fontawesome/webfonts/fa-solid-900.ttf) format("woff2"), url("../webfonts/fontawesome/webfonts/fa-solid-900.ttf") format("truetype");;
-}
-
 body {
-    background-color: rgb(241, 241, 241)
+    background-color: rgb(241, 241, 241);
 }
 
 .navbar {
@@ -301,7 +289,7 @@ body {
     text-transform: none;
     border-bottom: solid 1px rgb(144 144 144 / .35);
     box-shadow: 0 3px 6px rgb(0 0 0 / .1);
-    background-color: white !important;
+    /* background-color: white !important; */
     left: 0;
     position: fixed;
     top: 0;
@@ -370,7 +358,7 @@ body {
 }
 
 .navbar-toggler {
-    width: 10%;
+    width: 4rem;
 }
 
 .primary-navigation {
@@ -462,11 +450,11 @@ main {
     transition: 0.2s;
     left: 0;
     right: 0;
-    padding-left: 3rem;
-    padding-right: 3rem;
+    /*padding-left: 3rem;
+    padding-right: 3rem;*/
     scrollbar-width: thin;
     scrollbar-color: #868e96 #f8f9fa;
-    min-height: calc(100vh - 4em);
+    /* min-height: calc(100vh - 4em); */
 }
 
 .main-container {
@@ -505,20 +493,23 @@ main h1 {
     padding: 0;
 }
 
+
 .main-content {
-    border-top: 2px solid #061b3d;
+    border: 2px solid #dadce0;
     background: #fff;
     padding: 1rem;
     margin-bottom: 1rem !important;
+    border-radius: 10px;
+    background: #fff;
 }
 
 /*Logowanie*/
 
-body.login {
+.login {
     display: flex;
     flex-direction: column;
     justify-content: unset;
-    min-height: 100%;
+    /*min-height: 100%;*/
     height: unset;
     font-size: 1rem;
     line-height: 1.4;
@@ -526,30 +517,21 @@ body.login {
     text-rendering: optimizelegibility;
     font-feature-settings: "liga", "kern";
     color: #000;
-    background: #fff;
 }
 
-.login header #header-content {
+header #header-content {
     margin-right: auto;
     margin-left: auto;
-    max-width: 40rem;
+    /*max-width: 40rem;*/
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
     padding: 16px;
-
+    background: rgba(45, 45, 45, 0.98);
+    color: white;
 }
 
-.login main {
-    width: 40rem;
-    max-width: 100%;
-    border-radius: 8px;
-    margin: 2rem auto;
-    background: #fff;
-    border: 1px solid #dadce0;
-}
-
-.login main > #logo {
+#logo {
     display: block;
     margin: 50px auto;
     max-width: min(90%, 350px);
@@ -623,7 +605,7 @@ body.login {
     background: transparent;
 }
 
-.login div.new-input input:not(:placeholder-shown) ~ label, div.new-input input:focus ~ label {
+.login div.new-input input:not(:placeholder-shown) ~ label, .login div.new-input input:focus ~ label {
     position: absolute;
     top: -0.625rem;
     left: 0.5rem;
@@ -727,4 +709,32 @@ footer p {
     height: auto;
     overflow: visible;
     margin-top: 20px;
+}
+
+.alert-dismissible {
+  transition: opacity 0.5s ease-out;
+}
+
+.alert-dismissible.fade-out {
+  opacity: 0;
+}
+
+.table-fixed {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.opis-col {
+  max-width: 99%;   /* dopasuj do szerokości layoutu */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nazwa-col { width: 20%; }
+
+.akcje-col { width: 15%; }
+
+.link-row {
+  cursor: pointer;
 }

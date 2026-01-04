@@ -2,6 +2,26 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class TestPraktyki(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        permissions = [
+            ("add_offer_portal", "Może dodawać ofertę w portalu"),
+            ("change_offer_portal", "Może edytować ofertę w portalu"),
+            ("delete_offer_portal", "Może usuwać ofertę z portalu"),
+            ("view_own_applications", "Może widzieć własne zgłoszenia"),
+            ("view_assigned_applications", "Może widzieć przypisane zgłoszenia"),
+            ("view_students", "Może widzieć listę studentów"),
+            ("view_tutors", "Może widzieć listę opiekunów"),
+            ("view_employers", "Może widzieć listę pracodawców"),
+            ("view_users", "Może widzieć listę użytkowników"),
+            ("view_user_profile", "Może widzieć profil użytkownika"),
+            ("change_user_profile", "Może edytować profil użytkownika"),
+            ("change_user_status", "Może zmieniać status konta użytkownika"),
+        ]
+
+
 class Uzytkownik(models.Model):
     class Role(models.TextChoices):
         STUDENT = "Student", "Student"
@@ -59,6 +79,38 @@ class Pracodawca(models.Model):
         return self.nazwa_firmy or "(Pracodawca)"
 
 
+class Student(models.Model):
+    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
+    adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
+    imie = models.CharField(max_length=50)
+    nazwisko = models.CharField(max_length=50)
+    data_urodzenia = models.DateField()
+    numer_indeksu = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return f"{self.imie} {self.nazwisko} ({self.numer_indeksu})"
+
+
+class OpiekunPraktyk(models.Model):
+    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
+    adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
+    imie = models.CharField(max_length=50, null=True)
+    nazwisko = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return f"{self.imie} {self.nazwisko}"
+
+
+class PracownikBK(models.Model):
+    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
+    adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
+    imie = models.CharField(max_length=50, null=True)
+    nazwisko = models.CharField(max_length=50, null=True)
+
+    def __str__(self):
+        return f"{self.imie} {self.nazwisko}"
+
+
 class Oferta(models.Model):
     class Rodzaj(models.TextChoices):
         PRACA = "Praca zawodowa", "Praca zawodowa"
@@ -79,27 +131,6 @@ class Oferta(models.Model):
         return f"Oferta #{self.id} - {self.pracodawca}"
 
 
-class OpiekunPraktyk(models.Model):
-    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
-    imie = models.CharField(max_length=50, null=True)
-    nazwisko = models.CharField(max_length=50, null=True)
-
-    def __str__(self):
-        return f"{self.imie} {self.nazwisko}"
-
-
-class Student(models.Model):
-    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
-    adres = models.ForeignKey(Adres, on_delete=models.PROTECT)
-    imie = models.CharField(max_length=50)
-    nazwisko = models.CharField(max_length=50)
-    data_urodzenia = models.DateField()
-    numer_indeksu = models.CharField(max_length=20, unique=True)
-
-    def __str__(self):
-        return f"{self.imie} {self.nazwisko} ({self.numer_indeksu})"
-
-
 class Zgloszenie(models.Model):
     class Status(models.TextChoices):
         ZGLOSZONE = "Zgłoszone", "Zgłoszone"
@@ -110,7 +141,9 @@ class Zgloszenie(models.Model):
 
     oferta = models.ForeignKey(Oferta, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    opiekun_praktyk = models.ForeignKey(OpiekunPraktyk, on_delete=models.SET_NULL, null=True, blank=True)
+    opiekun_praktyk = models.ForeignKey(
+        OpiekunPraktyk, on_delete=models.SET_NULL, null=True, blank=True
+    )
     data_zgloszenia = models.DateTimeField(null=True)
     status = models.CharField(max_length=20, choices=Status.choices, null=True)
     ocena_dla_pracodawcy = models.IntegerField(null=True)
@@ -154,12 +187,3 @@ class OcenaDlaPracodawcy(models.Model):
 
     def __str__(self):
         return f"Ocena #{self.id}"
-
-
-class PracownikBK(models.Model):
-    uzytkownik = models.OneToOneField(Uzytkownik, on_delete=models.CASCADE)
-    imie = models.CharField(max_length=50, null=True)
-    nazwisko = models.CharField(max_length=50, null=True)
-
-    def __str__(self):
-        return f"{self.imie} {self.nazwisko}"

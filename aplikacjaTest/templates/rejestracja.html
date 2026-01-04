@@ -1,66 +1,110 @@
-{% extends 'base.html' %}
-{% block title %}Rejestracja{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}
+    Rejestracja
+{% endblock title %}
+
 {% load django_bootstrap5 %}
 {% block breadcrumb %}
 
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'home' %}">Strona główna</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Rejestracja</li>
-  </ol>
-</nav>
-{% endblock %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'home' %}">Strona główna</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Rejestracja
+            </li>
+        </ol>
+    </nav>
+{% endblock breadcrumb %}
 
 {% block main_title %}
-<div class="row"><h1>Rejestracja</h1></div> {% endblock %}
+    <div class="row">
+        <h1>
+            Rejestracja
+        </h1>
+    </div>
+{% endblock main_title %}
 
 {% block content %}
-<div class="row py-3">
-    <div class="col">
-    <form method="POST" novalidate>
-        {% csrf_token %}
-        <!-- ========================== UŻYTKOWNIK ========================== -->
-        <h3>Dane użytkownika</h3>
-        {% bootstrap_form form %}
+    <div class="row py-3">
+        <div class="col">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <!-- ========================== UŻYTKOWNIK ========================== -->
+                <h3>
+                    Dane użytkownika
+                </h3>
+                {% bootstrap_form form %}
 
-        <!-- ============================ ADRES ============================== -->
-        <div id="adres_fields" class="hidden">
-            <h3>Adres</h3>
-           {% bootstrap_form adres_form %}
+                <!-- ============================ ADRES ============================== -->
+                <div id="adres_fields" class="hidden">
+                    <h3>
+                        Adres
+                    </h3>
+                    {% bootstrap_form adres_form %}
+                </div>
+
+                <!-- ============================ STUDENT ============================ -->
+                <div id="student_fields" class="hidden">
+                    <h3>
+                        Dane studenta
+                    </h3>
+                    {% bootstrap_form student_form %}
+                </div>
+
+                <!-- ============================ OPIEKUN ============================ -->
+                <div id="opiekun_fields" class="hidden">
+                    <h3>
+                        Dane opiekuna
+                    </h3>
+                    {% bootstrap_form opiekun_form %}
+                </div>
+
+                <!-- ============================ PRACODAWCA ============================ -->
+                <div id="pracodawca_fields" class="hidden">
+                    <h3>
+                        Dane pracodawcy
+                    </h3>
+                    {% bootstrap_form pracodawca_form %}
+                </div>
+
+                <!-- ============================ PRACOWNIK BK ============================ -->
+                <div id="pracownikbk_fields" class="hidden">
+                    <h3>
+                        Dane pracownika BK
+                    </h3>
+                    {% bootstrap_form pracownikbk_form %}
+                </div>
+
+                <datalist id="kraje_list">
+                    {% for kraj in istniejace_kraje %}
+                        {% if kraj %}
+                            <option value="{{ kraj }}">
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </datalist>
+
+                <datalist id="miasta_list">
+                    {% for miasto in istniejace_miasta %}
+                        {% if miasto %}
+                            <option value="{{ miasto }}">
+                            </option>
+                        {% endif %}
+                    {% endfor %}
+                </datalist>
+
+                <button type="submit" class="btn btn-primary mt-3">
+                    Zarejestruj
+                </button>
+            </form>
+
+            {% load static %}
+            {% block scripts %}
+                <script src="{% static 'aplikacjaTest/js/rejestracja.js' %}"></script>
+            {% endblock scripts %}
         </div>
-
-        <!-- ============================ STUDENT ============================ -->
-        <div id="student_fields" class="hidden">
-            <h3>Dane studenta</h3>
-           {% bootstrap_form student_form %}
-        </div>
-
-        <!-- ============================ OPIEKUN ============================ -->
-        <div id="opiekun_fields" class="hidden">
-            <h3>Dane opiekuna</h3>
-           {% bootstrap_form opiekun_form %}
-        </div>
-
-        <!-- ============================ PRACODAWCA ============================ -->
-        <div id="pracodawca_fields" class="hidden">
-            <h3>Dane pracodawcy</h3>
-           {% bootstrap_form pracodawca_form %}
-        </div>
-
-        <!-- ============================ PRACOWNIK BK ============================ -->
-        <div id="pracownikbk_fields" class="hidden">
-            <h3>Dane pracownika BK</h3>
-           {% bootstrap_form pracownikbk_form %}
-        </div>
-
-        <button type="submit" class="btn btn-primary mt-3">Zarejestruj</button>
-    </form>
-
-    {% load static %}
-    {% block scripts %}
-        <script src="{% static 'aplikacjaTest/js/rejestracja.js' %}"></script>
-    {% endblock scripts %}
     </div>
-</div>
-{% endblock %}
-
+{% endblock content %}

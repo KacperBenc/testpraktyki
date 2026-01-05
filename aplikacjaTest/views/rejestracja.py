@@ -27,9 +27,16 @@ def rejestracja(request):
         role = request.POST.get("main-rola")
         extra_class = role_forms.get(role)
         extra_prefix = role.replace(" ", "_") if extra_class else None
-        extra_form = extra_class(request.POST, prefix=extra_prefix) if extra_class else None
+        extra_form = (
+            extra_class(request.POST, prefix=extra_prefix) if extra_class else None
+        )
 
-        requires_address = role in ["Student", "Pracodawca", "Opiekun Praktyk", "Pracownik BK"]
+        requires_address = role in [
+            "Student",
+            "Pracodawca",
+            "Opiekun Praktyk",
+            "Pracownik BK",
+        ]
 
         valid_main = main_form.is_valid()
         valid_address = (not requires_address) or adres_form.is_valid()
@@ -42,19 +49,13 @@ def rejestracja(request):
             # =====================================================
             adres_instance = None
             if requires_address:
-                # miasto — szukanie/utworzenie
-                miasto_nazwa = adres_form.cleaned_data["miasto_nazwa"].strip()
-                miasto_obj = Miasto.objects.filter(nazwa__iexact=miasto_nazwa).first()
-                if not miasto_obj:
-                    miasto_obj = Miasto.objects.create(nazwa=miasto_nazwa.title())
-
                 adres_instance = adres_form.save(commit=False)
-                adres_instance.miasto = miasto_obj
 
-                # numer lokalu może być None
+                # Pola kraj i miasto są już obiektami po walidacji
+                # nie trzeba ich manualnie wyszukiwać
+
                 if not adres_instance.numer_lokalu:
                     adres_instance.numer_lokalu = None
-
                 adres_instance.save()
 
             # =====================================================
@@ -65,7 +66,7 @@ def rejestracja(request):
             django_user = User.objects.create_user(
                 username=main_form.cleaned_data["login"],
                 password=haslo_raw,
-                email=main_form.cleaned_data["adres_mailowy"]
+                email=main_form.cleaned_data["adres_mailowy"],
             )
 
             # >>> 2a) PRZYPISANIE GRUPY NA PODSTAWIE ROLI <<<
@@ -130,9 +131,13 @@ def rejestracja(request):
         elif role == "Pracownik BK":
             forms_map["pracownikbk_form"] = extra_form
 
-    return render(request, "rejestracja.html", {
-        "form": main_form,
-        **forms_map,
-        "istniejace_kraje": adres_form.istniejace_kraje,
-        "istniejace_miasta": adres_form.istniejace_miasta,
-    })
+    return render(
+        request,
+        "rejestracja.html",
+        {
+            "form": main_form,
+            **forms_map,
+            "istniejace_kraje": adres_form.istniejace_kraje,
+            "istniejace_miasta": adres_form.istniejace_miasta,
+        },
+    )

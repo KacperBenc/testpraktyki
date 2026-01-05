@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-      {% block extra_head %}
-      {% endblock extra_head %}
+    {% block extra_head %}
+    {% endblock extra_head %}
     <title>
       {% block title %}
         System Praktyk
@@ -33,15 +33,17 @@
            id="header-content">
 
         <div class="order-1">
-          <button class="navbar-toggler"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#navbarSupportedContent"
-                  aria-controls="navbarSupportedContent"
-                  aria-expanded="false"
-                  aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+          {% if user.is_authenticated %}
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          {% endif %}
           {% if is_login_page %}
           {% else %}
             <a href="{% url 'home' %}"

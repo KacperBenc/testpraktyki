@@ -1,5 +1,5 @@
 function setRequired(sectionId, enable) {
-    document.querySelectorAll(`#${sectionId} input, #${sectionId} select`)
+    document.querySelectorAll(`#${sectionId} input:not([name="csrfmiddlewaretoken"]), #${sectionId} select`)
         .forEach(el => {
             el.required = enable;
         });

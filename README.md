@@ -27,10 +27,11 @@ System korzysta z separacji warstw prezentacji, logiki biznesowej i warstwy dany
 
 ## Instalacja i uruchomienie
 1. Sklonuj repozytorium
-2. Skonfiguruj bazę danych PostgreSQL (testowo SQLite)
-3. (Opcjonalnie) Uruchom system w kontenerach Docker
-4. Uruchom serwer Django
-5. Uzyskaj dostęp do aplikacji przez przeglądarkę pod adresem http://localhost:8000
+2. Utwórz środowisko wirtualne
+3. Zainstaluj wymagane moduły 
+4. Uruchom skrypty inicjalizacyjne (podane niżej)
+5. Uruchom serwer Django
+6. Uzyskaj dostęp do aplikacji przez przeglądarkę pod adresem http://localhost:8000
 
 ## Instrukcje użytkowania
 - Studenci mogą przeglądać oferty, aplikować na praktyki i dokumentować przebieg praktyk

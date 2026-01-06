@@ -93,7 +93,7 @@ Uprawnienia są zdefiniowane jako meta‑permissions w modelu TestPraktyki i mog
 
 # Konfiguracja środowiska (.env)
 W projekcie Django 5 środowisko konfigurowane jest przez zmienne z pliku .env, ładowane za pomocą biblioteki
-1. Utwórz plik .env w katalogu głównym projektu (tam, gdzie znajduje się manage.py i settings.py).
+1. Utwórz plik .env w katalogu głównym projektu (tam, gdzie znajduje się manage.py).
 2. Uzupełnij go podstawowymi zmiennymi konfiguracyjnymi, na przykład:
 ```
 # Tryb developerski (True/False)

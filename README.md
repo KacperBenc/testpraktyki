@@ -19,7 +19,6 @@ System Zarządzania Praktykami Studenckimi to aplikacja webowa wspierająca proc
 - **Frontend:** Django Templates (HTML, CSS, JavaScript, Bootstrap)
 - **Baza danych:** dev: SQLite, prod: PostgreSQL
 - **Konteneryzacja:** Docker (Redis, Celery)
-- **System zarządzania rolami i uprawnieniami użytkowników**
 
 
 ## Architektura systemu

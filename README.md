@@ -47,7 +47,7 @@ System korzysta z separacji warstw prezentacji, logiki biznesowej i warstwy dany
 ```bash
 rm db.sqlite3
 python manage.py migrate
-python namage.py init_role
+python manage.py init_role
 python manage.py seed_app_praktyki  # wywołanie dodania kilku testowych użytkowników i ofert
 ```
 
